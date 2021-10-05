@@ -1,0 +1,99 @@
+{% extends 'include/adminbase.html' %}
+
+{% block content %}
+<div class="main-panel">
+	<div class="content">
+		<div class="panel-header bg-white shadow-sm">
+			<div class="page-inner  py-3 mb-5">
+				<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+					<div class="">
+						<div class="header d-sm-flex align-items-center  text-center">
+							<h1 class="page-header banner-title">Users List</h1>
+							<ul class="breadcrumb justify-content-sm-start justify-content-center">
+								<li><a href="../index.html"><i class="icon-home"></i></a></li>
+								<li><a href="#">Users</a></li>
+								<li><a href="{%url 'userlist' %}">Users List</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="page-inner">
+			<div class="row">
+				<div class="col-12">
+					<div class="card">
+						<div class="card-header">
+							<div class="card-head-row justify-content-between">
+								<div class="card-title"><i class="fas fa-list"></i> Users List</div>
+
+							</div>
+						</div>
+
+						<div class="card-body">
+							<div class="table-responsive dataTables_scroll">
+								<table id="basic-datatables" class="display table table-hover table-fixed">
+									<thead>
+										<tr>
+											<!-- <th>profile</th> -->
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Email</th>
+											<th>Last Login</th>
+											<th>BLock/Unblock</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for data in data%}
+										{% if not data.is_superuser %}
+										<tr>
+											<!-- <td>
+														<div class="profile">
+															<img src="https://aaryaweb.info/html/stylexpo/admin/assets/img/profile-1.jpg" alt="..." class="profile-img rounded-circle">
+														</div>
+													</td> -->
+
+											<td>{{data.first_name}}</td>
+											<td>{{data.last_name}}</td>
+											<td>{{data.email}}</td>
+											<td>{{data.last_login}}</td>
+											{% if data.is_active %}
+
+											<td class="text-center ">
+												<div style="font-size: x-large;"><a
+														href="userlist/userblock/{{data.id}}"><i
+															class="far fa-circle "></i></a></div>
+											</td>
+
+											{% else %}
+											<td class="text-center">
+												<div style="font-size: x-large;"><a
+														href="userlist/userblock/{{data.id}}"><i
+															class="fa fa-ban "></i></a></div>
+											</td>
+											{% endif %}
+
+										</tr>
+										{% endif %}
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- custom JS -->
+	<!-- <script src="https://kit.fontawesome.com/d476ce10a9.js" crossorigin="anonymous"></script> -->
+	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/custom.js"></script>
+	<script src="https://kit.fontawesome.com/d476ce10a9.js" crossorigin="anonymous"></script>
+	<script>
+		$(document).ready(function () {
+			$('#basic-datatables').DataTable({
+			});
+		});
+	</script>
+	{% endblock content %}

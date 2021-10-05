@@ -1,0 +1,130 @@
+{% extends 'include/base.html' %}
+{% load static %}
+{% block  content%}
+  
+  <!-- Bread Crumb STRAT -->
+  <div class="container mt-sm-15">
+    <div class="banner inner-banner1 ">
+      <section class="banner-detail center-xs">
+        <h1 class="banner-title">Women</h1>
+        <div class="bread-crumb right-side float-none-xs">
+          <ul>
+            <li><a href="{% url 'index' %}">Home</a>/</li>
+            <li><span>Women</span></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+  <!-- Bread Crumb END --> 
+
+  <!-- CONTAIN START -->
+  <section class="pt-70">
+    <div class="container pb-5">
+      <div class="row">
+        <div class="col-lg-9">
+       
+          <div class="row">
+            <div class="col-lg-5 col-md-5 mb-xs-30">
+              <div class="fotorama" data-nav="thumbs" data-allowfullscreen="native"> <a href="{% url 'productpage' all_data.id %}"><img src="{{all_data.image1.url}}" alt="Stylexpo"></a> <a href="#"><img src="{{all_data.image2.url}}" alt="Stylexpo"></a> <a href="#"><img src="{{all_data.image3.url}}" alt="Stylexpo"></a> <a href="#"><img src="{{all_data.image4.url}}" alt="Stylexpo"></a> 
+              </div>
+            </div>
+            <div class="col-lg-7 col-md-7 ">
+              <div class="row">
+                <div class="col-12 text-center ">
+                  <div class="product-detail-main">
+                    <div class="product-item-details pl-4">
+                      <h1 class="product-item-name">{{all_data.product_name}}</h1>
+                      
+                      <div class="rating-summary-block pl-4">
+                        <div title="53%" class="rating-result"> <span style="width:53%"></span> </div>
+                      </div>
+                      <div class="price-box p-4"> <span class="price">${{all_data.price}}</span>  </div>
+                      
+                      <div class="mb-20 pl-4">
+                        <div class="product-qty ">
+                          <label for="qty">Qty:</label>
+                          <!-- <div class="custom-qty">
+                            <button onclick="var result = document.getElementById('qty'); var qty = result.value; if( !isNaN( qty )) result.value--;return false;" class="reduced items" type="button"> <i class="fa fa-minus"></i> </button>
+                            <input type="text" class="input-text qty" title="Qty" value="1" maxlength="8" id="qty" name="qty">
+                            <button onclick="var result = document.getElementById('qty'); var qty = result.value; if( !isNaN( qty )) result.value++;return false;" class="increase items" type="button"> <i class="fa fa-plus"></i> </button>
+                          </div> -->
+                        </div>
+                        <div class="bottom-detail cart-button">
+                          <ul>
+                            <li class="pro-cart-icon">
+                              {% if in_cart %}
+                              <div class="row pl -3">
+                              <!-- <form action="">
+                                <button  title="Add to Cart" class=" btn-success">Added to Cart <i class="fa fa-check"></i></button>
+                              </form>  -->
+                              <div class="pl-4"> 
+                              <form action="{% url 'add_cart' all_data.id %}">
+                                <button  title="Add to Cart" class=" btn-color">View Cart <i class="far fa_eye"></i> </button>
+                              </form>  
+                              </div>
+                            </div>
+                              {% else %}
+                             
+                              <form action="{% url 'add_cart' all_data.id %}">
+                                <button  title="Add to Cart" class="btn-color "><span></span>Add to Cart</button>
+                              </form>
+                           
+                              {% endif %}
+
+                            </li>
+                          </ul>
+                        </div>
+                       
+                    <div class="product-size select-arrow input-box select-dropdown mb-20 mt-30">
+                    <label>Size</label>
+                    <fieldset>
+                      <select class="selectpicker form-control option-drop" id="select-by-size">
+                        <option selected="selected" value="#">S</option>
+                        <option value="#">M</option>
+                        <option value="#">L</option>
+                      </select>
+                    </fieldset>
+                      </div>
+                      <div class="bottom-detail">
+                        <ul>
+                          <li class="pro-wishlist-icon"><a href="wishlist.html"><span></span>Wishlist</a></li>
+                          <li class="pro-compare-icon"><a href="compare.html"><span></span>Compare</a></li>
+                          <li class="pro-email-icon"><a href="#"><span></span>Email to Friends</a></li>
+                        </ul>
+                      </div>
+                      <div class="items-Description selected ">
+                        <div class="Description"> <strong></strong><br />
+  
+                          <p>{{all_data.product_description}}</p>
+                        </div>
+                      </div>
+                      <div class="share-link">
+                        <label>Share This : </label>
+                        <div class="social-link">
+                          <ul class="social-icon">
+                            <li><a class="facebook" title="Facebook" href="#"><i class="fa fa-facebook"> </i></a></li>
+                            <li><a class="twitter" title="Twitter" href="#"><i class="fa fa-twitter"> </i></a></li>
+                            <li><a class="linkedin" title="Linkedin" href="#"><i class="fa fa-linkedin"> </i></a></li>
+                            <li><a class="rss" title="RSS" href="#"><i class="fa fa-rss"> </i></a></li>
+                            <li><a class="pinterest" title="Pinterest" href="#"><i class="fa fa-pinterest"> </i></a></li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+        </div>
+       
+      </div>
+    </div>
+  </section>
+	<script src="https://kit.fontawesome.com/d476ce10a9.js" crossorigin="anonymous"></script>
+
+  <!-- CONTAINER END --> 
+  {% endblock content %}

@@ -1,0 +1,59 @@
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/owl.carousel.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/fotorama.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/magnific-popup.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/responsive.css' %}">
+<link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
+<link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.html' %}">
+<link rel="apple-touch-icon" sizes="72x72" href="{% static 'images/apple-touch-icon-72x72.html' %}">
+<link rel="apple-touch-icon" sizes="114x114" href="{% static 'images/apple-touch-icon-114x114.html' %}">
+{% block content %}
+
+<section class="checkout-section ptb-70">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-8 col-md-8 ">
+              <form class="main-form full" action="" method = "POST">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-12 mb-20">
+                    <div class="heading-part heading-bg">
+                      <h2 class="heading">Admin Login</h2>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="input-box">
+                      <label for="login-email">Username</label>
+                      <input id="login-email" name="username" type="text" required placeholder="Username ">
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="input-box">
+                      <label for="login-pass">Password</label>
+                      <input id="login-pass" type="password" name="password" required placeholder="Enter your Password">
+                    </div>
+                  </div>
+                  <div class="col-12 d-flex justify-content-center">
+                    <button name="submit" type="submit" class="btn-color right-side">Log In</button>
+                  </div>
+                  <div class =" ml-3" style="color: red">
+                      {% for message in messages%}
+                      <small>{{message}} </small>
+                      {% endfor %}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- CONTAINER END --> 
+{% endblock content %}

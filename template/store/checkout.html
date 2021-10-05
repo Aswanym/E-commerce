@@ -1,0 +1,100 @@
+{% extends 'include/base.html' %}
+{% block content %}
+
+<!-- CONTAIN START -->
+<section class="checkout-section ptb-70">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="checkout-step mb-40">
+          <ul>
+            <li class="active">
+              <a href="">
+                <div class="step">
+                  <div class="line"></div>
+                  <div class="circle">1</div>
+                </div>
+                <span>Shipping</span>
+              </a>
+            </li>
+            <li>
+              <a href="">
+                <div class="step">
+                  <div class="line"></div>
+                  <div class="circle">2</div>
+                </div>
+                <span>Order Overview & Payment</span>
+              </a>
+            </li>
+            <li>
+              <a href="">
+                <div class="step">
+                  <div class="line"></div>
+                  <div class="circle">3</div>
+                </div>
+                <span>Order Complete</span>
+              </a>
+            </li>
+            <li>
+              <div class="step">
+                <div class="line"></div>
+              </div>
+            </li>
+          </ul>
+          <hr>
+        </div>
+        <div class="row">
+      
+        <div class="col-6 pt-4">
+          <div class="cart-total-table address-box commun-table mb-30">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Shipping Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <ul>
+                      <form action="{% url 'place_order' %}" method="POST">
+                      {% csrf_token %}
+                        <p style="font-weight: bold;"> Saved Address </p>
+                        
+                        {% for address in useraddress %}
+                         <div class="custom-control custom-radio mt-3">
+
+                         <input type="radio"   name="address-id" value="{{address.id}}">
+                      
+                        <label id="{{address.id}}"  style="font-weight: bold;" >{{address.first_name}}</label>
+                        
+                        <li><p>{{address.first_address}}</p><p>{{address.second_address}}</p></li>
+                        <li><p>{{address.city}}, {{address.state}},{{address.pin}}</p><p>{{address.country}}</p></li>
+                      </div>
+                      
+                      {% endfor%}
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row">
+              <div class="col-md-6 align-left p-3">
+                  <button type="submit" class="btn btn-color ">Continue</button>
+              </div>
+              <div class="col-md-6 align-right p-3">
+                  <a href="{% url 'add_address' %}" class="btn btn-color ">Add Address</a>
+              </div>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- CONTAINER END -->
+{% endblock %}

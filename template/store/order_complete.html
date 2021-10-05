@@ -1,0 +1,271 @@
+{% extends 'include/base.html' %}
+{% block content %}
+
+<!-- Bread Crumb STRAT -->
+<div class="container mt-sm-15">
+    <div class="banner inner-banner1 ">
+      <section class="banner-detail center-xs">
+        <h1 class="banner-title">Checkout</h1>
+        <div class="bread-crumb right-side float-none-xs">
+          <ul>
+            <li><a href="{% url 'index' %}">Home</a>/</li>
+            <li><a href="{% url 'cart' %}">Cart</a>/</li>
+            <li><span>Checkout</span></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+
+
+  <style>
+    a {
+        color: inherit;
+    }
+</style>
+  <!-- Bread Crumb END -->
+<div class="container">
+      <div class="row ptb-70">
+        <div class="col-12">
+          <div class="checkout-step mb-40">
+            <ul>
+              <li> <a href="">
+                <div class="step">
+                  <div class="line"></div>
+                  <div class="circle">1</div>
+                </div>
+                <span>Shipping</span> </a> </li>
+                <li> <a href="">
+                <div class="step">
+                  <div class="line"></div>
+                  <div class="circle">2</div>
+                </div>
+                <span>Order Overview & Payment</span> </a> </li>
+                <li class="active"> <a href="#">
+                <div class="step">
+                  <div class="line"></div>
+                  <div class="circle">3</div>
+                </div>
+                <span>Order Complete</span> </a> </li>
+            </ul>
+            <hr>
+          </div>
+        </div>
+       </div>
+      </div>
+
+<div class="u-row-container" style="padding: 0px;background-color: transparent">
+  <div class="u-row" style="Margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
+    <div style="border-collapse: collapse;display: table;width: 100%;background-color: transparent;">
+      <div class="u-col u-col-100" style="max-width: 320px;min-width: 640px;display: table-cell;vertical-align: top;">
+        <div style="width: 100% !important;">
+            <div style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
+              <table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+                <tbody>
+                  <tr>
+                    <td style="overflow-wrap:break-word;word-break:break-word;padding:20px 10px;font-family:arial,helvetica,sans-serif;" align="left">
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td style="padding-right: 0px;padding-left: 0px;" align="center">
+                          <img align="center" border="0" src="https://img.bayengage.com/assets/1602242596297-img (2).png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 147px;" width="147"/>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ </div>
+
+
+<div class="u-row-container" style="padding: 0px;background-color: transparent">
+  <div class="u-row" style="Margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
+    <div style="border-collapse: collapse;display: table;width: 100%;background-color: transparent;">
+      <div class="u-col u-col-100" style="max-width: 320px;min-width: 640px;display: table-cell;vertical-align: top;">
+        <div style="width: 100% !important;">
+          <div style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
+            <table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+              <tbody>
+                <tr>
+                  <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 30px;font-family:arial,helvetica,sans-serif;" align="left">
+                    <div style="line-height: 140%; text-align: left; word-wrap: break-word;">
+                      <p style="font-size: 14px; line-height: 140%; text-align: center;"><strong><span style="font-size: 32px; line-height: 44.8px; color: #fc6864;">Thank you for your purchase</span></strong></p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="u-row-container" style="padding: 0px;background-color: transparent">
+  <div class="u-row" style="Margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
+    <div style="border-collapse: collapse;display: table;width: 100%;background-color: transparent;">
+      <div class="u-col u-col-100" style="max-width: 320px;min-width: 640px;display: table-cell;vertical-align: top;">
+        <div style="width: 100% !important;">
+          <div style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
+            <table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+              <tbody>
+                <tr>
+                  <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 30px;font-family:arial,helvetica,sans-serif;" align="left">
+                    <div style="line-height: 200%; text-align: left; word-wrap: break-word;">
+                     
+                        {% comment %} <button class="btn  text-light btn-block"  style="background-color: #fc6864;height: 50px; "  type="submit"><a href="/"> Continue Shopping</button></a> {% endcomment %}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- CONTAIN START -->
+  <section class="checkout-section ptb-70">
+    <div class="container">
+      
+            <div class="row">
+              <div class="col-md-8 mb-sm-30">
+                <div id="form-print" class="admission-form-wrapper">
+                  <div class="cart-item-table complete-order-table commun-table mb-30">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Product</th>
+                            <th>Product Detail</th>
+                          </tr>
+                        </thead>
+                      {% for order_product in order_product %}
+                        <tbody>
+                          <tr>
+                            <td>
+                              <a href="product-page.html">
+                                <div class="product-image">
+                                  <img alt="Stylexpo" src="{{order_product.product.image1.url}}">
+                                </div>
+                              </a>
+                            </td>
+                            <td>
+                              <div class="product-title"> 
+                                <a href="product-page.html">{{order_product.product}}</a>
+                                <div class="product-info-stock-sku m-0">
+                                  <div>
+                                    <label>Price: </label>
+                                    <div class="price-box"> 
+                                      <span class="info-deta price">₹{{order_product.product.price}}</span> 
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="product-info-stock-sku m-0">
+                                  <div>
+                                    <label>Quantity: </label>
+                                    <span class="info-deta">{{order_product.quantity}}</span> 
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      {% endfor %}
+                      </table>
+                    </div>
+                  </div>
+                 
+                  <div class="complete-order-detail commun-table mb-30">
+                    <div class="table-responsive">
+                      <table class="table">
+                      
+                        <tbody>
+                          <tr>
+                            <td><b>Order Places :</b></td>
+                            <td>{{order_confirms.created_at}}</td>
+                          </tr>
+                          <tr>
+                            <td><b>Total :</b></td>
+                            <td><div class="price-box"> <span class="price">₹{{order_confirms.payment.amount_paid}}</span> </div></td>
+                          </tr>
+                          <tr>
+                            <td><b>Payment :</b></td>
+                            <td>{{order_confirms.payment.payment_method}}</td>
+                          </tr>
+                          <tr>
+                            <td><b>Order No. :</b></td>
+                            <td>{{order_confirms.order_number}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  {% comment %} <div class="mb-30">
+                    <div class="heading-part">
+                      <h3 class="sub-heading">Order Confirmation</h3>
+                    </div>
+                    <hr>
+                    <p class="mt-20">Quisque id fermentum tellus. Donec fringilla mauris nec ligula maximus sodales. Donec ac felis nunc. Fusce placerat volutpat risus, ac fermentum ex tempus eget.</p>
+                  </div> {% endcomment %}
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="">
+                      {% comment %} <button onclick="printDiv('form-print')" class="btn btn-color" type="button">Print</button> {% endcomment %}
+                      <div class="right-side float-none-xs mt-sm-30"> 
+                        <a class="btn btn-black" href="shop.html">
+                          <span><i class="fa fa-angle-left"></i></span>Continue Shopping
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="cart-total-table address-box commun-table mb-30">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Shipping Address</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <ul>
+                              <li class="inner-heading"> <b>{{order_confirms.full_name}}</b> </li>
+                              <li>
+                                <p>{{order_confirms.full_address}}</p>
+                              </li>
+                              <li>
+                                <p>{{order_confirms.state}} {{order_confirms.city}}</p>
+                              </li>
+                              <li>
+                                <p>{{order_confirms.country}}</p>
+                              </li>
+                            </ul>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            
+            </div>
+    </div>
+  </section>
+
+  <!-- CONTAINER END --> 
+  {% endblock %}

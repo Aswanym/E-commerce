@@ -1,0 +1,204 @@
+{% extends 'include/adminbase.html' %}
+{% block content %}
+<div class="main-panel">
+	<div class="content">
+		<div class="panel-header bg-white shadow-sm">
+			<div class="page-inner  py-3 mb-5">
+				<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+					<div class="">
+						<div class="header d-sm-flex align-items-center  text-center">
+							<h1 class="page-header banner-title">Products</h1>
+							<ul class="breadcrumb justify-content-sm-start justify-content-center">
+								<li><a href="../index.html"><i class="icon-home"></i></a></li>
+								<li><a href="{% url 'addproduct' %}">Products</a></li>
+								<li><a href="#">Add Product</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="page-inner">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+
+						<div class="card-header">
+							<div class="card-head-row justify-content-between">
+								<div class="card-title"><i class="fas fa-pen"></i> Add Product</div>
+								<form class="main-form full" method="POST" action="" enctype="multipart/form-data">
+									{% csrf_token %}
+									<div class="add-btn">
+										<button class="btn btn-primary" data-toggle="tooltip" type="submit"
+											data-original-title="Save"><i class="fa fa-save"> Save</i></button>
+										<!-- <a class="btn btn-primary" href="#"  data-toggle="tooltip" title="" data-original-title="Cancel"><i class="fa fa-times"></i></a> -->
+									</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<!-- <form class="main-form full"> -->
+							<div class="row">
+								<div class="col-12">
+									<div class="input-box form-group required">
+										<div class="row">
+											<label for="p-name" class="col-md-3 control-label">Product Name</label>
+											<div class="col-md-9">
+												<input type="text" name="product_name" class="form-control" id="p-name"
+													required placeholder="Product Name">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-box form-group">
+										<div class="row">
+											<label for="input-status" class="col-md-3 control-label">Category</label>
+											<div class="col-md-9">
+												<select name ="category" class="form-control mySelect">
+													{% for category in category %}
+													<option value="{{category.category_name}}">
+														{{category.category_name}}
+													</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-box form-group">
+										<div class="row">
+											<label for="input-status" class="col-md-3 control-label">Sub Category</label>
+											<div class="col-md-9">
+												<select  class="form-control mySelect" name="subcategory" >
+													{% for subcategory in subcategory %}
+													<option value="{{subcategory.sub_category}}">
+														{{subcategory.sub_category}}
+													</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-12">
+									<div class="input-box form-group">
+										<div class="row">
+											<label for="input-brands" class="col-md-3 control-label">Slug</label>
+											<div class="col-md-9">
+												<input type="text" name="product_slug" class="form-control"
+													id="input-brands" placeholder="Slug">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-box form-group">
+										<div class="row">
+											<label for="description" class="col-md-3 control-label">Description</label>
+											<div class="col-md-9">
+												<textarea id="summernote" name="product_description"
+													class="form-control" placeholder="Description" rows="10"
+													cols="30">
+												</textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-box form-group">
+										<div class="row">
+											<label for="input-price" class="col-md-3 control-label">Price</label>
+											<div class="col-md-9">
+												<input type="text" name="price" placeholder="Price" id="input-price"
+													class="form-control">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-box form-group">
+										<div class="row">
+											<label for="input-quantity" class="col-md-3 control-label">Stock</label>
+											<div class="col-md-9">
+												<input type="text" name="stock" class="form-control" id="input-quantity"
+													placeholder="Stock">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-box form-group required">
+										<div class="row">
+											<label for="first-name" class="col-md-3 control-label">Upload Image1</label>
+											<div class="col-md-9">
+												<input type="file" name="pic1" class="form-control" id="coupan-name"
+													placeholder="First Name">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-box form-group required">
+										<div class="row">
+											<label for="first-name" class="col-md-3 control-label">Upload Image2</label>
+											<div class="col-md-9">
+												<input type="file" name="pic2" class="form-control" id="coupan-name"
+													placeholder="First Name">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-box form-group required">
+										<div class="row">
+											<label for="first-name" class="col-md-3 control-label">Upload Image3</label>
+											<div class="col-md-9">
+												<input type="file" name="pic3" class="form-control" id="coupan-name"
+													placeholder="First Name">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="input-box form-group required">
+										<div class="row">
+											<label for="first-name" class="col-md-3 control-label">Upload Image4</label>
+											<div class="col-md-9">
+												<input type="file" name="pic4" class="form-control" id="coupan-name"
+													placeholder="First Name">
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- custom JS -->
+	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/custom.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script>
+
+		$('.mySelect').on("change", function(){
+			$('option:selected', this).hide().siblings().show(); 
+		}).trigger('change');	
+		
+			
+		$('#summernote').summernote({
+			placeholder: 'Description',
+			tabsize: 2,
+			height: 250
+		});
+
+	
+		
+	</script>
+	{% endblock content%}

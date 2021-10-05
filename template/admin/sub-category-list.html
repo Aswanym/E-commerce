@@ -1,0 +1,80 @@
+{% extends 'include/adminbase.html' %}
+{% load static %}
+{% static "images" as baseUrl %}
+{% block content %}
+		<div class="main-panel">
+			<div class="content">
+				<div class="panel-header bg-white shadow-sm">
+					<div class="page-inner  py-3 mb-5">
+						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div class="">
+								<div class="header d-sm-flex align-items-center  text-center"> 
+				                    <h1 class="page-header banner-title">Sub Category</h1>
+									<ul class="breadcrumb justify-content-sm-start justify-content-center">
+									  	<li><a href="../index.html"><i class="icon-home"></i></a></li>
+									  	<li><a href="#">Sub Category</a></li>
+									  	<li><a href="{%url 'subcategorylist' %}">Sub Category List</a></li>
+									</ul> 			
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="page-inner">
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-head-row justify-content-between">
+										<div class="card-title"><i class="fas fa-list"></i>Sub Category List</div>
+										<div class="add-btn">
+											<a class="btn btn-primary" href="{%url 'addsubcategory' %}" data-toggle="tooltip" title="" data-original-title="Create User"><i class="fa fa-plus">Add</i></a>	
+										</div>
+									</div>
+								</div>
+								
+								<div class="card-body">
+									<div class="table-responsive dataTables_scroll">
+										<table id="basic-datatables" class="display table table-hover table-fixed" >
+											<thead>
+												<tr>
+                                                    
+													<th>Sub Category</th>
+													<th>Category</th>
+													<th>Slug</th>
+													<th>Description</th>
+													<th>Delete</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for subcategory in all_sub_category%}
+												<tr>
+													<td>{{subcategory.sub_category}}</td>
+													<td>{{subcategory.category}}</td>
+													<td>{{subcategory.sub_category_slug}}</td>
+													<td>{{subcategory.sub_category_description}}</td>
+												
+													<td class="">
+														<a class="btn btn-primary" href="{% url 'deletesubcategory' subcategory.id %}" data-toggle="tooltip" title="" data-original-title="delete"><i class="fa fa-trash"></i></a>
+													</td>
+                                                </tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+	<!-- custom JS -->
+	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/custom.js"></script>
+	<script >
+		$(document).ready(function() {
+			$('#basic-datatables').DataTable({
+			});
+		});
+	</script>
+	{% endblock content %}

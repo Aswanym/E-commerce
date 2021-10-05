@@ -1,0 +1,74 @@
+{% extends 'include/adminbase.html' %}
+{% load static %}
+{% block content %}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="panel-header bg-white shadow-sm">
+            <div class="page-inner  py-3 mb-5">
+                <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                    <div class="">
+                        <div class="header d-sm-flex align-items-center  text-center"> 
+                            <h1 class="page-header banner-title">Orders</h1>
+                            <ul class="breadcrumb justify-content-sm-start justify-content-center">
+                                  <li><a href="../index.html"><i class="icon-home"></i></a></li>
+                                  <li><a href="#">Sales</a></li>
+                                  <li><a href="#">Orders</a></li>
+                            </ul> 			
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title"><i class="fa fa-list"></i> Order List</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="basic-datatables" class="display table table-hover" >
+                                    <thead>
+                                   
+                                        <tr>
+                                            <th>order ID</th>
+                                            <th>Product</th>
+                                            <th>Payment Status</th>
+                                            <th>Payment Method</th>
+                                            <th>Order Status</th>
+                                            <th>Date</th>
+                                            <th>Total</th>
+                                            <th class="text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                     {% for order_list in order_list %}
+                                        <tr>
+                                            <td>{{order_list.order.order_number}}</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <img src="{{order_list.product.image1.url}}" alt="product"  class="img-fluid img-thumbnail">
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-secondary"></span></td>
+                                            <td>{{order_list.payment.payment_method}}</td>
+                                            <td><span class="badge badge-success">Delivered</span></td>
+                                            <td>{{order_list.created_at}}</td>
+                                            <td>₹{{order_list.product_price}}</td>
+                                            <td class="text-right">
+                                                <a class="btn btn-primary" href="orders-details.html" data-toggle="tooltip" title="" data-original-title="View Details"><i class="fa fa-edit"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
