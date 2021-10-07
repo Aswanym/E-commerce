@@ -13,6 +13,9 @@ urlpatterns = [
     path('shop_clothes/',views.shop_clothes,name ='shop_clothes'),
     path('shop_footwears/',views.shop_footwears,name ='shop_footwears'),
 
-    path('user_profile/',views.user_profile,name='user_profile')
+    path('user_profile/',views.user_profile,name='user_profile'),
+    path('change_password/',views.change_password,name='change_password'),
+    path('edit_profile/<int:id>',views.edit_profile,name='edit_profile'),
+    path('order_cancel/<str:order_number>',views.order_cancel,name='order_cancel'),
 
 ]

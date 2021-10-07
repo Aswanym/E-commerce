@@ -44,7 +44,7 @@ class Order(models.Model):
     
     order_total=models.FloatField(null=True)
     
-    status=models.CharField(max_length=30,choices=STATUS,default='New')
+    status=models.CharField(max_length=30,choices=STATUS,default='Ordered')
     ip=models.CharField(max_length=100,blank=True)
     is_ordered=models.BooleanField(default=False)
     created_at=models.DateTimeField(auto_now_add=True)

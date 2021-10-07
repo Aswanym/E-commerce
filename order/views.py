@@ -248,8 +248,8 @@ def order_complete(request,order_number):
     order_confirms = Order.objects.get(user=request.user,order_number=order_number)
     print(order_confirms)
     order_product = OrderProduct.objects.filter(user=request.user,order_id=order_confirms.id)
-    for product in order_product:
-        print(product)
+    # for product in order_product:
+    #     print(product)
     
     context={
         'order_confirms': order_confirms,

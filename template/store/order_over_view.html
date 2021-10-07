@@ -187,7 +187,7 @@
                         console.log(amount)
                         src="https://checkout.razorpay.com/v1/checkout.js"
                         data-key="rzp_test_vSGvaCLi6bOoGd"
-                        data-amount="{{grand_total}}" 
+                        data-amount="{{razorpay_amount}}" 
                         data-currency="INR"
                         data-order_id="{{payment.id}}"
                         data-buttontext="Pay with Razorpay"
@@ -198,7 +198,6 @@
                         data-prefill.email="aswany@example.com"
                         data-theme.color="#3399cc"
                     ></script>
-                    <input type="" custom="Hidden Element" name="hidden">
                     </form>
                 </div>
           </div>

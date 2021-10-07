@@ -1,298 +1,303 @@
-{% extends 'include/base.html' %}
-{% block content %}
+{% extends 'include/base.html' %} {% block content %}
 
-
-  
-  <!-- Bread Crumb STRAT -->
-  <div class="container mt-sm-15">
-    <div class="banner inner-banner1 ">
-      <section class="banner-detail center-xs">
-        <h1 class="banner-title">Account</h1>
-        <div class="bread-crumb right-side float-none-xs">
-          <ul>
-            <li><a href="{% url 'index' %}">Home</a>/</li>
-            <li><span>Account</span></li>
-          </ul>
-        </div>
-      </section>
-    </div>
+<!-- Bread Crumb STRAT -->
+<div class="container mt-sm-15">
+  <div class="banner inner-banner1">
+    
+    <section class="banner-detail center-xs">
+      <h1 class="banner-title">Account</h1>
+      <div class="bread-crumb right-side float-none-xs">
+        <ul>
+          <li><a href="{% url 'index' %}">Home</a>/</li>
+          <li><span>Account</span></li>
+        </ul>
+      </div>
+    </section>
   </div>
-  <!-- Bread Crumb END -->
+</div>
+<!-- Bread Crumb END -->
 
-  <!-- CONTAIN START -->
-  <section class="checkout-section ptb-70">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-3">
-          <div class="account-sidebar account-tab mb-sm-30">
-            <div class="dark-bg tab-title-bg">
-              <div class="heading-part">
-                <div class="sub-title"><span></span> My Account</div>
+<!-- CONTAIN START -->
+<section class="checkout-section ptb-70">
+  <div class="container">
+    <div class="row">
+    {% include  'include/alerts.html' %}
+    {% include  'include/account_sidebar.html' %}
+
+      <div class="col-lg-9">
+        <div id="data-step1" class="account-content" data-temp="tabdata">
+        
+          <div class="mb-30">
+          
+            <div class="row">
+              <div class="col-12">
+                
+                <div class="heading-part">
+                   
+                  <p class="sub-heading" style="font-size: 20px">
+                    <span style="font-weight: bold; font-size: 20px"
+                      >Hello,</span
+                    >
+                    {{user_details.full_name}}
+                  </p>
+                </div>
+
+                <hr />
+                <br />
+                <p>
+                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                  Donec eros tellus, scelerisque nec, rhoncus eget, laoreet sit
+                  amet.
+                  >
+                </p>
+                <hr />
               </div>
             </div>
-            <div class="account-tab-inner">
-              <ul class="account-tab-stap">
-                <li id="step1" class="active"> <a href="javascript:void(0)">My Dashboard<i class="fa fa-angle-right"></i> </a> </li>
-                <li id="step2"> <a href="javascript:void(0)">Account Details<i class="fa fa-angle-right"></i> </a> </li>
-                <li id="step3"> <a href="javascript:void(0)">My Order List<i class="fa fa-angle-right"></i> </a> </li>
-                <li id="step4"> <a href="javascript:void(0)">Change Password<i class="fa fa-angle-right"></i> </a> </li>
-              </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card" style="text-align: center;">
+                    <div class="card-body">
+                      <h5 class="card-title">Total order</h5>
+                      <h4>{{order_count}}</h4>
+                      <a href="">View order</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="card" style="text-align: center; ">
+                    <div class="card-body">
+                      <img
+                        src="https://www.w3schools.com/howto/img_avatar.png"
+                        alt="Avatar"
+                        class="avatar"
+                        width="50"
+                        height="50"
+                        style="border-radius: 50%" />
+                      <br>
+                      <p>{{user_details.full_name}}</p>
+                      <p>{{user_details.email}}</p>
+                      <p>{{user_details.phone_number}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-9">
-          <div id="data-step1" class="account-content" data-temp="tabdata">
-            <div class="row">
-              <div class="col-12">
-                <div class="heading-part heading-bg mb-30">
-                  <h2 class="heading m-0">Account Dashboard</h2>
-                </div>
-              </div>
-            </div>
-            <div class="mb-30">
-              <div class="row">
-                <div class="col-12">
-                {% for user_address in user_address1 %}
-                  <div class="heading-part">
-                    <h3 class="sub-heading">Hello, {{user_address.first_name}}</h3>
-                  </div>
-                  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec eros tellus, scelerisque nec, rhoncus eget, laoreet sit amet.<a class="account-link" id="subscribelink" href="#">Click Here</a></p>
-                </div>
-              </div>
-            </div>
-          
-            <div class="m-0">
-              <div class="row">
-                <div class="col-12 mb-20">
-                  <div class="heading-part">
-                    <h3 class="sub-heading">Account Information</h3>
-                  </div>
-                  <hr>
-                </div>
-                <div class="col-md-6">
-                  <div class="cart-total-table address-box commun-table">
-                    <div class="table-responsive">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>Shipping Address</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td><ul>
-                                <li class="inner-heading"> <b>{{user_address.first_name}}</b> </li>
-                                <li>
-                                  <p> {{user_address.first_address}}, {{user_address.second_address}}</p>
-                                </li>
-                                <li>
-                                  <p> {{user_address.state}}, {{user_address.city}},{{user_address.pin}}</p>
-                                </li>
-                                <li>
-                                  <p> {{user_address.country}}</p>
-                                </li>
-                              </ul></td>
-                          </tr>
-                            {% endfor %}
-                        </tbody>
-                      </table>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div
+          id="data-step2"
+          class="account-content"
+          data-temp="tabdata"
+          style="display: none"
+        >
+          <div class="row">
+            <div class="col-12">
+              <h4
+                class="heading m-0"
+                style="font-weight: bold; font-size: 20px"
+              >
+                Edit Profile
+              </h4>
             </div>
           </div>
-          <div id="data-step2" class="account-content" data-temp="tabdata" style="display:none">
-            <div class="row">
-              <div class="col-12">
-                <div class="heading-part heading-bg mb-30">
-                  <h2 class="heading m-0">Account Details</h2>
-                </div>
-              </div>
-            </div>
-            <div class="m-0">
-              <form class="main-form full">
-                <div class="mb-20">
-                  <div class="row">
-                    <div class="col-12 mb-20">
-                      <div class="heading-part">
-                        <h3 class="sub-heading">Shipping Address</h3>
-                      </div>
-                      <hr>
+          <hr>
+          <div class="m-0">
+            <form
+              class="main-form full"
+              method="POST"
+              action="{% url 'edit_profile' user_details.id %}"
+            >
+              <div class="mb-20">
+                <div class="row">
+                  <div class="col-12 mb-20">
+                    <div class="">
+                      <h5>Shipping Address</h5>
                     </div>
-                    <div class="col-md-6">
-                      <div class="input-box">
-                        <input type="text" required placeholder="Full Name">
-                      </div>
-                    </div>
-                    <div class="col-md-6">
+                    <hr />
+                    <br />
+                  </div>
+                  <div class="col-md-6">
                     <div class="input-box">
-                      <input type="text" required placeholder="Last Name" name=last_name>
-                    </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="input-box">
-                        <input type="email" required placeholder="Email Address">
-                      </div>
-                    </div>
-                   
-                    <div class="col-md-6">
-                      <div class="input-box">
-                        <input type="text" required placeholder="Contact Number">
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="input-box">
-                        <input type="text" required placeholder="Address line1">
-                       
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="input-box">
-                        <input type="text" required placeholder="Address line2">
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="input-box select-dropdown">
-                        <fieldset>
-                          <select name="shippingCountryId" class="option-drop" id="shippingcountryid">
-                            <option selected="" value="">Select Country</option>
-                            <option value="IN">India</option>
-                          </select>
-                        </fieldset>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="input-box select-dropdown">
-                        <fieldset>
-                          <select name="shippingstateId" class="option-drop" id="shippingstateid">
-                            <option value="">Select a State</option>
-                            <option value="KL">Kerala</option>
-                          </select>
-                        </fieldset>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="input-box">
-                        <input type="text" required placeholder="Select City">
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="input-box">
-                        <input type="text" required placeholder="Postcode/zip">
-                      </div>
-                    </div>
-                     <div class="col-md-12 align-center p-3">
-                        <button type="submit" class="btn btn-color ">Change Address</button>
+                      <input type="text" required placeholder="First Name" name="first_name" value="{{data.first_name}}"/>
                     </div>
                   </div>
-                </div>
-              </form>
-            </div>
-          </div>
-          <div id="data-step3" class="account-content" data-temp="tabdata" style="display:none">
-            <div id="form-print" class="admission-form-wrapper">
-              <div class="row">
-                <div class="col-12">
-                  <div class="heading-part heading-bg mb-30">
-                    <h2 class="heading m-0">My Orders</h2>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12 mb-xs-30">
-                  <div class="cart-item-table commun-table">
-                    <div class="table-responsive">
-                      <table class="table">
-                        {% for order_list in order_list1 %}
-                          <tr>
-                            <td>
-                              <a href="product-page.html">
-                                <div class="product-image">
-                                  <img alt="Stylexpo" src="{{order_list.product.image1.url}}">
-                                </div>
-                              </a>
-                            </td>
-                            <td>
-                              <div class="product-title"> 
-                                <a href="product-page.html">{{order_list.product}}</a> 
-                              </div>
-                              {% comment %} <div class="product-info-stock-sku m-0">
-                                <div>
-                                  <label>Quantity: </label>
-                                  <span class="info-deta">{{order_list.quantity}}</span> 
-                                </div>
-                              </div> {% endcomment %}
-                            </td>
-                            <td>
-                              <div class="base-price price-box"> 
-                                <span class="price">{{order_list.order.order_number}}</span> 
-                              </div>
-                            </td>
-                            <td>
-                              <div class="base-price price-box"> 
-                                <span class="price">₹{{order_list.product_price}}</span> 
-                              </div>
-                            </td>
-                            <td>
-                              <i title="Remove Item From Cart" data-id="100" class="fa fa-trash cart-remove-item"></i>
-                            </td> 
-                          </tr>
-                         
-                        </tbody>
-                        {% endfor %}
-                      </table>
+                  <div class="col-md-6">
+                    <div class="input-box">
+                      <input
+                        type="text"
+                        required
+                        placeholder="Last Name"
+                        name="last_name"
+                        value="{{data.last_name}}"
+                      />
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <div class="print-btn text-center mt-30">
-                  <button onclick="printDiv('form-print')" class="btn btn-color" type="button">Print</button>
-                </div>
-              </div>
-           </div>
-          </div>
-          <div id="data-step4" class="account-content" data-temp="tabdata" style="display:none">
-            <div class="row">
-              <div class="col-12">
-                <div class="heading-part heading-bg mb-30">
-                  <h2 class="heading m-0">Change Password</h2>
-                </div>
-              </div>
-            </div>
-            <form class="main-form full">
-              <div class="row">
-                <div class="col-12">
-                  <div class="input-box">
-                    <label for="old-pass">Old-Password</label>
-                    <input type="password" placeholder="Old Password" required id="old-pass">
+                  <div class="col-md-6">
+                    <div class="input-box">
+                      <input
+                        type="email"
+                        required
+                        placeholder="Email Address"
+                        name= "email"
+                        value= "{{data.email}}"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="input-box">
-                    <label for="login-pass">Password</label>
-                    <input type="password" placeholder="Enter your Password" required id="login-pass">
+                  <div class="col-md-6">
+                    <div class="input-box">
+                      <input
+                        type="text"
+                        required
+                        placeholder="Contact Number"
+                        name= "phone_number"
+                        value= "{{data.phone_number}}"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="input-box">
-                    <label for="re-enter-pass">Re-enter Password</label>
-                    <input type="password" placeholder="Re-enter your Password" required id="re-enter-pass">
+                  <div class="col-md-12 align-center p-3">
+                    <button type="submit" class="btn btn-color">
+                      Change Address
+                    </button>
                   </div>
-                </div>
-                <div class="col-12">
-                  <button class="btn-color" type="submit" name="submit">Change Password</button>
                 </div>
               </div>
             </form>
           </div>
         </div>
+        <div
+          id="data-step3"
+          class="account-content"
+          data-temp="tabdata"
+          style="display: none"
+        >
+          <div id="form-print" class="admission-form-wrapper">
+            <div class="row">
+              <div class="col-12">
+                <h3
+                  class="heading m-0"
+                  style="font-weight: bold; font-size: 20px"
+                >
+                  My order history
+                </h3>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-12 mb-xs-30">
+                <div class="cart-item-table commun-table">
+                  <div class="">
+                    <table class="table">
+                      <thead>
+                        <tr>                       
+                          <td>Order Number</td>
+                          <td>Price</td>
+                          <td>Date</td>
+                          <td>Status</td>
+                          <td>Action</td>
+                        </tr>
+                      </thead>
+
+                      {% for order_list in order_list %}
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div class="product-title">
+                              <a href="product-page.html"
+                                >{{order_list.order_number}}</a
+                              >
+                            </div>
+                          </td>
+                          <td>
+                              <div class="price">
+                                ₹{{order_list.payment.amount_paid}}
+                              </div>
+                          </td>
+                          <td>
+                            <div class="base-price price-box">
+                              <span class="price"
+                                >{{order_list.created_at}}</span
+                              >
+                            </div>
+                          </td>
+                          <td>
+                            <div class="base-price price-box">
+                              <span class="price"
+                                >{{order_list.status}}</span
+                              >
+                            </div>
+                          </td>
+                          {% if order_list.status != "Cancelled" %}
+                            <td>
+                            <div>
+                            <a href="{% url 'order_cancel' order_list.order_number %}">Cancel</a>
+                            </div>
+                            </td>
+                          {% else %}
+                            <div>
+                            </div>
+                          {% endif %}
+                        </tr>
+                      </tbody>
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div
+          id="data-step4"
+          class="account-content"
+          data-temp="tabdata"
+          style="display: none"
+        >
+          <div class="row">
+            <div class="col-12">
+              <h3
+                class="heading m-0"
+                style="font-weight: bold; font-size: 20px">
+                change password
+              </h3>
+            </div>
+          </div>
+          <hr>
+          <br>
+         
+
+          <form class="main-form full" action="{% url 'change_password' %}" method = "POST">
+           {% csrf_token %}
+           <div class="form-group">
+            <label>Current password</label>
+            <input type="password" name="current_password" placeholder="Current password" class="form-control" required>
+           <div>
+
+           <div class="form-group mt-2">
+            <label>New password</label>
+            <input type="password" name="new_password" placeholder="New password" class="form-control" required>
+           <div>
+
+          <div class="form-group mt-2">
+            <label>Confirm password</label>
+            <input type="password" name="confirm_password" placeholder="Confirm password" class="form-control" required>
+           <div>
+              <div class="col-12 mt-2">
+                <button class="btn-color" type="submit" name="submit">
+                  Change Password
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </section>
-  <!-- CONTAINER END --> 
-  {% endblock %}
+  </div>
+</section>
+<!-- CONTAINER END -->
+{% endblock %}

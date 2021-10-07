@@ -43,11 +43,11 @@
           </ul>
           <hr>
         </div>
-        <div class="row">
-      
-        <div class="col-6 pt-4">
+        <div class="row" >
+        {% include  'include/alerts.html' %}
+        <div class="col-8 pt-4">
           <div class="cart-total-table address-box commun-table mb-30">
-            <div class="table-responsive">
+            <div class="table">
               <table class="table">
                 <thead>
                   <tr>
@@ -63,7 +63,7 @@
                         <p style="font-weight: bold;"> Saved Address </p>
                         
                         {% for address in useraddress %}
-                         <div class="custom-control custom-radio mt-3">
+                      <div class="custom-control custom-radio mt-3">
 
                          <input type="radio"   name="address-id" value="{{address.id}}">
                       

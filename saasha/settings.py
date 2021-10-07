@@ -140,6 +140,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-RAZORPAY_API_KEY = ' rzp_test_vSGvaCLi6bOoGd'
-RAZORPAY_API_SECRET_KEY = 'upu3ldcsypjLzDcJqdVNVsqo'
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+ 
+}

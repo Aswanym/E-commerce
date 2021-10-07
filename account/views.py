@@ -7,7 +7,8 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 
 from cart.models import Cart, CartItem, UserAddress
-from order.models import OrderProduct
+from order.models import Order, OrderProduct
+
 
 # import requests
 
@@ -129,8 +130,6 @@ def index(request):
     }
     return render(request, 'account/index.html', context)
 
-
-
 def ProductPage(request, id):
     all_data = Product.objects.get(id=id)
     print(all_data)
@@ -158,13 +157,84 @@ def shop_footwears(request):
     }
     return render(request, 'account/shop_footwears.html', context)
 
-
+@login_required(login_url='login')
 def user_profile(request):
+    user1 = User.objects.get(id=request.user.id)
+    print("-----------------------------",user1.id)
 
-    user_address = UserAddress.objects.filter(user=request.user)
-    order_list = OrderProduct.objects.filter(user=request.user)
-    context = {
-        'user_address1' : user_address,
-        'order_list1' : order_list,
-    }
+    order_list = Order.objects.filter(user=request.user,is_ordered =True).order_by('created_at')
+    order_count = order_list.count()
+    if UserAddress.objects.filter(user_id=user1.id).exists():
+        user_details = UserAddress.objects.filter(user_id=user1.id).last()
+        print(user_details)
+        context = {
+            'user_details':user_details,
+            'order_list' : order_list,
+            'order_count':order_count,
+        }
+    else:
+         context = {
+            'order_list' : order_list,
+            'order_count':order_count,
+        }
+
     return render(request, 'account/user_profile.html',context) 
+
+
+def order_cancel(request,order_number):
+
+    get_order = Order.objects.filter(user=request.user.id,order_number=order_number)
+    print(get_order)
+    for order in get_order:
+        order.status = 'Cancelled'
+        order.save()
+    messages.success(request,'order cancelled')
+    return redirect('user_profile')
+
+def edit_profile(request,id):
+    print(id)
+    datas = UserAddress.objects.get(id=id)
+    if request.method == "POST":
+        
+        datas.first_name = request.POST['first_name']
+        datas.last_name = request.POST['last_name']
+        datas.email = request.POST['email']
+        datas.phone_number = request.POST['phone_number']
+        datas.save()
+        messages.success(request,"profile updated successfully")
+        return redirect('user_profile')
+    else:
+        context ={
+            'data':datas
+        }
+    return render(request,'user_profile', context)
+
+@login_required(login_url='login')
+def change_password(request):
+    if request.method == 'POST':
+        print('inside post')
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        user1 = User.objects.get(username__exact=request.user.username)
+        print(user1)
+
+        if new_password == confirm_password:
+            success = user1.check_password(current_password)
+            
+            if success:
+                print('inside success')
+                user1.set_password(new_password)
+                user1.save()
+                print('saved')
+                messages.success(request,"password updated successfully")
+                return redirect('change_password')
+            else:
+                messages.error(request,'please enter valid password')
+                return redirect('change_password')
+        else:
+            messages.error(request,"password doesn't match")
+            return redirect('change_password')
+
+    return redirect('user_profile')

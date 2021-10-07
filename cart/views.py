@@ -1,6 +1,8 @@
+from django.core.checks import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import request
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User, auth
 from admin_panel.models import Product
@@ -137,53 +139,58 @@ def checkout_shipping(request):
 
 @login_required(login_url = 'login')
 def checkout(request):
+    address_count = UserAddress.objects.filter(user=request.user).count()
+    print('address count -----------------------------------',address_count)
+
     
     if request.method == 'POST':
-        print('inside post')    
+        print('inside post')  
+        if address_count < 3:  
 
-        first_name      = request.POST.get('first_name')
-        last_name       = request.POST.get('last_name')
-        email           = request.POST.get('email')
-        phone_number    = request.POST.get('phone_number')
+            first_name      = request.POST.get('first_name')
+            last_name       = request.POST.get('last_name')
+            email           = request.POST.get('email')
+            phone_number    = request.POST.get('phone_number')
 
-        first_address        = request.POST.get('address1')
-        second_address        = request.POST.get('address2')
-        pin             = request.POST.get('pin')
+            first_address        = request.POST.get('address1')
+            second_address        = request.POST.get('address2')
+            pin             = request.POST.get('pin')
 
-        country         = request.POST.get('country')
-        city            = request.POST.get('city')
-        state           = request.POST.get('state')
+            country         = request.POST.get('country')
+            city            = request.POST.get('city')
+            state           = request.POST.get('state')
 
-        address_type    = request.POST.get('address_type')
-        
-        user_address = UserAddress.objects.create(
-            first_name=first_name, 
-            last_name=last_name, 
-            email=email, 
-            phone_number=phone_number, 
-            first_address=first_address,
-            second_address=second_address, 
-            pin=pin, 
-            country=country, 
-            city=city, 
-            state=state, 
-            address_type=address_type,
-            user_id =request.user.id
-            )
+            address_type    = request.POST.get('address_type')
 
-        count += 1
-        user_address.save()
-    
-        return redirect('order_overview')
-   
+            
+            user_address = UserAddress.objects.create(
+                first_name=first_name, 
+                last_name=last_name, 
+                email=email, 
+                phone_number=phone_number, 
+                first_address=first_address,
+                second_address=second_address, 
+                pin=pin, 
+                country=country, 
+                city=city, 
+                state=state, 
+                address_type=address_type,
+                user_id =request.user.id
+                )
+            user_address.save()
+            return redirect('order_overview')
+        else:
+            messages.error(request,"Cann't add more than 3 address")
+            return redirect('checkout')
+
     else:
         print('inside get')
         useraddress = UserAddress.objects.filter(user_id = request.user )
         context = {
             'useraddress':useraddress,
         }
-       
         return render(request,'store/checkout.html',context)
+    
 
 def add_address(request):
     return render(request,'store/address_page.html')
@@ -191,7 +198,7 @@ def add_address(request):
 def order_overview(request, total=0, quantity=0, cart_items=None):
     shipping = 0
     grand_total = 0
-   
+    razorpay_amount = 0
     useraddress = UserAddress.objects.filter(user=request.user)
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
@@ -209,6 +216,7 @@ def order_overview(request, total=0, quantity=0, cart_items=None):
     else:
         shipping = 80
     grand_total = total + shipping
+    razorpay_amount=grand_total*100
     if Order.objects.filter(user=request.user,is_ordered=False):
         order1 = Order.objects.get(user=request.user,is_ordered=False)
     else:
@@ -247,6 +255,7 @@ def order_overview(request, total=0, quantity=0, cart_items=None):
         'shipping': shipping,
         'grand_total': grand_total,
         'order1' : order1,
+        'razorpay_amount':razorpay_amount,
         'useraddress' : useraddress,   
     }
     return render(request,'store/order_over_view.html',context)

@@ -52,9 +52,9 @@
                                                     <img src="{{order_list.product.image1.url}}" alt="product"  class="img-fluid img-thumbnail">
                                                 </div>
                                             </td>
-                                            <td><span class="badge badge-secondary"></span></td>
+                                            <td><span class="badge badge-secondary"></span>{{order_list.status}}</td>
                                             <td>{{order_list.payment.payment_method}}</td>
-                                            <td><span class="badge badge-success">Delivered</span></td>
+                                            <td><span class="badge badge-success">{{order_list.order.status}}</span></td>
                                             <td>{{order_list.created_at}}</td>
                                             <td>₹{{order_list.product_price}}</td>
                                             <td class="text-right">
