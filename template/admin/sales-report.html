@@ -1,0 +1,95 @@
+
+{% extends 'include/adminbase.html' %} 
+{% block content %}
+<div class="main-panel">
+    <div class="content">
+        <div class="panel-header bg-white shadow-sm">
+            <div class="page-inner  py-3 mb-5">
+                <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                    <div class="">
+                        <div class="header d-sm-flex align-items-center  text-center"> 
+                            <h1 class="page-header banner-title">Sales report</h1>
+                            <ul class="breadcrumb justify-content-sm-start justify-content-center">
+                                  
+                                  <li><a href="#">reports</a></li>
+                                  <li><a href="#">Sales report</a></li>
+                            </ul> 			
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-inner">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="card col-md-12">
+                        <div class="card-body">
+                            <form action="{% url 'salesreport' %}" method="POST">
+                                {% csrf_token %} 
+                                    <div class="row p-2">
+                                        <div class="ml-4">
+                                            <label>Start date</label>
+                                            <input type="date" name="fdate"></input>
+                                        </div>
+                                        <div class="ml-4">
+                                            <label>End date</label>
+                                            <input type="date" name="ldate"></input>
+                                        </div>
+                                        <div class="ml-4">
+                                            <button class="btn btn-color" type="submit">Search here</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card">
+                        <div class="card-header">
+                        {% if check == True %}
+                            <h4 class="card-title"><i class="fa fa-list"></i>Sales by date</h4>
+                        {% else %}
+                             <h4 class="card-title"><i class="fa fa-list"></i>Total Sales</h4>
+                        {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="basic-datatables" class="display table table-hover" >
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Product Name</th>
+                                            <th>Payment Method</th>
+                                            <th>Quantity</th>
+                                            <th>Date</th>
+                                            <th>status</th>
+                                            <th>Total Amount</th>    
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                     {% for data in datas %}
+                                        <tr>
+                                            <td>{{data.order.order_number}}</td>
+                                            <td>{{data.product.product_name}} </td>
+                                            <td>{{data.payment.payment_method}}</td>
+                                            <td>{{data.quantity}}</td>
+                                            <td>{{data.created_at}}</td>
+                                            <td>{{data.order.status}}</td>
+                                            {% if data.order.status != 'Cancelled' %}
+                                                <td>₹{{data.payment.amount_paid}}</td>
+                                            {% endif %}
+                                        </tr>
+                                    </tbody>
+                                    {% endfor %}
+                                </table>
+                                <div class='mr-5'>
+                                <div style="text-align:right; margin:0px auto 0px auto;"><p><b> Total sales:</b>{{sum}}</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div>
+{% endblock %}

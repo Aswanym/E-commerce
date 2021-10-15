@@ -1,356 +1,281 @@
-{% extends 'include/adminbase.html' %}
-{% block content %}
-		<div class="main-panel">
-			<div class="content">
-				<!-- Bread Crumb Start -->
-				<div class="panel-header bg-white shadow-sm">
-					<div class="page-inner  py-3 mb-5">
-						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
-							<div class="">
-								<div class="header d-sm-flex align-items-center  text-center"> 
-				                    <h1 class="page-header banner-title">Dashboard </h1>
-									<ul class="breadcrumb justify-content-sm-start justify-content-center">
-									  	<li><a href="index.html"><i class="icon-home"></i></a></li>
-									  	<li><a href="{% url 'admindash' %}">Dashboard</a></li>
-									</ul> 			
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- Bread Crumb End -->
-				
-				<div class="page-inner">
-					<!-- Statistics data -->
-				    <div class="statistics">
-				      <div class="row">
-				        <div class="col-xl-6">
-				          <div class="row">
-				            <div class="col-sm-6 ">
-				              <div class="statistics-grid card bg-light-primary px-4 py-3 py-sm-4">
-				              	<div class="d-flex justify-content-between align-items-center">
-					                <div class="statistics-icon">
-					                	<i class="icon-basket"></i>
-					                </div>
-					                <div class="statistics-detail">
-						                <p class="stat-text">Total Orders</p>
-						                <h3 class="number">29.75 K<small> This Month</small></h3>
-						            </div>
-						        </div>
-						        <div class="tile-footer pt-2"><a href="#">View more...</a></div>
-				              </div>
-				            </div>
-				            <div class="col-sm-6 ">
-				              <div class="statistics-grid card bg-light-secondary px-4 py-3 py-sm-4">
-				              	<div class="d-flex justify-content-between align-items-center">
-					                <div class="statistics-icon">
-					                	<i class="icon-credit-card"></i>
-									</div>
-					                <div class="statistics-detail">
-						                <p class="stat-text">Total Sales </p>
-						                <h3 class="number">51.25 K<small> This Month</small></h3>
-						            </div>
-						        </div>
-						        <div class="tile-footer pt-2"><a href="#">View more...</a></div>
-				              </div>
-				            </div>
-				          </div>
-				        </div>
-				        <div class="col-xl-6">
-				          <div class="row">
-				            <div class="col-sm-6 ">
-				              <div class="statistics-grid card bg-light-info px-4 py-3 py-sm-4">
-				              	<div class="d-flex justify-content-between align-items-center">
-					                <div class="statistics-icon">
-					                	<i class="icon-user"></i>
-									</div>
-					                <div class="statistics-detail">
-						                <p class="stat-text">Total Customers </p>
-						                <h3 class="  number">66.89 M<small> This Month</small></h3>
-						            </div>
-						        </div>
-						        <div class="tile-footer pt-2"><a href="#">View more...</a></div>
-				              </div>
-				            </div>
-				            <div class="col-sm-6 ">
-				              <div class="statistics-grid card bg-light-danger px-4 py-3 py-sm-4">
-				              	<div class="d-flex justify-content-between align-items-center">
-					                <div class="statistics-icon">
-					                	<i class="icon-people"></i>
-					            	</div>
-					                <div class="statistics-detail">
-						                <p class="stat-text">Users online</p>
-						                <h3 class=" number">1,250 k<small> This Month</small></h3>
-						            </div>
-						        </div>
-						        <div class="tile-footer pt-2"><a href="#">View more...</a></div>
-				              </div>
-				            </div>
-				          </div>
-				        </div>
-				      </div>
-				    </div>
-				    <!-- Statistics data -->
+{% extends 'include/adminbase.html' %} {% block content %}
 
-					<div class="row">
-						<div class="col-md-6">
-							<div class="card full-height">
-								<div class="card-header">
-									<div class="card-head-row">
-										<div class="card-title"><i class="fab fa-xbox"></i> World Map</div>
-									</div>
-								</div>
-								<div class="mapcontainer my-auto">
-									<div id="map-example" class="vmap"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="card">
-								<div class="card-header">
-									<div class="card-head-row">
-										<div class="card-title"><i class="far fa-chart-bar"></i> Sales Analytics</div>
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="chart-container" style="min-height: 375px">
-										<canvas id="statisticsChart"></canvas>
-									</div>
-									<div id="myChartLegend"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xl-8 col-lg-7">
-							<div class="card">
-								<div class="card-header">
-									<div class="card-head-row">
-										<div class="card-title"><i class="fas fa-shopping-cart"></i> Latest Orders</div>
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="table-responsive table-hover table-sales">
-										<table class="table table-hover">
-											<thead>
-												<tr>
-													<th>Order ID</th>
-													<th>Customer</th>
-													<th>Status</th>
-													<th>Date Added</th>
-													<th>Total</th>
-													<th class="text-right">Action</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>#515345</td>
-													<td>John Doe</td>
-													<td><span class="badge badge-success">Delivered</span></td>
-													<td>Dec 08,2020</td>
-													<td>$95.00</td>
-													<td class="text-right">
-														<a class="btn btn-primary" href="sales/orders-details.html" data-toggle="tooltip" title="" data-original-title="View Details"><i class="fas fa-pen"></i></a>
-													</td>
-												</tr>
-												<tr>
-													<td>#515346</td>
-													<td>Holio Mako</td>
-													<td><span class="badge badge-primary">Shipped</span></td>
-													<td>Dec 19,2020</td>
-													<td>$205.00</td>
-													<td class="text-right">
-														<a class="btn btn-primary" href="sales/orders-details.html" data-toggle="tooltip" title="" data-original-title="View Details"><i class="fas fa-pen"></i></a>
-													</td>
-												</tr>
-												<tr>
-													<td>#515347</td>
-													<td>Mohsib lara</td>
-													<td><span class="badge badge-warning">Processing</span></td>
-													<td>Nov 30,2020</td>
-													<td>$100.00</td>
-													<td class="text-right">
-														<a class="btn btn-primary" href="sales/orders-details.html" data-toggle="tooltip" title="" data-original-title="View Details"><i class="fas fa-pen"></i></a>
-													</td>
-												</tr>
-												<tr>
-													<td>#515348</td>
-													<td>Hileri Soli</td>
-													<td><span class="badge badge-dark">Cancelled</span></td>
-													<td>Nov 29,2020</td>
-													<td>$105.00</td>
-													<td class="text-right">
-														<a class="btn btn-primary" href="sales/orders-details.html" data-toggle="tooltip" title="" data-original-title="View Details"><i class="fas fa-pen"></i></a>
-													</td>
-												</tr>
-												<tr>
-													<td>#515349</td>
-													<td>Pusiz bia</td>
-													<td><span class="badge badge-primary">Shipped</span></td>
-													<td>May 18,2020</td>
-													<td>$474.99</td>
-													<td class="text-right">
-														<a class="btn btn-primary" href="sales/orders-details.html" data-toggle="tooltip" title="" data-original-title="View Details"><i class="fas fa-pen"></i></a>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-									<div class="">
-		                        		<a  href="sales/orders.html" class="btn btn-primary btn-round">View All Orders</a>
-		                        	</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-lg-5">
-							<div class="card full-height">
-								<div class="card-header">
-									<div class="card-head-row">
-										<div class="card-title"><i class="far fa-calendar-alt"></i> Recent Activity</div>
-									</div>
-								</div>
-								<div class="card-body">
-									<h1 class="mt-2 mb-4">17</h1>
-									<h4 class="mt-3 pb-2 mb-5">Page view per minutes</h4>
-									<div id="activeUsersChart"></div>
-									<h4 class="mt-5 pb-3 mb-0">Top active pages</h4>
-									<ul class="list-unstyled">
-										<li class="d-flex justify-content-between pb-1 pt-1">
-											<small>/product/stylexpo/index.html</small> <span>7</span>
-										</li>
-										<li class="d-flex justify-content-between pb-1 pt-1">
-											<small>/product/stylexpo/demo.html</small> <span>10</span>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="card">
-								<div class="card-header">
-									<div class="card-head-row">
-										<div class="card-title">Empolyee Status</div>
-									</div>
-								</div>
-								<div class="card-body">
-									<div class="card-list">
-										<div class="item-list">
-											<div class="profile">
-												<img src="https://aaryaweb.info/html/stylexpo/admin/assets/img/profile-1.jpg" alt="..." class="profile-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">Ginger Johnston</div>
-												<div class="status">Graphic Designer</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
-										<div class="item-list">
-											<div class="profile">
-												<img src="https://aaryaweb.info/html/stylexpo/admin/assets/img/profile-2.jpg" alt="..." class="profile-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">Hileri Jecno</div>
-												<div class="status">CEO Zeleaf</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
-										<div class="item-list">
-											<div class="profile">
-												<img src="https://aaryaweb.info/html/stylexpo/admin/assets/img/profile-3.jpg" alt="..." class="profile-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">John Smith</div>
-												<div class="status">Front End Designer</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
-										<div class="item-list">
-											<div class="profile">
-												<img src="https://aaryaweb.info/html/stylexpo/admin/assets/img/profile-4.jpg" alt="..." class="profile-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">John Doe</div>
-												<div class="status">Back End Developer</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
-										<div class="item-list">
-											<div class="profile">
-												<img src="https://aaryaweb.info/html/stylexpo/admin/assets/img/profile-5.jpg" alt="..." class="profile-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">John Smith</div>
-												<div class="status">Front End Designer</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
-										<div class="item-list">
-											<div class="profile">
-												<img src="https://aaryaweb.info/html/stylexpo/admin/assets/img/profile-6.jpg" alt="..." class="profile-img rounded-circle">
-											</div>
-											<div class="info-user ml-3">
-												<div class="username">Ginger Johnston</div>
-												<div class="status">Graphic Designer</div>
-											</div>
-											<button class="btn btn-icon btn-primary btn-round btn-xs">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="card full-height">
-								<div class="card-header">
-									<div class="card-title">Feed Activity</div>
-								</div>
-								<div class="card-body">
-									<ol class="activity-feed">
-										<li class="feed-item feed-item-secondary">
-											<time class="date" datetime="9-25">Dec 25</time>
-											<span class="text">Meeting Started <a href="#">"Call Pong in Lord Howe"</a></span>
-										</li>
-										<li class="feed-item feed-item-success">
-											<time class="date" datetime="9-24">Dec 24</time>
-											<span class="text">Development <a href="#">"Volunteer Activities"</a></span>
-										</li>
-										<li class="feed-item feed-item-info">
-											<time class="date" datetime="9-23">Dec 23</time>
-											<span class="text">Joined the group <a href="#">"Boardsmanship Forum"</a></span>
-										</li>
-										<li class="feed-item feed-item-warning">
-											<time class="date" datetime="9-21">Dec 21</time>
-											<span class="text">Project Briefing <a href="#">"In-Kind Opportunity"</a></span>
-										</li>
-										<li class="feed-item feed-item-danger">
-											<time class="date" datetime="9-18">Dec 18</time>
-											<span class="text">Functional Logics <a href="#">"Volunteer Opportunity"</a></span>
-										</li>
-										<li class="feed-item">
-											<time class="date" datetime="9-17">Dec 17</time>
-											<span class="text">Stakeholder Meeting <a href="#">"Some New Event"</a></span>
-										</li>
-									</ol>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- custom JS -->
-	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/custom.js"></script>
-	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/demo.js"></script>
-{% endblock content %}
+<div class="main-panel">
+  <div class="content">
+    <!-- Bread Crumb Start -->
+    <div class="panel-header bg-white shadow-sm">
+      <div class="page-inner py-3 mb-5">
+        <div
+          class="
+            d-flex
+            align-items-left align-items-md-center
+            flex-column flex-md-row
+          "
+        >
+          <div class="">
+            <div class="header d-sm-flex align-items-center text-center">
+              <h1 class="page-header banner-title">Dashboard</h1>
+              <ul
+                class="
+                  breadcrumb
+                  justify-content-sm-start justify-content-center
+                "
+              >
+                <li><a href="index.html"></a></li>
+                <li><a href="{% url 'admindash' %}">Dashboard</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bread Crumb End -->
+    <div class="col-md-10 col-12 mx-auto">
+      <div class="row">
+        <div class="col-md-6 col-12">
+          <div class="card" style="margin-top: 30px">
+            <div class="card-body">
+              <div>
+                <canvas id="pieChart" width="300" height="300"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-12">
+          <div class="card" style="margin-top: 30px">
+            <div class="card-body">
+              <canvas id="doughnutChart" width="300" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-12">
+          <div class="card" style="margin-top: 30px">
+            <div class="card-body">
+              <canvas id="barChart2" width="300" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-12">
+          <div class="card" style="margin-top: 30px">
+            <div class="card-body">
+              <canvas id="lineChart" width="300" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card" style="margin-top: 30px">
+            <div class="card-header">
+              <div class="card-head-row">
+                <div class="card-title">
+                  <i class="fa fa-shopping-cart"></i> Latest Orders
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-hover table-sales">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Status</th>
+                      <th>Date Added</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for orders in last_six_order%}
+                    <tr>
+                      <td>{{orders.order_number}}</td>
+                      <td>{{orders.full_name}}</td>
+                      <td>
+                        <span class="badge badge-success"
+                          >{{orders.status}}</span
+                        >
+                      </td>
+                      <td>{{orders.created_at}}</td>
+                      <td>{{orders.order_total}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/custom.js"></script>
+    <script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+          //setup for bar chart
+	   const databar2 = {
+      		 labels: {{allproduct|safe}},
+             datasets: [{
+                 label: 'Product avilability',
+                 data: {{stock|safe}},
+                 backgroundColor:   [
+                     'rgba(245, 40, 145, 0.8)',
+                     'rgba(63, 39, 245, 0.8)',
+                     'rgba(245, 183, 39, 0.8)',
+					 'rgba(245, 121, 118, 0.8)',
+
+                 ],
+                 borderColor:['rgba(255, 99, 132, 1)',
+                     		'rgba(54, 162, 235, 1)'
+					],
+                 borderWidth: 1
+             }]
+      	};
+	//config for barchart
+		const configbar2 = {
+			type: 'bar',
+			data: databar2 ,
+			options: {
+			}
+		};
+	//render inti block for barchart
+      const barchart2 = new Chart(
+      	 document.getElementById('barChart2'),
+      	 configbar2
+      );
+  //setup for bar chart
+	   const databar = {
+      		 labels: {{status|safe}},
+             datasets: [{
+                 label: 'Order details',
+                 data: {{totalcount|safe}},
+                 backgroundColor:  [
+				 	            'rgba(245, 40, 145, 0.8)',
+                     'rgba(63, 39, 245, 0.8)',
+                     'rgba(245, 183, 39, 0.8)',
+					          'rgba(245, 121, 118, 0.8)',
+					 ],
+                 borderColor:['rgba(255, 99, 132, 1)',
+                     'rgba(54, 162, 235, 1)',
+                     'rgba(255, 206, 86, 1)',
+					            'rgba(232, 106, 100, 1)',
+					],
+                 borderWidth: 1
+             }]
+      	};
+      	
+      //config for barchart
+      const configbar = {
+      	type: 'bar',
+      	data: databar ,
+      	options: {
+      	}
+      };
+
+      //render inti block for barchart
+      const lineChart = new Chart(
+      	 document.getElementById('lineChart'),
+      	 configbar
+      );
+
+  //setup for piechart
+      	const datapie = {
+      		 labels: ['False', 'True'],
+      		 //labels: {{users|safe}},
+             datasets: [{
+
+                 data: {{user_count|safe}},
+                 backgroundColor: [
+                     'rgba(245, 40, 145, 0.8)',
+                     'rgba(63, 39, 245, 0.8)',
+                     'rgba(245, 183, 39, 0.8)',
+					          'rgba(245, 121, 118, 0.8)',
+
+                 ],
+                 borderColor: [
+                     'rgba(255, 99, 132, 1)',
+                     'rgba(54, 162, 235, 1)',
+                     'rgba(255, 206, 86, 1)',
+					 'rgba(232, 106, 100, 1)',
+
+                 ],
+                 borderWidth: 1
+             }],
+      	};
+
+      //config for pieChart
+      const configpie = {
+      	type: 'pie',
+      	data: datapie ,
+      	options: {
+      		responsive: true,
+      		plugins: {
+      		legend: {
+      			position: 'top',
+      		},
+      		title: {
+      			display: true,
+      			text: 'user details'
+      		}
+      		}
+      	}
+      };
+      //render inti block for pie chart
+      const pieChart = new Chart(
+      	 document.getElementById('pieChart'),
+      	 configpie
+      );
+
+	  //setup for doughnut
+	  const datadoughnut = {
+      		 labels: {{payment_method|safe}},
+             datasets: [{
+                 label: 'Payment ',
+                 data: {{payment_count|safe}},
+                 backgroundColor: [
+                    'rgba(245, 40, 145, 0.8)',
+                     'rgba(63, 39, 245, 0.8)',
+                     'rgba(245, 183, 39, 0.8)',
+					 'rgba(39, 245, 118, 0.8)',
+
+
+                 ],
+                 borderColor: [
+                     'rgba(255, 99, 132, 1)',
+                     'rgba(54, 162, 235, 1)',
+                     'rgba(255, 206, 86, 1)',
+
+                 ],
+                 borderWidth: 1
+             }]
+      	};
+
+      //config for doughnutChart
+      const configdoughnut =  {
+      	type: 'doughnut',
+      	data: datadoughnut,
+      	options: {
+      		responsive: true,
+      		plugins: {
+      		legend: {
+      			position: 'top',
+      		},
+      		title: {
+      			display: true,
+      			text: 'Payment Details'
+      		}
+      		}
+      	},
+      	};
+      //render inti block for doughnutChart
+      const doughnutChart = new Chart(
+      	 document.getElementById('doughnutChart'),
+      	 configdoughnut
+      );
+    </script>
+    {% endblock content %}
+  </div>
+</div>

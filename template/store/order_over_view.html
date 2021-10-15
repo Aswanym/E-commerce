@@ -2,11 +2,7 @@
 {% load static %}
 {% block content %}
 
-<style>
-.none {
-    display:none;
-}
-</style>
+
 <!-- Bread Crumb STRAT -->
 <div class="container mt-sm-15">
     <div class="banner inner-banner1 ">
@@ -156,18 +152,18 @@
                       <form action="{% url 'payment' order1.order_number %}" method = "POST">
                         {% csrf_token %}
                         <div class="row ">
-                        <div> 
-                        <input type="radio" data-id="cash" value="paypal" name="payment-option">
-                        <label for="paypal">Paypal</label>
-                        </div>
-                        <div> 
-                        <input type="radio" data-id="rzp-button1" value="razorpay" name="payment-option">
-                        <label for="razorpay">razorpay</label>
-                        </div>   
-                        <div><span>
-                          <input class="ml-3" type="radio" data-id="paypal-button-container" value="cash" name="payment-option">
-                          </span>
-                          <label for="cash">Cash on Delivery</label>
+                          <div class=p-3> 
+                          <input type="radio" id="paypal-button-container-button" value="paypal" name="payment-option" onClick='showPaypal()' >
+                          <label for="paypal">Paypal</label>
+                          </div>
+                          <div class=p-3 > 
+                          <input type="radio" id="rzp-button1" value="razorpay" name="payment-option" onClick='showRazorpay()'>
+                          <label for="razorpay">razorpay</label>
+                          </div>   
+                          <div class=p-3 >
+                            <input class="ml-3" type="radio" id="cashbutton" value="cash" onClick='showCashonDelivery()' name="payment-option">                          
+                            <label for="cash">Cash on Delivery</label>
+                          </div> 
                         </div> 
                       </div> 
                     </div>
@@ -175,14 +171,15 @@
                 </div>
               </div>
               <br>
-              <div id="paypal-button-container" class="none"></div>
-              <div id="cash" class="none"><button type="submit" class="btn btn-color">Make Payment</button></div>
+              <div id="paypal-button-container" style="display:none;"></div>
+              <div id="cash"  style="display:none;"><button type="submit" class="btn btn-color">Make Payment</button></div>
+              {% comment %} <div class="" id="razorpay_button"> {% endcomment %}
             </div>
           </form>
           </div>
-
-               <div class="center" id="razorpay_button" >
-                <form action="{% url 'razorpay' order1.order_number %}" method="POST" >{% csrf_token %}
+         
+               
+               <form id="razorpay" style="display:none" action="{% url 'razorpay' order1.order_number %}" method="POST" >{% csrf_token %}
                     <script
                         console.log(amount)
                         src="https://checkout.razorpay.com/v1/checkout.js"
@@ -190,13 +187,12 @@
                         data-amount="{{razorpay_amount}}" 
                         data-currency="INR"
                         data-order_id="{{payment.id}}"
-                        data-buttontext="Pay with Razorpay"
                         data-name="Aswany"
                         data-description="How are you"
                         data-image="https://example.com/your_logo.jpg"
                         data-prefill.name="aswany"
                         data-prefill.email="aswany@example.com"
-                        data-theme.color="#3399cc"
+                        data-theme.color="#dc3545"
                     ></script>
                     </form>
                 </div>
@@ -279,6 +275,24 @@
                 });
             }
         }).render('#paypal-button-container');
+    </script>
+    <script>
+      function showPaypal(){
+              document.getElementById('cash').style.display = 'none';
+              document.getElementById('razorpay').style.display ='none';
+              document.getElementById('paypal-button-container').style.display = 'block';
+              
+              }
+      function showRazorpay(){
+            document.getElementById('cash').style.display = 'none';
+              document.getElementById('razorpay').style.display ='block';
+              document.getElementById('paypal-button-container').style.display = 'none';
+      }
+        function showCashonDelivery(){
+            document.getElementById('cash').style.display = 'block';
+              document.getElementById('razorpay').style.display ='none';
+              document.getElementById('paypal-button-container').style.display = 'none';
+      }
     </script>
 
 {% endblock %}

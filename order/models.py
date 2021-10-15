@@ -8,7 +8,7 @@ class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment_id = models.CharField(max_length=100)
     payment_method = models.CharField(max_length=100)
-    amount_paid = models.CharField(max_length=100)
+    amount_paid = models.FloatField()
     status = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -44,9 +44,9 @@ class Order(models.Model):
     
     order_total=models.FloatField(null=True)
     
-    status=models.CharField(max_length=30,choices=STATUS,default='Ordered')
+    status=models.CharField(max_length=30,choices=STATUS,default='New')
     ip=models.CharField(max_length=100,blank=True)
-    is_ordered=models.BooleanField(default=False)
+    is_ordered=models.BooleanField()
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 

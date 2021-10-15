@@ -1,8 +1,7 @@
-
-from admin_panel.views import productlist
 from django.contrib import admin
-from .models import Category, SubCategory,Product
+from .models import Category, SubCategory,Product,Offers
     
 admin.site.register(Category)
 admin.site.register(SubCategory)
 admin.site.register(Product)
+admin.site.register(Offers)

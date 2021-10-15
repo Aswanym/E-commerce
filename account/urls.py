@@ -17,5 +17,5 @@ urlpatterns = [
     path('change_password/',views.change_password,name='change_password'),
     path('edit_profile/<int:id>',views.edit_profile,name='edit_profile'),
     path('order_cancel/<str:order_number>',views.order_cancel,name='order_cancel'),
-
+    path('order_details/<str:order_number>',views.order_details,name='order_details'),
 ]

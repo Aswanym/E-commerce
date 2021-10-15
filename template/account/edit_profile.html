@@ -1,0 +1,48 @@
+{% extends 'include/base.html' %}
+{% block content %}
+
+<!-- Bread Crumb STRAT -->
+<div class="container mt-sm-15">
+  <div class="banner inner-banner1">
+    <section class="banner-detail center-xs">
+      <h1 class="banner-title">Account</h1>
+      <div class="bread-crumb right-side float-none-xs">
+        <ul>
+          <li><a href="{% url 'index' %}">Home</a>/</li>
+          <li><span>Account</span></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- Bread Crumb END -->
+
+<section class="checkout-section ptb-70">
+  <div class="container">
+    <div class="row">
+      
+        {% include  'include/account_sidebar.html' %}
+
+            
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="heading m-0"style="font-weight: bold; font-size: 20px">Edit Profile</h4>
+                </div>
+            </div><hr>
+            <div class="m-0">
+                <form class="main-form full" method="POST" action="">
+                
+            </div>
+                
+
+        
+
+        
+
+        
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

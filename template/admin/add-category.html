@@ -9,7 +9,7 @@
 								<div class="header d-sm-flex align-items-center  text-center"> 
 				                    <h1 class="page-header banner-title">Category</h1>
 									<ul class="breadcrumb justify-content-sm-start justify-content-center">
-									  	<li><a href="../index.html"><i class="icon-home"></i></a></li>
+									  	<li><a href="../index.html"></a></li>
 									  	<li><a href="{% url 'categorylist' %}">Category</a></li>
 									  	<li><a href="#">Add Category</a></li>
 									</ul> 			
@@ -24,12 +24,11 @@
 							<div class="card">
 								<div class="card-header">
 									<div class="card-head-row justify-content-between">
-										<div class="card-title"><i class="fas fa-pen"></i> Add Category</div>
+										<div class="card-title"><i class="fa fa-edit"></i> Add Category</div>
 									<form class="main-form full" method="POST" action="" enctype="multipart/form-data">
 
 										<div class="add-btn">
-											<!-- <button class="btn btn-primary"  data-toggle="tooltip" title="" data-original-title="Save"><i class="fa fa-save"> Save</i></button> -->
-										<!-- <a class="btn btn-primary" href="{% url 'addcategory' %}"  data-toggle="tooltip" title="" data-original-title="Cancel"><i class="fa fa-times"> Cancel</i></a> -->
+										
 										<button class="btn btn-primary" href=""  data-toggle="tooltip" title="" data-original-title="Save"><i class="fa fa-save"> Save</i></button> 
 										</div> 
 									</div>
@@ -48,32 +47,6 @@
 				                            		</div>
 				                          		</div>
 				                        	</div>
-
-											<!-- <div class="col-12">
-												<div class="input-box form-group required">
-												  <div class="row">
-														<label for="input-status" class="col-md-3 control-label">Category Name</label>
-														<div class="col-md-9">
-														  <select name="status" id="input-status" class="form-control">
-																 <option value="1" selected="selected">Clothings</option>
-															  <option value="0">Footwears</option>
-														  </select>
-														</div>
-												  </div>
-												</div>
-										  </div> -->
-
-				                        	<div class="col-12">
-												<div class="input-box form-group">
-												  <div class="row">
-														<label for="input-sku" class="col-md-3 control-label">Slug</label>
-														
-														<div class="col-md-9">
-														  <input type="text" name="slug" value="" placeholder="Slug" id="input-sku" class="form-control">
-														</div>
-												  </div>
-												</div>
-										  </div>
 				                        
 				                        	<div class="col-12">
 				                          		<div class="input-box form-group">
@@ -85,143 +58,6 @@
 				                            		</div>
 				                          		</div>
 				                        	</div>
-										
-										  <!-- <div class="add-btn"> -->
-											<!-- <button class="btn btn-primary"  data-toggle="tooltip" title="" data-original-title="Save"><i class="fa fa-save"> Save</i></button> -->
-										<!-- <a class="btn btn-primary" href="{% url 'addcategory' %}"  data-toggle="tooltip" title="" data-original-title="Cancel"><i class="fa fa-times"> Cancel</i></a> -->
-										<!-- <button  class="btn btn-primary" href=""  data-toggle="tooltip" title="" data-original-title="Save"><i class="fa fa-save"> Save</i></button> -->
-										<!-- </div> -->
-												<!-- <div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                              			<label for="input-brands" class="col-md-3 control-label">Brands</label>
-				                              			<div class="col-md-9">
-				                                			<input type="text"  class="form-control"  id="input-brands" placeholder="brands">
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
-				                        	
-				                        	<!-- <div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                              			<label for="input-quantity" class="col-md-3 control-label">Quantity</label>
-				                              			<div class="col-md-9">
-				                                			<input type="text" class="form-control"  id="input-quantity" placeholder="Quantity">
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
-				                        	<!-- <div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                              			<label for="input-minimum" class="col-md-3 control-label">
-				                              				<span data-toggle="tooltip" title="" data-original-title="Force a minimum ordered amount">Minimum Quantity</span>
-				                              			</label>
-				                              			<div class="col-md-9">
-				                                			<input type="text" name="minimum" value="1" placeholder="Minimum Quantity" id="input-minimum" class="form-control">
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
-				                        	<!-- <div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                              			<label for="input-subtract" class="col-md-3 control-label">Subtract Stock</label>
-				                              			<div class="col-md-9">
-				                                			<select name="subtract" id="input-subtract" class="form-control">
-												                <option value="1" selected="selected">Yes</option>
-	                    										<option value="0">No</option>
-											               	</select>
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
-				                        	<!-- <div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                              			<label for="input-stock-status" class="col-md-3 control-label">
-				                              				<span data-toggle="tooltip" title="" data-original-title="Status shown when a product is out of stock">Out Of Stock Status</span>
-				                              			</label>
-				                              			<div class="col-md-9">
-				                                			<select name="stock_status_id" id="input-stock-status" class="form-control">
-                    											<option value="6" selected="selected">2-3 Days</option>
-											                    <option value="7">In Stock</option>
-											                    <option value="5">Out Of Stock</option>
-											                    <option value="8">Pre-Order</option>
-										                    </select>
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
-				                        	<!-- <div class="col-12">
-				                          		<div class="input-box form-group required">
-				                            		<div class="row">
-				                              			<label for="meta-tag" class="col-md-3 control-label">Meta Tag Title</label>
-				                             			<div class="col-md-9">
-				                                			<input type="text" class="form-control" required id="meta-tag" placeholder="Meta Tag Title">
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
-				                        	<!-- <div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                              			<label for="meta-tag-des" class="col-md-3 control-label">Meta Tag Description</label>
-				                              			<div class="col-md-9">
-				                                			<textarea  class="form-control" placeholder="Meta Tag Description" rows="5" cols="30" name="Meta Tag Description"></textarea>
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
-				                        	<!-- <div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                             	 		<label for="meta-tag-tey" class="col-md-3 control-label">Meta Tag Keywords</label>
-				                              			<div class="col-md-9">
-				                                			<textarea  class="form-control" placeholder="Meta Tag Keywords" rows="5" cols="30" name="Meta Tag Keywords"></textarea>
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
-				                       		<!-- <div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                              			<label for="product-tags" class="col-md-3 control-label">Product Tags</label>
-				                              			<div class="col-md-9">
-				                                			<input type="text" class="form-control" id="product-tags" required placeholder="Product Tags">
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
-				                       		<!-- <div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                              			<label for="requires-shipp" class="col-md-3 control-label">Requires Shipping</label>
-				                              			<div class="col-md-9">
-										                  	<label class="form-radio-label control-label"> 
-										                  		<input type="radio" name="shipping" value="1" checked="checked">Yes 
-										                  	</label>
-										                  	<label class="form-radio-label control-label"> 
-										                  		<input type="radio" name="shipping" value="0">No 
-										                  	</label>
-										                </div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
-				                       		<!-- <div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                              			<label for="input-status" class="col-md-3 control-label">Status</label>
-				                              			<div class="col-md-9">
-				                                			<select name="status" id="input-status" class="form-control">
-	                   											<option value="1" selected="selected">Enabled</option>
-                    											<option value="0">Disabled</option>
-										                    </select>
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div> -->
 				                      	</div>
 					                </form>
 								</div>

@@ -27,6 +27,12 @@ urlpatterns = [
    path('subcategory/addsubcategory',views.AddSubCategory,name = 'addsubcategory'),
    path('subcategory/addsubcategory/deletesubcategory/<id>',views.deleteSubCatergory,name='deletesubcategory'),
 
-   path('orders/orders',views.orders,name='orders')
+   path('orders/orders',views.orders,name='orders'),
+
+   path('reports/salesreport',views.salesreport,name='salesreport'),
+
+   path('productoffer',views.productoffer,name='productoffer'),
+   path('productofferlist',views.productofferlist,name='productofferlist'),
+   path('delete_product_offer',views.delete_product_offer,name='delete_product_offer'),
 
 ]

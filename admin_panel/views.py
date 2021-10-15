@@ -1,10 +1,17 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count,Sum
+from django.db.models.expressions import Window
+from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
-from admin_panel.models import Category, Product, SubCategory
-from order.models import Order, OrderProduct
+from django.db.models.functions import ExtractMonth
+from admin_panel.models import Category, Offers, Product, SubCategory
+from order.models import Order, OrderProduct, Payment
+import calendar
+from django.db.models import Q
 import os
+
 # Create your views here.
 
 
@@ -32,12 +39,88 @@ def adminlogin(request):
             return render(request, 'admin/adminlogin.html')
 
 @login_required(login_url='adminlogin')
+
 def admindash(request):
     if request.session.has_key('admin_login'):
-        return render(request, 'admin/admindash.html')
+    #------------------------------------------------order by month-------------------------------#
+        orders = Order.objects.annotate(month = ExtractMonth('created_at')).values('month').annotate(count=Count('id')).values('month','count')
+        print("query set is ",orders)
+        month_number = []
+        total_orders = []
+    
+        for data in orders:
+            month_number.append(calendar.month_name[data['month']])
+            total_orders.append(data['count'])
+        print("month is",month_number)
+        print("total order is ",total_orders)
+     #--------------------------------------payment graph----------------------------------------#
+        payment_method = []
+        payment_count=[]
+        pay_count = Payment.objects.filter(payment_method__in=('paypal', 'COD','razorpay')).values('payment_method').annotate(count=Count('payment_method')).values('payment_method','count')
+        print("queryset ",pay_count)
+
+        for pay in pay_count:
+            payment_method.append(pay['payment_method'])
+            payment_count.append(pay['count'])
+
+        print(payment_method)
+        print(payment_count)
+
+    #--------------------------------------product availability---------------------------------------#
+        allproduct =[]
+        stock=[]
+        products =Product.objects.all().values('product_name').annotate(stock=Sum('stock')).values('product_name','stock')
+        print(products)
+
+        for product in products:
+            allproduct.append(product['product_name'])
+            stock.append(product['stock'])
+
+        print(allproduct)
+        print(stock)
+
+
+    #--------------------------------user details------------------------------------------------#
+        users=[]
+        user_count=[]
+
+        userall = User.objects.filter(is_active__in=('True','False')).values('is_active').annotate(counter=Count('is_active')).values('is_active','counter')
+        print(userall)
+        for user in userall:
+            users.append(user['is_active'])
+            user_count.append(user['counter'])
+        print(users)
+        print(user_count)
+    #==================================order details========================================================#
+        status=[]
+        totalcount =[]
+        orderall = OrderProduct.objects.filter(status__in=('Placed','Cancelled','Accepted','Shipped','Ordered') ).values('status').annotate(count=Count('status')).values('status','count')
+        for products in orderall:
+            status.append(products['status'])
+            totalcount.append(products['count'])
+        print(status)
+        print(totalcount)
+    #===========================================================================================================#
+        last_six_order = Order.objects.filter(is_ordered=True).order_by('-id')[:6]
+        for order in last_six_order:
+            print(order)
+
+        context = {'last_six_order':last_six_order, 
+                    'month_number':month_number,
+                    'total_orders':total_orders,
+                    'payment_method':payment_method,
+                    'payment_count':payment_count,
+                    'stock':stock,
+                    'allproduct':allproduct,
+                    'status':status,
+                    'totalcount':totalcount,
+                    'users':users,
+                    'user_count':user_count,
+                }
+        
+        return render(request, 'admin/admindash.html',context)
     else:
         return redirect('adminlogin')
-
 
 @login_required(login_url='adminlogin')
 def adminlogout(request):
@@ -47,8 +130,6 @@ def adminlogout(request):
 
 def adminbase(request):
     return render(request, 'admin/adminbase.html')
-
-
 
 #========================================  Product ==============================================#
 
@@ -75,19 +156,14 @@ def addproduct(request):
 
         data.save()
         return redirect('productlist')
-
     else:
-
         category = Category.objects.all()
         subcategory = SubCategory.objects.all()
 
         context = {'category': category,
                    'subcategory': subcategory
                    }
-
         return render(request, 'admin/add-product.html', context)
-
-
 @login_required(login_url='adminlogin')
 def EditProduct(request, id):
     product_data = Product.objects.get(id=id)
@@ -105,9 +181,8 @@ def EditProduct(request, id):
 def EditedProduct(request, id):
 
     data = Product.objects.get(id=id)
-
     data.product_name = request.POST.get('product_name')
-    data.category = Category.objects.get(
+    data.category = Category.objects.filter(
         category_name=request.POST.get('category'))
     data.product_description = request.POST.get('product_description')
     data.product_slug = request.POST.get('product_slug')
@@ -134,12 +209,8 @@ def EditedProduct(request, id):
 def productlist(request):
 
     data = Product.objects.all()
-
-    context = {'data': data
-
-               }
+    context = {'data': data }
     return render(request, 'admin/product-list.html', context)
-
 
 def DeleteProduct(request, id):
     data = Product.objects.get(id=id)
@@ -158,9 +229,7 @@ def addcategory(request):
         category_list = Category()
         category_list.category_name = request.POST.get('category_name')
         category_list.slug = request.POST.get('slug')
-        category_list.category_description = request.POST.get(
-            'category_description')
-
+        category_list.category_description = request.POST.get('category_description')
         category_list.save()
         # messages.success(request,'product added sucessfully')
         return redirect('categorylist')
@@ -190,9 +259,7 @@ def deleteCatergory(request, id):
 def AddSubCategory(request):
 
     if request.method == 'POST':
-
         sub_category_list = SubCategory()
-
         sub_category_list.sub_category = request.POST.get('sub_category')
         sub_category_list.sub_category_slug = request.POST.get(
             'sub_category_slug')
@@ -217,10 +284,8 @@ def SubCategoryList(request):
     all_sub_category = SubCategory.objects.all()
     context = {'all_sub_category': all_sub_category,
                'category': category,
-
                }
     return render(request, 'admin/sub-category-list.html', context)
-
 
 def deleteSubCatergory(request, id):
 
@@ -236,7 +301,6 @@ def deleteSubCatergory(request, id):
 def userlist(request):
     data = User.objects.all()
     return render(request, 'admin/userlist.html', {'data': data})
-
 
 def userblock(request, id):
 
@@ -260,3 +324,93 @@ def orders(request):
     }
     print(context)
     return render(request,'admin/orders.html',context)
+
+#=======================================sales report====================================
+
+def salesreport(request):
+    
+    if request.method == "POST":
+        fdate= request.POST['fdate']
+        ldate= request.POST['ldate']
+        amount=0
+        try:
+            check=True
+            searchresult = OrderProduct.objects.filter(created_at__lte=ldate,created_at__gte=fdate)
+            for result in searchresult:
+                amount += result.payment.amount_paid
+            return render(request,'admin/sales-report.html',{'datas':searchresult,'sum':amount,'check':check})
+        except:
+            return redirect('salesreport')
+    else:
+        amount  = 0
+        check=False
+        orderedproducts = OrderProduct.objects.all()
+        data = OrderProduct.objects.filter(~Q(status='Cancelled'))
+        for  order in data:
+            amount += order.payment.amount_paid
+        return render(request,'admin/sales-report.html',{'datas':orderedproducts,'sum':amount,'check':check})
+
+
+#==========================================productoffer===========================================================
+def productoffer(request):
+    
+    products = Product.objects.all()
+
+    if request.method == "POST":
+        print(request.POST.get('product_name'))
+        if Product.objects.filter(product_name=request.POST.get('product_name'),is_offer_avail=True).exists():
+            messages.success(request,'Offer for this product already exists')
+            return redirect('productoffer')
+        else:
+            product_offer =Offers()
+            product_offer.offername = request.POST.get('offername')
+            product_offer.product= Product.objects.get(product_name=request.POST.get('product_name'))
+            product_offer.dis_percentage = request.POST.get('offer')
+            product_offer.startdate = request.POST.get('startdate')
+            product_offer.enddate = request.POST.get('enddate')
+            product_offer.save()
+
+            
+            offer_avail_product = Product.objects.get(product_name=request.POST.get('product_name'))
+            offer = Offers.objects.get(product=offer_avail_product.id)
+            
+            #calculate the discount price        
+            offer_percent=int(offer.dis_percentage) 
+            product_price = offer_avail_product.price
+            savings = ( product_price* offer_percent)/100
+            dicounted_price = product_price-savings
+        
+            #save discount details in product table
+            offer_avail_product.offer_price = dicounted_price
+            offer_avail_product.is_offer_avail = True
+            offer_avail_product.save()
+
+            messages.success(request,'Offer added successfully')
+            return redirect('productoffer')
+    else:
+        return render(request,'admin/productoffer.html',{'products':products})
+
+
+
+def productofferlist(request):
+    offer_list = Offers.objects.all()
+    return render(request,'admin/productoffer-list.html',{'offer_list':offer_list})
+
+
+def delete_product_offer(request):
+    print("entered inside delete")
+    if request.method=="POST":
+        offer_id=request.POST.get('offer_id')
+        productoffer = Offers.objects.get(id=offer_id)
+        change_status = Product.objects.get(id=productoffer.product_id)
+        if change_status.is_offer_avail==True:
+            change_status.is_offer_avail=False
+            change_status.save()
+        productoffer.delete()
+
+        messages.error(request,"offer deleted successfully.")
+        
+        return JsonResponse({
+                'msg':'success',
+            })
+        

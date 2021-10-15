@@ -22,6 +22,7 @@
         </div>
         <div class="page-inner">
             <div class="row">
+
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -35,7 +36,6 @@
                                         <tr>
                                             <th>order ID</th>
                                             <th>Product</th>
-                                            <th>Payment Status</th>
                                             <th>Payment Method</th>
                                             <th>Order Status</th>
                                             <th>Date</th>
@@ -46,20 +46,28 @@
                                     <tbody>
                                      {% for order_list in order_list %}
                                         <tr>
-                                            <td>{{order_list.order.order_number}}</td>
+                                            <td id="">{{order_list.order.order_number}}</td>
                                             <td>
                                                 <div class="d-flex">
                                                     <img src="{{order_list.product.image1.url}}" alt="product"  class="img-fluid img-thumbnail">
                                                 </div>
                                             </td>
-                                            <td><span class="badge badge-secondary"></span>{{order_list.status}}</td>
                                             <td>{{order_list.payment.payment_method}}</td>
-                                            <td><span class="badge badge-success">{{order_list.order.status}}</span></td>
-                                            <td>{{order_list.created_at}}</td>
+                                            <td><span class="badge badge-danger">{{order_list.order.status}}</span></td>
+                                             <td>{{order_list.created_at}}</td> 
                                             <td>₹{{order_list.product_price}}</td>
-                                            <td class="text-right">
-                                                <a class="btn btn-primary" href="orders-details.html" data-toggle="tooltip" title="" data-original-title="View Details"><i class="fa fa-edit"></i></a>
+                                            {% if order_list.status != 'Cancelled' %}
+                                            <td>
+                                                <select class="form-control mySelect selectOption" id="optionselected" data-id ={{order_list.order.order_number}} >
+                                                    
+                                                    <option value="">Choose</option>
+													<option value="Shipped">Shipped</option>
+                                                    <option value="Accepted">Accepted</option>
+                                                    <option value="Placed">Placed</option>
+                                                    <option value="Cancelled">Cancelled</option>	
+												</select>
                                             </td>
+                                            {% endif %}
                                         </tr>
                                     </tbody>
                                     {% endfor %}
@@ -71,4 +79,43 @@
             </div>
         </div>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+data = document.getElementsByClassName('selectOption')
+for(i=0;i<data.length;i++){
+    data[i].addEventListener("change", function(){
+        order = this.dataset.id
+        var optionVal =  this.value 
+        changestatus(order,optionVal)
+    })
+}
+function changestatus(order,optionVal){
+    var ordernumber = order;
+    alert(optionVal)
+    alert(ordernumber)
+     $.ajax({
+            type: "POST", 
+            url:'{% url 'order_status' %}',
+            data: {optionVal: optionVal,  
+                ordernumber:ordernumber,   
+            },
+            dataType: 'json',
+            success: successHandler,
+            
+         });
+}
+
+function successHandler(data){
+            if (data.msg === 'success'){
+                alert(data.message);
+                location.reload();  
+
+            }
+        }
+</script>
+
+
 {% endblock %}

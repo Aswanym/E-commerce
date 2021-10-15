@@ -9,7 +9,7 @@
 						<div class="header d-sm-flex align-items-center  text-center">
 							<h1 class="page-header banner-title">Products</h1>
 							<ul class="breadcrumb justify-content-sm-start justify-content-center">
-								<li><a href="../index.html"><i class="icon-home"></i></a></li>
+								<li><a href="../index.html"></a></li>
 								<li><a href="{% url 'addproduct' %}">Products</a></li>
 								<li><a href="#">Add Product</a></li>
 							</ul>
@@ -25,7 +25,7 @@
 
 						<div class="card-header">
 							<div class="card-head-row justify-content-between">
-								<div class="card-title"><i class="fas fa-pen"></i> Add Product</div>
+								<div class="card-title"><i class="fa fa-edit"></i> Add Product</div>
 								<form class="main-form full" method="POST" action="" enctype="multipart/form-data">
 									{% csrf_token %}
 									<div class="add-btn">
@@ -85,17 +85,6 @@
 								<div class="col-12">
 									<div class="input-box form-group">
 										<div class="row">
-											<label for="input-brands" class="col-md-3 control-label">Slug</label>
-											<div class="col-md-9">
-												<input type="text" name="product_slug" class="form-control"
-													id="input-brands" placeholder="Slug">
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-12">
-									<div class="input-box form-group">
-										<div class="row">
 											<label for="description" class="col-md-3 control-label">Description</label>
 											<div class="col-md-9">
 												<textarea id="summernote" name="product_description"
@@ -112,7 +101,7 @@
 											<label for="input-price" class="col-md-3 control-label">Price</label>
 											<div class="col-md-9">
 												<input type="text" name="price" placeholder="Price" id="input-price"
-													class="form-control">
+													class="form-control"required>
 											</div>
 										</div>
 									</div>
@@ -123,7 +112,7 @@
 											<label for="input-quantity" class="col-md-3 control-label">Stock</label>
 											<div class="col-md-9">
 												<input type="text" name="stock" class="form-control" id="input-quantity"
-													placeholder="Stock">
+													placeholder="Stock" required>
 											</div>
 										</div>
 									</div>

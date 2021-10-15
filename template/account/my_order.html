@@ -1,0 +1,138 @@
+{% extends 'include/base.html' %}
+{% block content %}
+
+<!-- Bread Crumb STRAT -->
+<div class="container mt-sm-15">
+  <div class="banner inner-banner1">
+    <section class="banner-detail center-xs">
+      <h1 class="banner-title">Account</h1>
+      <div class="bread-crumb right-side float-none-xs">
+        <ul>
+          <li><a href="{% url 'index' %}">Home</a>/</li>
+          <li><span>Account</span></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- Bread Crumb END -->
+
+<section class="checkout-section ptb-70">
+  <div class="container">
+    <div class="row">
+      
+    {% include  'include/account_sidebar.html' %}
+
+
+    <div
+          id="data-step3"
+          class="account-content"
+          data-temp="tabdata"
+          style="display: none"
+        >
+          <div id="form-print" class="admission-form-wrapper">
+            <div class="row">
+              <div class="col-12">
+                <h3
+                  class="heading m-0"
+                  style="font-weight: bold; font-size: 20px"
+                >
+                  My order history
+                </h3>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-12 mb-xs-30">
+                <div class="cart-item-table commun-table">
+                  <div class="">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <td>image</td>
+                          <td>product</td>
+                          <td>Date</td>
+                          <td>Action</td>
+                        </tr>
+                      </thead>
+
+                      {% for order_list in order_list %}
+                      <tbody>
+                        <tr>
+                          <td>
+                            <a href="product-page.html">
+                              <div class="product-image">
+                                <img
+                                  alt="Stylexpo"
+                                  src="{{order_list.product.image1.url}}"
+                                />
+                              </div>
+                            </a>
+                          </td>
+                          <td>
+                            <div class="product-title">
+                              <a href="product-page.html"
+                                >{{order_list.product}}</a
+                              >
+                              <div class="price">
+                                #{{order_list.order.order_number}}
+                              </div>
+                              <div class="price">
+                                ₹{{order_list.product_price}}
+                              </div>
+                            </div>
+                            {% comment %}
+                            <div class="product-info-stock-sku m-0">
+                              <div>
+                                <label>Quantity: </label>
+                                <span class="info-deta"
+                                  >{{order_list.quantity}}</span
+                                >
+                              </div>
+                            </div>
+                            {% endcomment %}
+                          </td>
+                          <td>
+                            <div class="base-price price-box">
+                              <span class="price"
+                                >{{order_list.created_at}}</span
+                              >
+                            </div>
+                          </td>
+                          <td>
+                            <i
+                              title="Remove Item From Cart"
+                              data-id="100"
+                              class="fa fa-trash cart-remove-item"
+                            ></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="print-btn text-center mt-30">
+                <button
+                  onclick="printDiv('form-print')"
+                  class="btn btn-color"
+                  type="button"
+                >
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

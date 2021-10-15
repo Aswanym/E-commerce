@@ -359,27 +359,7 @@
 								</ul>
 							</div>
 						</li>
-						<!-- <li class="nav-item ">
-							<a data-toggle="collapse" href="#coupons">
-								<i class="fas fa-tag"></i>
-								<p>Coupons</p>
-								<span class="caret"></span>
-							</a>
-							<div class="collapse" id="coupons">
-								<ul class="nav nav-collapse">
-									<li>
-										<a href="coupons/coupons-list.html">
-											<span class="sub-item">Coupons List</span>
-										</a>
-									</li>
-									<li>
-										<a href="coupons/create-coupon.html">
-											<span class="sub-item">Create Coupon</span>
-										</a>
-									</li>
-								</ul>
-							</div>
-						</li> -->
+						
 						<li class="nav-item">
 							<a data-toggle="collapse" href="#users">
 								<i class="fa fa-user-plus"></i>
@@ -393,61 +373,48 @@
 											<span class="sub-item">User List</span>
 										</a>
 									</li>
-									<!-- <li>
-										<a href="user/create-user.html">
-											<span class="sub-item">Create User</span>
-										</a>
-									</li> 
-									 <li>
-										<a href="user/login.html">
-											<span class="sub-item">Login</span>
-										</a>
-									</li> 
-								 <li>
-										<a href="user/login-2.html">
-											<span class="sub-item">Login 2</span>
-										</a>
-									</li>
-									<li> 
-										 <a href="user/register.html">
-											<span class="sub-item">Register</span>
-										</a>
-									</li>
-									<li> 
-										 <a href="user/register-2.html">
-											<span class="sub-item">Register 2</span>
-										</a>
-									</li> -->
+									
 								</ul>
 							</div>
 						</li>
 						
-						<!--<li class="nav-item">
+						<li class="nav-item">
 							<a data-toggle="collapse" href="#reports">
-								<i class="far fa-chart-bar"></i>
-								<p>Category Management</p>
+								<i class="fa fa-chart-bar"></i>
+								<p>Sales Management</p>
 								<span class="caret"></span>
 							</a>
 							<div class="collapse" id="reports">
 								<ul class="nav nav-collapse">
 									<li>
-										<a href="reports/reports.html">
-											<span class="sub-item">Category List</span>
+										<a href="{% url 'salesreport' %}">
+											<span class="sub-item">Sales report</span>
 										</a>
 									</li>
-									<li>
-										<a href="reports/online-report.html">
-											<span class="sub-item">AddCategory </span>
-										</a>
-									</li>
-									<li>
-										<a href="reports/statistics.html">
-											<span class="sub-item">statistics</span>
-										</a>
-									</li>
-							</ul>
+								</ul>
 							</div>
-						</li>  -->
+						</li> 
+						 <li class="nav-item ">
+							<a data-toggle="collapse" href="#offers">
+								<i class="fa fa-tag"></i>
+								<p>Offer Management</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="offers">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="{% url 'productofferlist' %}">
+											<span class="sub-item">product offer List</span>
+										</a>
+									</li>
+									<li>
+										<a href="{% url 'productoffer' %}">
+											<span class="sub-item">Create product offer</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -502,6 +469,7 @@
 <script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 <script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/plugin/datatables/datatables.min.js"></script>
 <!--   Plugin  JS Files (used by this page) End -->
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 
 </body>

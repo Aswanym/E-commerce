@@ -9,5 +9,8 @@ urlpatterns=[
     path('paypal',views.paypal,name='paypal'),
     path('razorpay/<str:order_number>',views.razorpay,name='razorpay'),
     path('place_order',views.place_order,name='place_order'),
+
+    path('order_status',views.order_status,name='order_status'),
+
     
 ]

@@ -1,7 +1,8 @@
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.fields import BooleanField
+from django.db.models.signals import ModelSignal, pre_save
 from django.dispatch import receiver
-from django.template.defaultfilters import slugify
+from django.template.defaultfilters import slugify, truncatechars
 from django.urls import reverse
 
 # Create your models here.
@@ -30,12 +31,16 @@ class Product(models.Model):
     product_description  = models.TextField(max_length = 500, blank = True)
     
     price        = models.IntegerField()
-    stock        = models.IntegerField()
+    stock        = models.PositiveIntegerField()
 
     image1       = models.ImageField(upload_to='medias',blank = False)
     image2       = models.ImageField(upload_to='medias',blank = False)
     image3       = models.ImageField(upload_to='medias',blank = False)
     image4       = models.ImageField(upload_to='medias',blank = False)
+
+    is_offer_avail = models.BooleanField(default=False,null=True)
+    offer_price = models.FloatField(null=True)
+    expired = models.BooleanField(default=False,null=True)
 
     subcategory  = models.ForeignKey(SubCategory,on_delete= models.CASCADE)
 
@@ -57,4 +62,18 @@ def my_newcallback(sender, instance, *args, **kwargs):
 def my_newmycallback(sender, instance, *args, **kwargs):
     instance.product_slug = slugify(instance.product_name)
 
+
+class Offers(models.Model):
+    offername = models.CharField(max_length = 200,blank=False)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,blank=False)
+    dis_percentage = models.IntegerField(blank=False)
+    is_avail = BooleanField(default=True,null=True)
+    startdate = models.DateField(blank=False)
+    enddate = models .DateField(blank=False)
+
+
+    def __str__(self):
+        return self.offername
+
+       
 

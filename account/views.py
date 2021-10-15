@@ -1,11 +1,13 @@
+from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
+
 from cart.views import _cart_id
 from admin_panel.models import *
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
-
+import datetime
 from cart.models import Cart, CartItem, UserAddress
 from order.models import Order, OrderProduct
 
@@ -123,10 +125,21 @@ def logout(request):
 
 @never_cache
 def index(request):
+    product = Product.objects.all()
+       
+    today = datetime.datetime.now().date()
+    print("today==",today)
+    all_offers = Offers.objects.all()
+    for offer in all_offers:
+        enddate= offer.enddate
+        if enddate <= today:
+            offer.product.is_offer_avail=False
+            offer.product.save()
+        else:
+            pass
     
-    obj1 = Product.objects.all()
     context = {
-        'product': obj1
+        'product': product
     }
     return render(request, 'account/index.html', context)
 
@@ -184,18 +197,26 @@ def user_profile(request):
 def order_cancel(request,order_number):
 
     get_order = Order.objects.filter(user=request.user.id,order_number=order_number)
-    print(get_order)
+    for order in get_order:
+        order_id = order.id
+    order_products = OrderProduct.objects.filter(order_id=order_id)
     for order in get_order:
         order.status = 'Cancelled'
         order.save()
+    for order_cancel in order_products:
+        order_cancel.user_cancelled = True
+        order_cancel.status = "Cancelled"
+        order_cancel.save()
+
+
     messages.success(request,'order cancelled')
     return redirect('user_profile')
 
 def edit_profile(request,id):
     print(id)
     datas = UserAddress.objects.get(id=id)
+    print(datas)
     if request.method == "POST":
-        
         datas.first_name = request.POST['first_name']
         datas.last_name = request.POST['last_name']
         datas.email = request.POST['email']
@@ -204,19 +225,17 @@ def edit_profile(request,id):
         messages.success(request,"profile updated successfully")
         return redirect('user_profile')
     else:
-        context ={
-            'data':datas
-        }
-    return render(request,'user_profile', context)
+        return redirect('user_profile')
+       
 
 @login_required(login_url='login')
 def change_password(request):
+
     if request.method == 'POST':
-        print('inside post')
+      
         current_password = request.POST['current_password']
         new_password = request.POST['new_password']
         confirm_password = request.POST['confirm_password']
-
         user1 = User.objects.get(username__exact=request.user.username)
         print(user1)
 
@@ -224,17 +243,37 @@ def change_password(request):
             success = user1.check_password(current_password)
             
             if success:
-                print('inside success')
+           
                 user1.set_password(new_password)
                 user1.save()
-                print('saved')
-                messages.success(request,"password updated successfully")
-                return redirect('change_password')
+            
+                return JsonResponse({
+                    'msg':'success',
+                    'message':'password updated successfully'
+                })
             else:
-                messages.error(request,'please enter valid password')
-                return redirect('change_password')
+                
+                return JsonResponse({
+                    'msg':'invalid',
+                    'message':'please enter valid password'
+                })
         else:
-            messages.error(request,"password doesn't match")
-            return redirect('change_password')
+            
+            return JsonResponse({
+                    'msg':'notmatch',
+                    'message':"password doesn't match"
+                })
 
     return redirect('user_profile')
+
+def order_details(request,order_number):
+    order = Order.objects.get(order_number=order_number)
+    order_detail = OrderProduct.objects.filter(order_id=order.id).last()
+    order_details = OrderProduct.objects.filter(order_id=order.id)
+
+    context={
+        'order' : order,
+        'order_detail': order_detail,
+        'order_details':order_details,
+    }
+    return render(request,'account/order_details.html',context)

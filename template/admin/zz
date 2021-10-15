@@ -1,0 +1,223 @@
+<script>
+
+    const selected_option = document.getElementById('selectOption');
+    var optionVal = $("#selectOption").val(); 
+    console.log(optionVal)
+    selected_option.addEventListener("click",changeHandler);
+
+  function changeHandler(e){
+    e.preventDefault();
+
+    $.ajax({
+      type: 'POST',
+      url:'{% url 'change_password' %}',
+      data:{optionVal: optionVal,
+            order_number:order_list.order.order_number
+            },
+      dataType:'json',
+      success:successHandler,
+    })
+  }
+
+  function successHandler(data){
+      if(data.msg === 'success'){
+          alert('success')
+      }
+
+  } 
+$(document).ready(function() {
+    $("#selectOption").change(function(){ //** on selecting an option based on ID you assigned
+        var optionVal = $("#selectOption").val(); //** get the selected option's value
+
+        $.ajax({
+            type: "POST", //**how data is send
+            url:'{% url 'order_status' %}', //** where to send the option data so that it can be saved in DB
+            data: {optionVal: optionVal,
+                   
+            }, //** send the selected option's value to above page
+            dataType: "json",
+            success: function(data){
+                //** what should do after value is saved to DB and returned from above URL page.
+                console.log("success")
+            }
+            console.log(data)
+        });
+    }); 
+}); 
+</script>  
+
+
+
+
+
+
+
+
+@login_required(login_url='login')
+def change_password(request):
+
+    if request.method == 'POST':
+      
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+        user1 = User.objects.get(username__exact=request.user.username)
+        print(user1)
+
+        if new_password == confirm_password:
+            success = user1.check_password(current_password)
+            
+            if success:
+           
+                user1.set_password(new_password)
+                user1.save()
+            
+                return JsonResponse({
+                    'msg':'success',
+                    'message':'password updated successfully'
+                })
+            else:
+                
+                return JsonResponse({
+                    'msg':'invalid',
+                    'message':'please enter valid password'
+                })
+        else:
+            
+            return JsonResponse({
+                    'msg':'notmatch',
+                    'message':"password doesn't match"
+                })
+
+    return redirect('user_profile')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    orders = Order.objects.annotate(month = ExtractMonth('created_at')).values('month').annotate(count=Count('id')).values('month','count')
+    print(orders)
+    month_number = []
+    total_orders = []
+    for data in orders:
+        month_number.append(calendar.month_name[data['month']])
+        total_orders.append(data['count'])
+    return render(request, 'admin/admindash.html',{'month_number':month_number,'total_orders':total_orders})
+
+
+
+
+
+
+    
+{% comment %} data = document.getElementsByClassName(selectOption)
+for(i=0;i<data.length;i++){
+    data[i].addEventListener("click", function(){
+        order_number = this.dataset.ordernumber;
+        optionval = this.dataset.value;
+    
+    $.ajax({
+    type: "POST", 
+    url:'{% url 'order_status' %}',
+    data: {optionval: optionVal,  
+                order_number:order_number,   
+    },
+    dataType: 'json',
+    success: successHandler,
+    });
+    
+    })
+}
+function successHandler(data){
+            if (data.msg === 'success'){
+                 alert(data.message)
+            }
+
+        } {% endcomment %}
+
+
+
+
+
+        {% for id, choice in order_list.STATUS %}
+                                                    
+        <option value="{{id}}"{% if order_list.status == id %} selected="selected"{% endif %}>{{ choice }}</option>
+       {% endfor %}	
+
+
+
+
+<div class="col-md-10 col-12 mx-auto">
+    <div classs="row">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div classs="row">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div classs="row">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div classs="row">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div classs="row">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div classs="row">
+        <div class="col-md-6 col-12">
+            <div class="card">
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+==========offer===========
+    def check_expired(self):
+        today = datetime.datetime.now().date()
+        if Offers.objects.filter(product=self,enddate__gte=today,startdate__lte=today):
+            return True
+        else:
+            return False

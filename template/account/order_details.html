@@ -1,0 +1,124 @@
+{% extends 'include/base.html' %}
+{% block content %}
+
+<!-- Bread Crumb STRAT -->
+
+  <style>
+    a {
+        color: inherit;
+    }
+</style>
+  <!-- Bread Crumb END -->
+
+
+  <!-- CONTAIN START -->
+  <section class="checkout-section ptb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-sm-30">
+                <div id="form-print" class="admission-form-wrapper">
+                <div class="cart-item-table complete-order-table commun-table mb-30">
+                <div class="table-responsive">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th>Product image</th>
+                        <th>Product </th>
+                        <th>Quantity </th>
+                        <th> Price</th>
+                        </tr>
+                    </thead>
+                    {% for order_detail in order_details %}
+                    <tbody>
+                        <tr>
+                        <td>
+                            <div class="d-flex">
+                                <img style="height:150px;" src="{{order_detail.product.image1.url}}" alt="product"  class="img-fluid img-thumbnail">
+                            </div> 
+                        </td>
+                        <td>
+                            <div class="product-title"> 
+                            <a href="product-page.html">{{order_detail.product}}</a>
+                            <div class="product-info-stock-sku m-0">
+                        </td>
+                           <td>
+                            <div class="product-info-stock-sku m-0">
+                                <div>
+                                    <span class="info-deta">{{order_detail.quantity}}</span> 
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                    <div class="price-box"> 
+                                        <span class="info-deta price">₹{{order_detail.product.price}}</span> 
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                     
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                    </table>
+                </div>
+                </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="cart-total-table address-box commun-table mb-30">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Order details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <ul>
+                                                <li class="inner-heading"> <b>order number:</b>{{order.order_number}} </li>
+                                                <li><b>Transaction Id:</b>{{order.payment.payment_id}}</li>
+                                                <li><b>Order date:</b>{{order.created_at}}</li>
+                                                <li><b>Status:</b>{{order.status}}</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="cart-total-table address-box commun-table mb-30">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Invoice To</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <ul>
+                                                <li class="inner-heading"> <b>{{order.full_name}}</b> </li>
+                                                <li> <p>{{order.full_address}}</p></li>
+                                                <li> <p>{{order.state}} {{order.city}}</p> </li>
+                                                <li><p>{{order.country}}</p></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <!-- CONTAINER END --> 
+  {% endblock %}

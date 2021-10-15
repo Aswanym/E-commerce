@@ -32,6 +32,8 @@
             <div class="row">
               <div class="col-12">
                 
+                
+               
                 <div class="heading-part">
                    
                   <p class="sub-heading" style="font-size: 20px">
@@ -108,10 +110,9 @@
           <hr>
           <div class="m-0">
             <form
-              class="main-form full"
-              method="POST"
-              action="{% url 'edit_profile' user_details.id %}"
+              class="main-form full"action="{% url 'edit_profile' user_details.id %}" method="POST"
             >
+            {% csrf_token %}
               <div class="mb-20">
                 <div class="row">
                   <div class="col-12 mb-20">
@@ -123,7 +124,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="input-box">
-                      <input type="text" required placeholder="First Name" name="first_name" value="{{data.first_name}}"/>
+                      <input type="text" required placeholder="First Name" name="first_name" value="{{user_details.first_name}}"/>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -133,7 +134,7 @@
                         required
                         placeholder="Last Name"
                         name="last_name"
-                        value="{{data.last_name}}"
+                        value="{{user_details.last_name}}"
                       />
                     </div>
                   </div>
@@ -144,7 +145,7 @@
                         required
                         placeholder="Email Address"
                         name= "email"
-                        value= "{{data.email}}"
+                        value= "{{user_details.email}}"
                       />
                     </div>
                   </div>
@@ -155,7 +156,7 @@
                         required
                         placeholder="Contact Number"
                         name= "phone_number"
-                        value= "{{data.phone_number}}"
+                        value= "{{user_details.phone_number}}"
                       />
                     </div>
                   </div>
@@ -194,11 +195,11 @@
                     <table class="table">
                       <thead>
                         <tr>                       
-                          <td>Order Number</td>
-                          <td>Price</td>
-                          <td>Date</td>
-                          <td>Status</td>
-                          <td>Action</td>
+                          <td><span style="font-weight:bold">Order Number</span></td>
+                          <td><span style="font-weight:bold">Price</span></td>
+                          <td style="font-weight:bold">Date</span></td>
+                          <td style="font-weight:bold">Status</span></td>
+                          <td style="font-weight:bold">Action</span></td>
                         </tr>
                       </thead>
 
@@ -207,7 +208,7 @@
                         <tr>
                           <td>
                             <div class="product-title">
-                              <a href="product-page.html"
+                              <a href="{% url 'order_details' order_list.order_number %}"
                                 >{{order_list.order_number}}</a
                               >
                             </div>
@@ -219,16 +220,16 @@
                           </td>
                           <td>
                             <div class="base-price price-box">
-                              <span class="price"
-                                >{{order_list.created_at}}</span
-                              >
+                             
+                                {{order_list.created_at}}
+                              
                             </div>
                           </td>
                           <td>
                             <div class="base-price price-box">
-                              <span class="price"
-                                >{{order_list.status}}</span
-                              >
+                              
+                                {{order_list.status}}
+                              
                             </div>
                           </td>
                           {% if order_list.status != "Cancelled" %}
@@ -271,7 +272,7 @@
           <br>
          
 
-          <form class="main-form full" action="{% url 'change_password' %}" method = "POST">
+          <form class="main-form full" id="changepassword" action="" method = "POST">
            {% csrf_token %}
            <div class="form-group">
             <label>Current password</label>
@@ -296,8 +297,44 @@
           </form>
         </div>
       </div>
+    
     </div>
   </div>
 </section>
+
+
+<script>
+  const form = document.getElementById('changepassword');
+  form.addEventListener("submit",submitHandler);
+
+  function submitHandler(e){
+    e.preventDefault();
+
+    $.ajax({
+      type: 'POST',
+      url:'{% url 'change_password'  %}',
+      data:$("#changepassword").serialize(),
+      dataType:'json',
+      success:successHandler,
+    })
+  }
+
+  function successHandler(data){
+   
+        if (data.msg === 'success'){
+          form.reset()
+          alert(data.message)
+        }else if(data.msg === 'invalid'){
+          form.reset()
+          alert(data.message)
+        }else{
+          form.reset()
+          alert(data.message)
+        }
+  }
+</script>
+
+
+
 <!-- CONTAINER END -->
 {% endblock %}

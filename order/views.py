@@ -6,7 +6,7 @@ from admin_panel.models import Product
 from django.contrib.auth.models import User, auth
 import datetime
 import json
-
+from django.views.decorators.csrf import csrf_exempt
 import razorpay
 
 # Create your views here.
@@ -114,9 +114,9 @@ def payment(request,order_number,total=0,quantity=0):
             orderproduct.product_id = item.product.id
             orderproduct.quantity = item.quantity
             orderproduct.product_price = item.product.price
-          
             orderproduct.ordered = True
             orderproduct.payment = payment
+            orderproduct.status = "Ordered"
             orderproduct.save()
 
             #reduce the quantity of sold product
@@ -150,6 +150,7 @@ def paypal(request):
     print(payment)
     payment.save()
 
+    orders.status = "Ordered"
     orders.payment = payment
     orders.is_ordered = True
     orders.save()
@@ -163,9 +164,10 @@ def paypal(request):
         orderproduct.product_id = item.product.id
         orderproduct.quantity = item.quantity
         orderproduct.product_price = item.product.price
-        
         orderproduct.ordered = True
         orderproduct.payment = payment
+        orderproduct.status = "Ordered"
+
         orderproduct.save()
 
         #reduce the quantity of sold product
@@ -185,7 +187,6 @@ def paypal(request):
     return JsonResponse(data)
 
 def razorpay(request,order_number,total=0,quantity=0):
-    print('hai')
 
     orders = Order.objects.filter(user= request.user,is_ordered = False, order_number=order_number)
     cart_items=CartItem.objects.filter(user=request.user,is_active=True)
@@ -199,7 +200,6 @@ def razorpay(request,order_number,total=0,quantity=0):
     else:
         shipping = 80
     grand_total = total + shipping
-    print('inside payment option')
     payment_method = request.POST.get('payment-option')
     print('outside payment option',payment_method)
     if request.method == 'POST':
@@ -209,6 +209,7 @@ def razorpay(request,order_number,total=0,quantity=0):
     for order in orders:
         
         order.payment = payment
+        order.status = "Ordered"
         order.is_ordered = True
         order.save()
 
@@ -223,9 +224,10 @@ def razorpay(request,order_number,total=0,quantity=0):
             orderproduct.product_id = item.product.id
             orderproduct.quantity = item.quantity
             orderproduct.product_price = item.product.price
-            orderproduct.status = "ordered"
             orderproduct.ordered = True
             orderproduct.payment = payment
+            orderproduct.status = "Ordered"
+        
             orderproduct.save()
 
             #reduce the quantity of sold product
@@ -248,11 +250,33 @@ def order_complete(request,order_number):
     order_confirms = Order.objects.get(user=request.user,order_number=order_number)
     print(order_confirms)
     order_product = OrderProduct.objects.filter(user=request.user,order_id=order_confirms.id)
-    # for product in order_product:
-    #     print(product)
     
     context={
         'order_confirms': order_confirms,
         'order_product': order_product,
     }
     return render(request,'store/order_complete.html',context)
+
+@csrf_exempt
+def order_status(request):
+   
+    if request.method == "POST":
+        get_data = request.POST.get('optionVal')
+        get_order =request.POST['ordernumber']
+        orders = Order.objects.filter(order_number = get_order)
+        print("------------------------",orders)
+        order_products = OrderProduct.objects.filter(user_cancelled = False)
+
+        for order in orders:
+            order.status = get_data
+            print(order_products)
+            order.save()
+
+        for orderproduct in order_products:
+            orderproduct.status = get_data
+            orderproduct.save()
+
+        return JsonResponse({
+                    'msg':'success',
+                    'message':'Order status updated',
+                })
