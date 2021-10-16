@@ -94,8 +94,6 @@ for(i=0;i<data.length;i++){
 }
 function changestatus(order,optionVal){
     var ordernumber = order;
-    alert(optionVal)
-    alert(ordernumber)
      $.ajax({
             type: "POST", 
             url:'{% url 'order_status' %}',

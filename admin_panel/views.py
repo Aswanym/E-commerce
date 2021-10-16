@@ -399,18 +399,18 @@ def productofferlist(request):
 
 def delete_product_offer(request):
     print("entered inside delete")
-    if request.method=="POST":
-        offer_id=request.POST.get('offer_id')
+    if request.method == "POST":
+        print("entered inside post")
+        offer_id = request.POST.get('offer_id')
         productoffer = Offers.objects.get(id=offer_id)
         change_status = Product.objects.get(id=productoffer.product_id)
-        if change_status.is_offer_avail==True:
-            change_status.is_offer_avail=False
+        if change_status.is_offer_avail == True:
+            change_status.is_offer_avail = False
             change_status.save()
         productoffer.delete()
 
-        messages.error(request,"offer deleted successfully.")
+        # messages.error(request,"offer deleted successfully.")
         
-        return JsonResponse({
-                'msg':'success',
-            })
+        return JsonResponse({'msg':'success','message':'sucessfully deleted'})
+    return JsonResponse({'message':'wrong route'})
         

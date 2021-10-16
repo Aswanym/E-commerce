@@ -59,9 +59,9 @@
 													<td class="text-right">
 														<div class="form-button-action">
 															
-															<a  href="" data-toggle="tooltip" title="" class="btn btn-link btn-danger offerdelete" data-id={{offer_list.id}} data-original-title="Remove">
+															<button data-toggle="tooltip" title="" onclick="delete_product('{{offer_list.id}}')" class="btn btn-link btn-danger offerdelete"  data-original-title="Remove">
 																<i class="fa fa-times"></i>
-															</a>
+															</button>
 														</div>
 													</td>
 												
@@ -80,48 +80,34 @@
 
 <script>
 
-	data= document.getElementsByClassName('offerdelete')
-	consloe.log("inside js")
-	for(i=0;i<data.length;i++){
-		data[i].addEventListener("click",function(){
-			offerid = this.dataset.id
-			delete_product(offerid)
-		})
-	}
-	function delete_product(offerid){
-		var offer_id= offerid
-		$.ajax({
-			type:"POST",
-			url:'{% url 'delete_product_offer' %}',
-			data:{offer_id=offer_id},
-			dataType:'json',
-			success:successHandler,	
-		});
-	}
-	function successHandler(data){
-            if (data.msg === 'success'){
-                alert('deleted');
-                location.reload();  
 
-            }
-        }
+
+		function delete_product(offerid){
+			var offer_id= offerid;
+			var csrftoken = '{{ csrf_token }}'
+
+			console.log("-----loged2------", offerid)
+		
+			/*$.ajax({
+				type: "POST",
+				headers:{'X-CSRFToken':csrftoken},
+				url: '{% url 'delete_product_offer' %}',
+				data: {offer_id:offer_id},
+				dataType: 'json',
+				success: function(data){
+					if (data.msg === 'success'){
+						alert(data.message)
+						};
+					
+					else{
+						alert(data.message)
+					};
+				},
+				error: function(){
+					console.log("something wrong")
+				}
+			});*/
+		} 
 </script>
-{% comment %} <script>
-	swal({
-	title: "Are you sure?",
-	text: "Once deleted, you will not be able to recover this imaginary file!",
-	icon: "warning",
-	buttons: true,
-	dangerMode: true,
-	})
-	.then((willDelete) => {
-	if (willDelete) {
-		swal("Poof! Your imaginary file has been deleted!", {
-		icon: "success",
-		});
-	} else {
-		swal("Your imaginary file is safe!");
-	}
-	});
-</script>  {% endcomment %}
+
 {% endblock %}
