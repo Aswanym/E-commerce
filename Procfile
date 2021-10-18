@@ -1,0 +1,1 @@
+web: gunicorn saasha-ecom.wsgi --log-file -
