@@ -3,7 +3,6 @@
 <!-- Bread Crumb STRAT -->
 <div class="container mt-sm-15">
   <div class="banner inner-banner1">
-    
     <section class="banner-detail center-xs">
       <h1 class="banner-title">Account</h1>
       <div class="bread-crumb right-side float-none-xs">
@@ -21,29 +20,19 @@
 <section class="checkout-section ptb-70">
   <div class="container">
     <div class="row">
-    {% include  'include/alerts.html' %}
-    {% include  'include/account_sidebar.html' %}
-
+      {% include 'include/alerts.html' %}
+      {% include 'include/account_sidebar.html' %}
       <div class="col-lg-9">
         <div id="data-step1" class="account-content" data-temp="tabdata">
-        
           <div class="mb-30">
-          
             <div class="row">
               <div class="col-12">
-                
-                
-               
                 <div class="heading-part">
-                   
                   <p class="sub-heading" style="font-size: 20px">
-                    <span style="font-weight: bold; font-size: 20px"
-                      >Hello,</span
-                    >
+                    <span style="font-weight: bold; font-size: 20px">Hello,</span>
                     {{user_details.full_name}}
                   </p>
                 </div>
-
                 <hr />
                 <br />
                 <p>
@@ -56,7 +45,6 @@
               </div>
             </div>
           </div>
-
           <div class="card">
             <div class="card-body">
               <div class="row">
@@ -69,17 +57,11 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="col-md-6">
                   <div class="card" style="text-align: center; ">
                     <div class="card-body">
-                      <img
-                        src="https://www.w3schools.com/howto/img_avatar.png"
-                        alt="Avatar"
-                        class="avatar"
-                        width="50"
-                        height="50"
-                        style="border-radius: 50%" />
+                      <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar" width="50"
+                        height="50" style="border-radius: 50%" />
                       <br>
                       <p>{{user_details.full_name}}</p>
                       <p>{{user_details.email}}</p>
@@ -91,28 +73,18 @@
             </div>
           </div>
         </div>
-        <div
-          id="data-step2"
-          class="account-content"
-          data-temp="tabdata"
-          style="display: none"
-        >
+        <div id="data-step2" class="account-content" data-temp="tabdata" style="display: none">
           <div class="row">
             <div class="col-12">
-              <h4
-                class="heading m-0"
-                style="font-weight: bold; font-size: 20px"
-              >
+              <h4 class="heading m-0" style="font-weight: bold; font-size: 20px">
                 Edit Profile
               </h4>
             </div>
           </div>
           <hr>
           <div class="m-0">
-            <form
-              class="main-form full"action="{% url 'edit_profile' user_details.id %}" method="POST"
-            >
-            {% csrf_token %}
+            <form class="main-form full" action="{% url 'edit_profile' user_details.id %}" method="POST">
+              {% csrf_token %}
               <div class="mb-20">
                 <div class="row">
                   <div class="col-12 mb-20">
@@ -124,40 +96,26 @@
                   </div>
                   <div class="col-md-6">
                     <div class="input-box">
-                      <input type="text" required placeholder="First Name" name="first_name" value="{{user_details.first_name}}"/>
+                      <input type="text" required placeholder="First Name" name="first_name"
+                        value="{{user_details.first_name}}" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="input-box">
-                      <input
-                        type="text"
-                        required
-                        placeholder="Last Name"
-                        name="last_name"
-                        value="{{user_details.last_name}}"
-                      />
+                      <input type="text" required placeholder="Last Name" name="last_name"
+                        value="{{user_details.last_name}}" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="input-box">
-                      <input
-                        type="email"
-                        required
-                        placeholder="Email Address"
-                        name= "email"
-                        value= "{{user_details.email}}"
-                      />
+                      <input type="email" required placeholder="Email Address" name="email"
+                        value="{{user_details.email}}" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="input-box">
-                      <input
-                        type="text"
-                        required
-                        placeholder="Contact Number"
-                        name= "phone_number"
-                        value= "{{user_details.phone_number}}"
-                      />
+                      <input type="text" required placeholder="Contact Number" name="phone_number"
+                        value="{{user_details.phone_number}}" />
                     </div>
                   </div>
                   <div class="col-md-12 align-center p-3">
@@ -170,19 +128,11 @@
             </form>
           </div>
         </div>
-        <div
-          id="data-step3"
-          class="account-content"
-          data-temp="tabdata"
-          style="display: none"
-        >
+        <div id="data-step3" class="account-content" data-temp="tabdata" style="display: none">
           <div id="form-print" class="admission-form-wrapper">
             <div class="row">
               <div class="col-12">
-                <h3
-                  class="heading m-0"
-                  style="font-weight: bold; font-size: 20px"
-                >
+                <h3 class="heading m-0" style="font-weight: bold; font-size: 20px">
                   My order history
                 </h3>
               </div>
@@ -194,7 +144,7 @@
                   <div class="">
                     <table class="table">
                       <thead>
-                        <tr>                       
+                        <tr>
                           <td><span style="font-weight:bold">Order Number</span></td>
                           <td><span style="font-weight:bold">Price</span></td>
                           <td style="font-weight:bold">Date</span></td>
@@ -202,45 +152,39 @@
                           <td style="font-weight:bold">Action</span></td>
                         </tr>
                       </thead>
-
                       {% for order_list in order_list %}
                       <tbody>
                         <tr>
                           <td>
                             <div class="product-title">
-                              <a href="{% url 'order_details' order_list.order_number %}"
-                                >{{order_list.order_number}}</a
-                              >
+                              <a
+                                href="{% url 'order_details' order_list.order_number %}">{{order_list.order_number}}</a>
                             </div>
                           </td>
                           <td>
-                              <div class="price">
-                                ₹{{order_list.payment.amount_paid}}
-                              </div>
-                          </td>
-                          <td>
-                            <div class="base-price price-box">
-                             
-                                {{order_list.created_at}}
-                              
+                            <div class="price">
+                              ₹{{order_list.payment.amount_paid}}
                             </div>
                           </td>
                           <td>
                             <div class="base-price price-box">
-                              
-                                {{order_list.status}}
-                              
+                              {{order_list.created_at}}
+                            </div>
+                          </td>
+                          <td>
+                            <div class="base-price price-box">
+                              {{order_list.status}}
                             </div>
                           </td>
                           {% if order_list.status != "Cancelled" %}
-                            <td>
+                          <td>
                             <div>
-                            <a href="{% url 'order_cancel' order_list.order_number %}">Cancel</a>
+                              <a href="{% url 'order_cancel' order_list.order_number %}">Cancel</a>
                             </div>
-                            </td>
+                          </td>
                           {% else %}
-                            <div>
-                            </div>
+                          <div>
+                          </div>
                           {% endif %}
                         </tr>
                       </tbody>
@@ -252,85 +196,72 @@
             </div>
           </div>
         </div>
-        
-        <div
-          id="data-step4"
-          class="account-content"
-          data-temp="tabdata"
-          style="display: none"
-        >
+        <div id="data-step4" class="account-content" data-temp="tabdata" style="display: none">
           <div class="row">
             <div class="col-12">
-              <h3
-                class="heading m-0"
-                style="font-weight: bold; font-size: 20px">
+              <h3 class="heading m-0" style="font-weight: bold; font-size: 20px">
                 change password
               </h3>
             </div>
           </div>
           <hr>
           <br>
-         
-
-          <form class="main-form full" id="changepassword" action="" method = "POST">
-           {% csrf_token %}
-           <div class="form-group">
-            <label>Current password</label>
-            <input type="password" name="current_password" placeholder="Current password" class="form-control" required>
-           <div>
-
-           <div class="form-group mt-2">
-            <label>New password</label>
-            <input type="password" name="new_password" placeholder="New password" class="form-control" required>
-           <div>
-
-          <div class="form-group mt-2">
-            <label>Confirm password</label>
-            <input type="password" name="confirm_password" placeholder="Confirm password" class="form-control" required>
-           <div>
-              <div class="col-12 mt-2">
-                <button class="btn-color" type="submit" name="submit">
-                  Change Password
-                </button>
+          <form class="main-form full" id="changepassword" action="" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label>Current password</label>
+              <input type="password" name="current_password" placeholder="Current password" class="form-control"
+                required>
+              <div>
+                <div class="form-group mt-2">
+                  <label>New password</label>
+                  <input type="password" name="new_password" placeholder="New password" class="form-control" required>
+                  <div>
+                    <div class="form-group mt-2">
+                      <label>Confirm password</label>
+                      <input type="password" name="confirm_password" placeholder="Confirm password" class="form-control"
+                        required>
+                    <div>
+                      <div class="col-12 mt-2">
+                        <button class="btn-color" type="submit" name="submit">
+                          Change Password
+                        </button>
+                      </div>
+                    </div>
+                </form>
               </div>
-            </div>
-          </form>
+            </div>  
+          </div>
         </div>
-      </div>
-    
-    </div>
-  </div>
 </section>
-
-
 <script>
   const form = document.getElementById('changepassword');
-  form.addEventListener("submit",submitHandler);
+  form.addEventListener("submit", submitHandler);
 
-  function submitHandler(e){
+  function submitHandler(e) {
     e.preventDefault();
 
     $.ajax({
       type: 'POST',
-      url:'{% url 'change_password'  %}',
-      data:$("#changepassword").serialize(),
-      dataType:'json',
-      success:successHandler,
+      url: '{% url 'change_password'  %}',
+      data: $("#changepassword").serialize(),
+      dataType: 'json',
+      success: successHandler,
     })
   }
 
-  function successHandler(data){
-   
-        if (data.msg === 'success'){
-          form.reset()
-          alert(data.message)
-        }else if(data.msg === 'invalid'){
-          form.reset()
-          alert(data.message)
-        }else{
-          form.reset()
-          alert(data.message)
-        }
+  function successHandler(data) {
+
+    if (data.msg === 'success') {
+      form.reset()
+      alert(data.message)
+    } else if (data.msg === 'invalid') {
+      form.reset()
+      alert(data.message)
+    } else {
+      form.reset()
+      alert(data.message)
+    }
   }
 </script>
 

@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import request
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User, auth
 from admin_panel.models import Product
@@ -97,20 +98,28 @@ def cart(request, total=0, quantity=0, cart_items=None):
         cart_items = CartItem.objects.filter(cart=cart, is_active=True)
         
     for cart_item in cart_items:
-        total += (cart_item.product.price * cart_item.quantity)
-        quantity += cart_item.quantity
+        if cart_item.product.is_offer_avail == True:
+                total += (cart_item.product.offer_price * cart_item.quantity)
+                quantity += cart_item.quantity
+        else:
+            total += (cart_item.product.price * cart_item.quantity)
+            quantity += cart_item.quantity
 
-    if total >= 1200:
+    tax  = int ( (2 * total)/100 )
+    total_with_tax = total + tax
+
+    if total_with_tax >= 1200:
         shipping = 0
     else:
         shipping = 80
-    grand_total = total + shipping
+    grand_total = total_with_tax + shipping
 
     context = {
         'total': total,
         'quantity': quantity,
         'cart_items': cart_items,
         'shipping': shipping,
+        'tax':tax,
         'grand_total': grand_total,
     }
 
@@ -133,18 +142,17 @@ def delete_cart(request, product_id):
         cart_item.delete()
         return redirect('cart')
 
+# def buy_now(request):
+#     pass
+
 def checkout_shipping(request):
     return redirect('checkout')
-
 
 @login_required(login_url = 'login')
 def checkout(request):
     address_count = UserAddress.objects.filter(user=request.user).count()
-    print('address count -----------------------------------',address_count)
 
-    
     if request.method == 'POST':
-        print('inside post')  
         if address_count < 3:  
 
             first_name      = request.POST.get('first_name')
@@ -162,7 +170,7 @@ def checkout(request):
 
             address_type    = request.POST.get('address_type')
 
-            
+        
             user_address = UserAddress.objects.create(
                 first_name=first_name, 
                 last_name=last_name, 
@@ -178,27 +186,45 @@ def checkout(request):
                 user_id =request.user.id
                 )
             user_address.save()
-            return redirect('order_overview')
+            if address_count > 0 :
+                return redirect('order_overview',address_count)
+            
+            messages.info(request,"select address and proceed.")
+            return redirect('checkout')
+            
         else:
             messages.error(request,"Cann't add more than 3 address")
             return redirect('checkout')
 
     else:
-        print('inside get')
+        
         useraddress = UserAddress.objects.filter(user_id = request.user )
         context = {
             'useraddress':useraddress,
+            'address_count':address_count,
         }
         return render(request,'store/checkout.html',context)
     
-
 def add_address(request):
     return render(request,'store/address_page.html')
 
-def order_overview(request, total=0, quantity=0, cart_items=None):
+def delete_useraddress(request):
+
+    if request.method == "GET":
+        print('inside get')
+        useraddress_id=request.GET.get('addressid')
+        delete_address = UserAddress.objects.get(id=useraddress_id)
+        print('inside yuihnjk')
+        delete_address.delete()
+        print('inside fyguekj')
+        return JsonResponse({'msg':'delete success'})
+    return JsonResponse({'msg':'message couldnot delete'})
+
+def order_overview(request,total=0, quantity=0, cart_items=None):
     shipping = 0
     grand_total = 0
     razorpay_amount = 0
+   
     useraddress = UserAddress.objects.filter(user=request.user)
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
@@ -208,14 +234,21 @@ def order_overview(request, total=0, quantity=0, cart_items=None):
         cart_items = CartItem.objects.filter(cart=cart, is_active=True)
         
     for cart_item in cart_items:
-        total += (cart_item.product.price * cart_item.quantity)
-        quantity += cart_item.quantity
+        if cart_item.product.is_offer_avail:
+            total += (cart_item.product.offer_price * cart_item.quantity)
+            quantity += cart_item.quantity
+        else:
+            total += (cart_item.product.price * cart_item.quantity)
+            quantity += cart_item.quantity
 
-    if total >= 1200:
+    tax  = int ( (2 * total)/100 )
+    total_with_tax = total + tax
+
+    if total_with_tax >= 1200:
         shipping = 0
     else:
         shipping = 80
-    grand_total = total + shipping
+    grand_total = total_with_tax + shipping
     razorpay_amount=grand_total*100
     if Order.objects.filter(user=request.user,is_ordered=False):
         order1 = Order.objects.get(user=request.user,is_ordered=False)
@@ -254,6 +287,7 @@ def order_overview(request, total=0, quantity=0, cart_items=None):
         'cart_items': cart_items,
         'shipping': shipping,
         'grand_total': grand_total,
+        'tax': tax,
         'order1' : order1,
         'razorpay_amount':razorpay_amount,
         'useraddress' : useraddress,   

@@ -7,15 +7,8 @@ from cart.views import _cart_id
 from admin_panel.models import *
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
-import datetime
 from cart.models import Cart, CartItem, UserAddress
 from order.models import Order, OrderProduct
-
-
-# import requests
-
-# Create your views here.
-
 
 
 def login(request):
@@ -26,7 +19,7 @@ def login(request):
         if request.method == 'POST':
             username = request.POST['username']
             password = request.POST['password']
-            print('credential entered')
+
             if username == '' or password == '':
                 messages.info(request, 'Enter all fields')
                 return redirect('login')
@@ -35,16 +28,16 @@ def login(request):
                     us = User.objects.get(username=username)
                     if us.is_active:
                         user = auth.authenticate(
-                            username=username, 
+                            username=username,
                             password=password)
                         if user is not None:
-
                             try:
-                                print("inside try")
-                                cart = Cart.objects.get(cart_id=_cart_id(request))
+                                cart = Cart.objects.get(
+                                    cart_id=_cart_id(request))
                                 if CartItem.objects.filter(cart_id=cart).exists():
                                     try:
-                                        cart_item = CartItem.objects.filter(cart=cart)      
+                                        cart_item = CartItem.objects.filter(
+                                            cart=cart)
                                     except:
                                         pass
                                     for item in cart_item:
@@ -54,19 +47,10 @@ def login(request):
                                 pass
                             auth.login(request, user)
                             request.session['user'] = True
-                            # url = request.META.get('HTTP_REFERER')
-                            # try :
-                            #     Query = requests.utils.urlparse(url).query
-                            #     print('query ---',Query)
-                            #     params = dict(x.split('=') for x in Query.split('&'))
-                            #     if 'next' in params:
-                            #         nextpage = params ['next']
-                            #         return redirect(nextpage)
-                            # except:
                             return redirect('index')
-                                
                         else:
-                            messages.info(request, 'invalid username or password')
+                            messages.info(
+                                request, 'invalid username or password')
                             return redirect('login')
                     else:
                         messages.info(request, 'You are blocked')
@@ -76,7 +60,6 @@ def login(request):
                     return redirect('login')
         else:
             return render(request, 'account/login.html')
-
 
 
 def register(request):
@@ -104,7 +87,6 @@ def register(request):
                     user = User.objects.create_user(first_name=first_name, last_name=last_name,
                                                     email=email, password=password1, username=username)
                     user.save()
-                    print("created")
                     return redirect('login')
             else:
                 messages.info(request, 'password not matching')
@@ -113,39 +95,26 @@ def register(request):
         return render(request, 'account/register.html')
 
 
-
 @login_required(login_url='login')
 def logout(request):
-    print('logged out')
+
     if request.session.has_key('user'):
         del request.session['user']
         auth.logout(request)
-        print('logged out')
     return redirect('index')
+
 
 @never_cache
 def index(request):
     product = Product.objects.all()
-       
-    today = datetime.datetime.now().date()
-    print("today==",today)
-    all_offers = Offers.objects.all()
-    for offer in all_offers:
-        enddate= offer.enddate
-        if enddate <= today:
-            offer.product.is_offer_avail=False
-            offer.product.save()
-        else:
-            pass
-    
     context = {
-        'product': product
+        'product': product,
     }
     return render(request, 'account/index.html', context)
 
+
 def ProductPage(request, id):
     all_data = Product.objects.get(id=id)
-    print(all_data)
     in_cart = CartItem.objects.filter(
         cart__cart_id=_cart_id(request), product=all_data).exists()
     context = {
@@ -154,12 +123,13 @@ def ProductPage(request, id):
     }
     return render(request, 'account/product-page.html', context)
 
+
 def shop_clothes(request):
     product = Product.objects.all()
     context = {
         'product': product
     }
-    print(context)
+
     return render(request, 'account/shop_clothes.html', context)
 
 
@@ -170,33 +140,35 @@ def shop_footwears(request):
     }
     return render(request, 'account/shop_footwears.html', context)
 
+
 @login_required(login_url='login')
 def user_profile(request):
     user1 = User.objects.get(id=request.user.id)
-    print("-----------------------------",user1.id)
 
-    order_list = Order.objects.filter(user=request.user,is_ordered =True).order_by('created_at')
+    order_list = Order.objects.filter(
+        user=request.user, is_ordered=True).order_by('created_at')
     order_count = order_list.count()
     if UserAddress.objects.filter(user_id=user1.id).exists():
         user_details = UserAddress.objects.filter(user_id=user1.id).last()
-        print(user_details)
+
         context = {
-            'user_details':user_details,
-            'order_list' : order_list,
-            'order_count':order_count,
+            'user_details': user_details,
+            'order_list': order_list,
+            'order_count': order_count,
         }
     else:
-         context = {
-            'order_list' : order_list,
-            'order_count':order_count,
+        context = {
+            'order_list': order_list,
+            'order_count': order_count,
         }
 
-    return render(request, 'account/user_profile.html',context) 
+    return render(request, 'account/user_profile.html', context)
 
 
-def order_cancel(request,order_number):
+def order_cancel(request, order_number):
 
-    get_order = Order.objects.filter(user=request.user.id,order_number=order_number)
+    get_order = Order.objects.filter(
+        user=request.user.id, order_number=order_number)
     for order in get_order:
         order_id = order.id
     order_products = OrderProduct.objects.filter(order_id=order_id)
@@ -208,72 +180,70 @@ def order_cancel(request,order_number):
         order_cancel.status = "Cancelled"
         order_cancel.save()
 
-
-    messages.success(request,'order cancelled')
+    messages.success(request, 'order cancelled')
     return redirect('user_profile')
 
-def edit_profile(request,id):
-    print(id)
+
+def edit_profile(request, id):
+
     datas = UserAddress.objects.get(id=id)
-    print(datas)
     if request.method == "POST":
         datas.first_name = request.POST['first_name']
         datas.last_name = request.POST['last_name']
         datas.email = request.POST['email']
         datas.phone_number = request.POST['phone_number']
         datas.save()
-        messages.success(request,"profile updated successfully")
+        messages.success(request, "profile updated successfully")
         return redirect('user_profile')
     else:
         return redirect('user_profile')
-       
+
 
 @login_required(login_url='login')
 def change_password(request):
 
     if request.method == 'POST':
-      
+
         current_password = request.POST['current_password']
         new_password = request.POST['new_password']
         confirm_password = request.POST['confirm_password']
         user1 = User.objects.get(username__exact=request.user.username)
-        print(user1)
 
         if new_password == confirm_password:
             success = user1.check_password(current_password)
-            
+
             if success:
-           
                 user1.set_password(new_password)
                 user1.save()
-            
+
                 return JsonResponse({
-                    'msg':'success',
-                    'message':'password updated successfully'
+                    'msg': 'success',
+                    'message': 'password updated successfully'
                 })
             else:
-                
+
                 return JsonResponse({
-                    'msg':'invalid',
-                    'message':'please enter valid password'
+                    'msg': 'invalid',
+                    'message': 'please enter valid password'
                 })
         else:
-            
+
             return JsonResponse({
-                    'msg':'notmatch',
-                    'message':"password doesn't match"
-                })
+                'msg': 'notmatch',
+                'message': "password doesn't match"
+            })
 
     return redirect('user_profile')
 
-def order_details(request,order_number):
+
+def order_details(request, order_number):
     order = Order.objects.get(order_number=order_number)
     order_detail = OrderProduct.objects.filter(order_id=order.id).last()
     order_details = OrderProduct.objects.filter(order_id=order.id)
 
-    context={
-        'order' : order,
+    context = {
+        'order': order,
         'order_detail': order_detail,
-        'order_details':order_details,
+        'order_details': order_details,
     }
-    return render(request,'account/order_details.html',context)
+    return render(request, 'account/order_details.html', context)

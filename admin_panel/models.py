@@ -5,6 +5,11 @@ from django.dispatch import receiver
 from django.template.defaultfilters import slugify, truncatechars
 from django.urls import reverse
 
+import datetime
+
+
+
+
 # Create your models here.
 class Category(models.Model):
 
@@ -47,6 +52,22 @@ class Product(models.Model):
     def get_url(self):
         return reverse('productpage',args=[self.id])
 
+
+    def offer_status(self):
+        date_time = datetime.date.today()
+        today = date_time.strftime("%Y-%m-%d")
+        if Offers.objects.filter(product=self).exists():
+            all_offers = Offers.objects.get(product=self)
+            if today <= str(all_offers.enddate) :
+                
+                all_offers.product.is_offer_avail=True
+                all_offers.product.save()
+                return True
+            else:
+                all_offers.product.is_offer_avail=False
+                all_offers.product.save()
+                return False
+
     def __str__(self) :
         return self.product_slug
 
@@ -68,9 +89,7 @@ class Offers(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE,blank=False)
     dis_percentage = models.IntegerField(blank=False)
     is_avail = BooleanField(default=True,null=True)
-    startdate = models.DateField(blank=False)
     enddate = models .DateField(blank=False)
-
 
     def __str__(self):
         return self.offername

@@ -19,7 +19,7 @@
                       <h1 class="banner-title">More Fashion Styles</h1>
                       <span class="offer">The latest fashion trends online.</span>
                     </div>
-                    <a class="btn btn-color" href="shop.html">Shop Now!</a>
+                    <a class="btn btn-color" href="">Shop Now!</a>
                   </div>
                 </div>
               </div>
@@ -95,7 +95,7 @@
               <div class="sub-banner-detail">
                 <div class="sub-banner-subtitle">Fashion Shop</div>
                 <div class="sub-banner-title sub-banner-title-color">Couple's</div>
-                <a class="btn btn-color " href="shop.html">Shop Now!</a>
+                <a class="btn btn-color " href="">Shop Now!</a>
               </div>
             </div>
           </div>
@@ -144,19 +144,19 @@
                           <button type="submit" title="Add to Cart"><span></span>Add to Cart</button>
                         </form>
                       </li>
-                      <li class="buy-now">
+                      <!-- <li class="buy-now">
                         <form action="{% url 'add_cart' product.id %}">
                           <button type="submit" title="buy now">Buy Now</button> 
                         </form>
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                 </div>
               </div>
               <div class="product-item-details">
                 <div class="product-item-name"> <a href="">{{product.product_name}}</a> </div>
-                {% if product.is_offer_avail == True %}
-                <div class="price-box"><del >₹{{product.price}}</del><span class="price ml-2">₹{{product.offer_price}}</span></div>
+                {% if product.offer_status == True %}
+                <div class="price-box"><del >₹{{product.price}}  </del><span class="price ml-2">₹{{product.offer_price}}</span></div>
                 {% else %}
                 <div class="price-box"> <span class="price">₹{{product.price}}</span> </div>
                 {% endif %}
@@ -178,8 +178,8 @@
       <div class="row">
         <div class="col-xl-8 offset-xl-2 ptb-70 client-box">
           <div class="perellex-delail align-center">
-            <div class="perellex-offer"><span class="line-bottom">Up to 50% Off on Electronics</span></div>
-            <div class="perellex-title ">New computer models are releasing </div>
+            <div class="perellex-offer"><span class="line-bottom">Up to 50% Off on Dresses</span></div>
+            <div class="perellex-title ">New Models are releasing </div>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
               industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
               scrambled it to make a type specimen book.</p>

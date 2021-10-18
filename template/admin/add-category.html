@@ -1,79 +1,82 @@
 {% extends 'include/adminbase.html' %}
 {% block content %}
-		<div class="main-panel">
-			<div class="content">
-				<div class="panel-header bg-white shadow-sm">
-					<div class="page-inner  py-3 mb-5">
-						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
-							<div class="">
-								<div class="header d-sm-flex align-items-center  text-center"> 
-				                    <h1 class="page-header banner-title">Category</h1>
-									<ul class="breadcrumb justify-content-sm-start justify-content-center">
-									  	<li><a href="../index.html"></a></li>
-									  	<li><a href="{% url 'categorylist' %}">Category</a></li>
-									  	<li><a href="#">Add Category</a></li>
-									</ul> 			
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="page-inner">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="card">
-								<div class="card-header">
-									<div class="card-head-row justify-content-between">
-										<div class="card-title"><i class="fa fa-edit"></i> Add Category</div>
-									<form class="main-form full" method="POST" action="" enctype="multipart/form-data">
-
-										<div class="add-btn">
-										
-										<button class="btn btn-primary" href=""  data-toggle="tooltip" title="" data-original-title="Save"><i class="fa fa-save"> Save</i></button> 
-										</div> 
-									</div>
-								</div>
-								<div class="card-body">
-									<!-- <form class="main-form full" method="POST" action="" enctype="multipart/form-data"> -->
-										{% csrf_token %}
-				                      	<div class="row">
-				                        	<div class="col-12"> 
-				                          		<div class="input-box form-group required">
-				                            		<div class="row">
-				                              			<label for="p-name" class="col-md-3 control-label">Category Name</label>
-				                              			<div class="col-md-9">
-				                                			<input type="text" name="category_name" class="form-control" id="p-name" required placeholder="Category name">
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div>
-				                        
-				                        	<div class="col-12">
-				                          		<div class="input-box form-group">
-				                            		<div class="row">
-				                              			<label for="description" class="col-md-3 control-label">Description</label>
-				                              			<div class="col-md-9">
-				                                			<textarea id="summernote"  class="form-control" placeholder="Description" rows="10" cols="30" name="category_description"></textarea>
-				                              			</div>
-				                            		</div>
-				                          		</div>
-				                        	</div>
-				                      	</div>
-					                </form>
-								</div>
-							</div>
+<div class="main-panel">
+	<div class="content">
+		<div class="panel-header bg-white shadow-sm">
+			<div class="page-inner  py-3 mb-5">
+				<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+					<div class="">
+						<div class="header d-sm-flex align-items-center  text-center">
+							<h1 class="page-header banner-title">Category</h1>
+							<ul class="breadcrumb justify-content-sm-start justify-content-center">
+								<li><a href="../index.html"></a></li>
+								<li><a href="{% url 'categorylist' %}">Category</a></li>
+								<li><a href="#">Add Category</a></li>
+							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="page-inner">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<div class="card-head-row justify-content-between">
+								<div class="card-title"><i class="fa fa-edit"></i> Add Category</div>
+								<form class="main-form full" method="POST" action="" enctype="multipart/form-data">
+
+									<div class="add-btn">
+
+										<button class="btn btn-primary" href="" data-toggle="tooltip" title=""
+											data-original-title="Save"><i class="fa fa-save"> Save</i></button>
+									</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<!-- <form class="main-form full" method="POST" action="" enctype="multipart/form-data"> -->
+							{% csrf_token %}
+							<div class="row">
+								<div class="col-12">
+									<div class="input-box form-group required">
+										<div class="row">
+											<label for="p-name" class="col-md-3 control-label">Category Name</label>
+											<div class="col-md-9">
+												<input type="text" name="category_name" class="form-control" id="p-name"
+													required placeholder="Category name">
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-12">
+									<div class="input-box form-group">
+										<div class="row">
+											<label for="description" class="col-md-3 control-label">Description</label>
+											<div class="col-md-9">
+												<textarea id="summernote" class="form-control" placeholder="Description"
+													rows="10" cols="30" name="category_description"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- custom JS -->
 	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/custom.js"></script>
-	 <script>
-      $('#summernote').summernote({
-        placeholder: 'Description',
-        tabsize: 2,
-        height: 250
-      });
-    </script>
-{% endblock content%}
+	<script>
+		$('#summernote').summernote({
+			placeholder: 'Description',
+			tabsize: 2,
+			height: 250
+		});
+	</script>
+	{% endblock content%}

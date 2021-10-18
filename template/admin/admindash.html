@@ -5,22 +5,18 @@
     <!-- Bread Crumb Start -->
     <div class="panel-header bg-white shadow-sm">
       <div class="page-inner py-3 mb-5">
-        <div
-          class="
+        <div class="
             d-flex
             align-items-left align-items-md-center
             flex-column flex-md-row
-          "
-        >
+          ">
           <div class="">
             <div class="header d-sm-flex align-items-center text-center">
               <h1 class="page-header banner-title">Dashboard</h1>
-              <ul
-                class="
+              <ul class="
                   breadcrumb
                   justify-content-sm-start justify-content-center
-                "
-              >
+                ">
                 <li><a href="index.html"></a></li>
                 <li><a href="{% url 'admindash' %}">Dashboard</a></li>
               </ul>
@@ -93,9 +89,7 @@
                       <td>{{orders.order_number}}</td>
                       <td>{{orders.full_name}}</td>
                       <td>
-                        <span class="badge badge-success"
-                          >{{orders.status}}</span
-                        >
+                        <span class="badge badge-success">{{orders.status}}</span>
                       </td>
                       <td>{{orders.created_at}}</td>
                       <td>{{orders.order_total}}</td>
@@ -115,165 +109,165 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-          //setup for bar chart
-	   const databar2 = {
-      		 labels: {{allproduct|safe}},
-             datasets: [{
-                 label: 'Product avilability',
-                 data: {{stock|safe}},
-                 backgroundColor:   [
-                     'rgba(245, 40, 145, 0.8)',
-                     'rgba(63, 39, 245, 0.8)',
-                     'rgba(245, 183, 39, 0.8)',
-					 'rgba(245, 121, 118, 0.8)',
+      //setup for bar chart
+      const databar2 = {
+        labels: {{ allproduct| safe}},
+      datasets: [{
+        label: 'Product avilability',
+        data: {{ stock| safe}},
+        backgroundColor: [
+        'rgba(245, 40, 145, 0.8)',
+        'rgba(63, 39, 245, 0.8)',
+        'rgba(245, 183, 39, 0.8)',
+        'rgba(245, 121, 118, 0.8)',
 
-                 ],
-                 borderColor:['rgba(255, 99, 132, 1)',
-                     		'rgba(54, 162, 235, 1)'
-					],
-                 borderWidth: 1
+      ],
+        borderColor: ['rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)'
+      ],
+        borderWidth: 1
              }]
       	};
-	//config for barchart
-		const configbar2 = {
-			type: 'bar',
-			data: databar2 ,
-			options: {
-			}
-		};
-	//render inti block for barchart
+      //config for barchart
+      const configbar2 = {
+        type: 'bar',
+        data: databar2,
+        options: {
+        }
+      };
+      //render inti block for barchart
       const barchart2 = new Chart(
-      	 document.getElementById('barChart2'),
-      	 configbar2
+        document.getElementById('barChart2'),
+        configbar2
       );
-  //setup for bar chart
-	   const databar = {
-      		 labels: {{status|safe}},
-             datasets: [{
-                 label: 'Order details',
-                 data: {{totalcount|safe}},
-                 backgroundColor:  [
-				 	            'rgba(245, 40, 145, 0.8)',
-                     'rgba(63, 39, 245, 0.8)',
-                     'rgba(245, 183, 39, 0.8)',
-					          'rgba(245, 121, 118, 0.8)',
-					 ],
-                 borderColor:['rgba(255, 99, 132, 1)',
-                     'rgba(54, 162, 235, 1)',
-                     'rgba(255, 206, 86, 1)',
-					            'rgba(232, 106, 100, 1)',
-					],
-                 borderWidth: 1
+      //setup for bar chart
+      const databar = {
+        labels: {{ status| safe}},
+      datasets: [{
+        label: 'Order details',
+        data: {{ totalcount| safe}},
+        backgroundColor: [
+        'rgba(245, 40, 145, 0.8)',
+        'rgba(63, 39, 245, 0.8)',
+        'rgba(245, 183, 39, 0.8)',
+        'rgba(245, 121, 118, 0.8)',
+      ],
+        borderColor: ['rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(232, 106, 100, 1)',
+      ],
+        borderWidth: 1
              }]
       	};
-      	
+
       //config for barchart
       const configbar = {
-      	type: 'bar',
-      	data: databar ,
-      	options: {
-      	}
+        type: 'bar',
+        data: databar,
+        options: {
+        }
       };
 
       //render inti block for barchart
       const lineChart = new Chart(
-      	 document.getElementById('lineChart'),
-      	 configbar
+        document.getElementById('lineChart'),
+        configbar
       );
 
-  //setup for piechart
-      	const datapie = {
-      		 labels: ['False', 'True'],
-      		 //labels: {{users|safe}},
-             datasets: [{
+      //setup for piechart
+      const datapie = {
+        labels: ['False', 'True'],
+        //labels: {{users|safe}},
+        datasets: [{
 
-                 data: {{user_count|safe}},
-                 backgroundColor: [
-                     'rgba(245, 40, 145, 0.8)',
-                     'rgba(63, 39, 245, 0.8)',
-                     'rgba(245, 183, 39, 0.8)',
-					          'rgba(245, 121, 118, 0.8)',
+          data: {{ user_count| safe}},
+      backgroundColor: [
+        'rgba(245, 40, 145, 0.8)',
+        'rgba(63, 39, 245, 0.8)',
+        'rgba(245, 183, 39, 0.8)',
+        'rgba(245, 121, 118, 0.8)',
 
-                 ],
-                 borderColor: [
-                     'rgba(255, 99, 132, 1)',
-                     'rgba(54, 162, 235, 1)',
-                     'rgba(255, 206, 86, 1)',
-					 'rgba(232, 106, 100, 1)',
+      ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(232, 106, 100, 1)',
 
-                 ],
-                 borderWidth: 1
+        ],
+          borderWidth: 1
              }],
       	};
 
       //config for pieChart
       const configpie = {
-      	type: 'pie',
-      	data: datapie ,
-      	options: {
-      		responsive: true,
-      		plugins: {
-      		legend: {
-      			position: 'top',
-      		},
-      		title: {
-      			display: true,
-      			text: 'user details'
-      		}
-      		}
-      	}
+        type: 'pie',
+        data: datapie,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'user details'
+            }
+          }
+        }
       };
       //render inti block for pie chart
       const pieChart = new Chart(
-      	 document.getElementById('pieChart'),
-      	 configpie
+        document.getElementById('pieChart'),
+        configpie
       );
 
-	  //setup for doughnut
-	  const datadoughnut = {
-      		 labels: {{payment_method|safe}},
-             datasets: [{
-                 label: 'Payment ',
-                 data: {{payment_count|safe}},
-                 backgroundColor: [
-                    'rgba(245, 40, 145, 0.8)',
-                     'rgba(63, 39, 245, 0.8)',
-                     'rgba(245, 183, 39, 0.8)',
-					 'rgba(39, 245, 118, 0.8)',
+      //setup for doughnut
+      const datadoughnut = {
+        labels: {{ payment_method| safe}},
+      datasets: [{
+        label: 'Payment ',
+        data: {{ payment_count| safe}},
+        backgroundColor: [
+        'rgba(245, 40, 145, 0.8)',
+        'rgba(63, 39, 245, 0.8)',
+        'rgba(245, 183, 39, 0.8)',
+        'rgba(39, 245, 118, 0.8)',
 
 
-                 ],
-                 borderColor: [
-                     'rgba(255, 99, 132, 1)',
-                     'rgba(54, 162, 235, 1)',
-                     'rgba(255, 206, 86, 1)',
+      ],
+        borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
 
-                 ],
-                 borderWidth: 1
+      ],
+        borderWidth: 1
              }]
       	};
 
       //config for doughnutChart
-      const configdoughnut =  {
-      	type: 'doughnut',
-      	data: datadoughnut,
-      	options: {
-      		responsive: true,
-      		plugins: {
-      		legend: {
-      			position: 'top',
-      		},
-      		title: {
-      			display: true,
-      			text: 'Payment Details'
-      		}
-      		}
-      	},
-      	};
+      const configdoughnut = {
+        type: 'doughnut',
+        data: datadoughnut,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Payment Details'
+            }
+          }
+        },
+      };
       //render inti block for doughnutChart
       const doughnutChart = new Chart(
-      	 document.getElementById('doughnutChart'),
-      	 configdoughnut
+        document.getElementById('doughnutChart'),
+        configdoughnut
       );
     </script>
     {% endblock content %}

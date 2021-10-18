@@ -1,95 +1,94 @@
 {% extends 'include/base.html' %}
 {% load static %}
 {% block content %}
-  <!-- Bread Crumb STRAT -->
-  <div class="container mt-sm-15">
-    <div class="banner inner-banner1 ">
-      <section class="banner-detail center-xs">
-        <h1 class="banner-title">Register</h1>
-        <div class="bread-crumb right-side float-none-xs">
-          <ul>
-            <li><a href="{% url 'index' %}">Home</a>/</li>
-            <li><span>Register</span></li>
-          </ul>
-        </div>
-      </section>
-    </div>
+<!-- Bread Crumb STRAT -->
+<div class="container mt-sm-15">
+  <div class="banner inner-banner1 ">
+    <section class="banner-detail center-xs">
+      <h1 class="banner-title">Register</h1>
+      <div class="bread-crumb right-side float-none-xs">
+        <ul>
+          <li><a href="{% url 'index' %}">Home</a>/</li>
+          <li><span>Register</span></li>
+        </ul>
+      </div>
+    </section>
   </div>
-  <!-- Bread Crumb END --> 
+</div>
+<!-- Bread Crumb END -->
 
-  <!-- CONTAIN START -->
-  <section class="checkout-section ptb-70">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <div class="row justify-content-center">
-            <div class="col-xl-6 col-lg-8 col-md-8 ">
-              <form class="main-form full" action ="{%url 'register' %}" method = 'POST'>
-                {% csrf_token %}
-                <div class="row ">
-                  <div class="col-12 mb-20">
-                    <div class="heading-part heading-bg">
-                      <h2 class="heading">Create your account</h2>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="input-box">
-                      <label for="f-name">Username</label>
-                      <input type="text" id="f-name" name="username" placeholder="Username">
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="input-box">
-                      <label for="f-name">First Name</label>
-                      <input type="text" id="f-name" name="first_name"  placeholder="First Name">
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="input-box">
-                      <label for="l-name">Last Name</label>
-                      <input type="text" id="l-name" name="last_name" placeholder="Last Name">
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="input-box">
-                      <label for="login-email">Email address</label>
-                      <input id="login-email" type="email" name="email" placeholder="Email Address">
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="input-box">
-                      <label for="login-pass">Password</label>
-                      <input id="login-pass" type="password" name="password1"  placeholder="Enter your Password">
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="input-box">
-                      <label for="re-enter-pass">Re-enter Password</label>
-                      <input id="re-enter-pass" type="password"name="password2"  placeholder="Re-enter your Password">
-                    </div>
-                  </div>
-                  <div class="col-12 text-center">
-                    <button name="submit" type="submit" class="btn-color ">Submit</button>
-                  </div>
-                  
-                  <div class="ml-3" style="text-align:center; color : red ;"  >
-                    {% for message in messages %}
-                      <small>{{message}}</small>
-                    {% endfor %}
-                  </div>
-                  <div class="col-12">
-                    <hr>
-                    <div class="new-account align-center mt-20"> <span>Already have an account with us</span> <a class="link"  href="{%url 'login' %}">Login Here</a> </div>
+<!-- CONTAIN START -->
+<section class="checkout-section ptb-70">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="row justify-content-center">
+          <div class="col-xl-6 col-lg-8 col-md-8 ">
+            <form class="main-form full" action="{%url 'register' %}" method='POST'>
+              {% csrf_token %}
+              <div class="row ">
+                <div class="col-12 mb-20">
+                  <div class="heading-part heading-bg">
+                    <h2 class="heading">Create your account</h2>
                   </div>
                 </div>
-              </form>
-            </div>
+                <div class="col-12">
+                  <div class="input-box">
+                    <label for="f-name">Username</label>
+                    <input type="text" id="f-name" name="username" placeholder="Username">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="input-box">
+                    <label for="f-name">First Name</label>
+                    <input type="text" id="f-name" name="first_name" placeholder="First Name">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="input-box">
+                    <label for="l-name">Last Name</label>
+                    <input type="text" id="l-name" name="last_name" placeholder="Last Name">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="input-box">
+                    <label for="login-email">Email address</label>
+                    <input id="login-email" type="email" name="email" placeholder="Email Address">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="input-box">
+                    <label for="login-pass">Password</label>
+                    <input id="login-pass" type="password" name="password1" placeholder="Enter your Password">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="input-box">
+                    <label for="re-enter-pass">Re-enter Password</label>
+                    <input id="re-enter-pass" type="password" name="password2" placeholder="Re-enter your Password">
+                  </div>
+                </div>
+                <div class="col-12 text-center">
+                  <button name="submit" type="submit" class="btn-color ">Submit</button>
+                </div>
+
+                <div class="ml-3" style="text-align:center; color : red ;">
+                  {% for message in messages %}
+                  <small>{{message}}</small>
+                  {% endfor %}
+                </div>
+                <div class="col-12">
+                  <hr>
+                  <div class="new-account align-center mt-20"> <span>Already have an account with us</span> <a
+                      class="link" href="{%url 'login' %}">Login Here</a> </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </section>
-<!-- CONTAINER END --> 
+  </div>
+</section>
+<!-- CONTAINER END -->
 {% endblock content %}
-
- 

@@ -273,8 +273,8 @@ button:not(:disabled),
 [type="button"]:not(:disabled),
 [type="reset"]:not(:disabled),
 [type="submit"]:not(:disabled) {
-  background-color: red;
   cursor: pointer;
+  background-color: #397cc0b3;
 }
 
 button::-moz-focus-inner,
@@ -8303,10 +8303,10 @@ button.bg-dark:focus {
   margin-bottom: 3rem !important;
 }
 
-.ml-5,
+/*.ml-5,
 .mx-5 {
   margin-left: 3rem !important;
-}
+}*/
 
 .p-0 {
   padding: 0 !important;

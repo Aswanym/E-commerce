@@ -43,58 +43,98 @@
           </ul>
           <hr>
         </div>
-        <div class="row" >
-        {% include  'include/alerts.html' %}
-        <div class="col-8 pt-4">
-          <div class="cart-total-table address-box commun-table mb-30">
-            <div class="table">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Shipping Address</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <ul>
-                      <form action="{% url 'place_order' %}" method="POST">
-                      {% csrf_token %}
-                        <p style="font-weight: bold;"> Saved Address </p>
-                        
-                        {% for address in useraddress %}
-                      <div class="custom-control custom-radio mt-3">
+        <div class="row">
+          {% include 'include/alerts.html' %}
+          <div class="col-8 pt-4">
+            <div class="cart-total-table address-box commun-table mb-30">
+              <div class="table">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Shipping Address</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <ul>
+                          <form action="{% url 'place_order' address_count %}" method="POST">
+                            {% csrf_token %}
+                            {% if address_count == 0 %}
+                            <p style="font-weight: bold;"> Add Address here</p>
+                            {% else %}
+                            <p style="font-weight: bold;"> Saved Address </p>
+                            {% endif %}
 
-                         <input type="radio"   name="address-id" value="{{address.id}}">
-                      
-                        <label id="{{address.id}}"  style="font-weight: bold;" >{{address.first_name}}</label>
-                        
-                        <li><p>{{address.first_address}}</p><p>{{address.second_address}}</p></li>
-                        <li><p>{{address.city}}, {{address.state}},{{address.pin}}</p><p>{{address.country}}</p></li>
-                      </div>
-                      
-                      {% endfor%}
-                      </ul>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="row">
-              <div class="col-md-6 align-left p-3">
-                  <button type="submit" class="btn btn-color ">Continue</button>
+                            {% for address in useraddress %}
+                            <div class="row" id="hide_address">
+                              <div class=" col-md-8 custom-control custom-radio mt-3">
+
+                                <input type="radio" name="address-id" value="{{address.id}}">
+
+                                <label id="{{address.id}}" style="font-weight: bold;">{{address.first_name}}</label>
+
+                                <li>
+                                  <p>{{address.first_address}}</p>
+                                  <p>{{address.second_address}}</p>
+                                </li>
+                                <li>
+                                  <p>{{address.city}}, {{address.state}},{{address.pin}}</p>
+                                  <p>{{address.country}}</p>
+                                </li>
+                              </div>
+                              <div class="col-md-4 ml-5">
+                                <button onclick="delete_address('{{address.id}}')"><i class="fa fa-trash fa-lg"></i>
+                                </button>
+                              </div>
+
+                            </div>
+                            {% endfor%}
+                        </ul>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row">
+                  <div class="col-md-6 align-left p-3">
+                    <button type="submit" class="btn btn-color ">Continue</button>
+                  </div>
+                  <div class="col-md-6 align-right p-3">
+                    <a href="{% url 'add_address' %}" class="btn btn-color ">Add Address</a>
+                  </div>
+                </div>
+                </form>
               </div>
-              <div class="col-md-6 align-right p-3">
-                  <a href="{% url 'add_address' %}" class="btn btn-color ">Add Address</a>
-              </div>
-              </div>
-              </form>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   </div>
 </section>
 <!-- CONTAINER END -->
+<script>
+  function delete_address(id) {
+    var addressid = id;
+    if (confirm('are you sure?')) {
+
+      $.ajax({
+
+        type: "GET",
+        url: '{% url 'delete_useraddress' %}',
+        data: { addressid: addressid },
+        dataType: 'json',
+        success: function (data) {
+          alert('Address deleted successfully')
+          window.reload()
+        },
+        error: function () {
+          alert('something went wrong')
+        }
+      });
+    }
+  }
+
+
+</script>
 {% endblock %}
