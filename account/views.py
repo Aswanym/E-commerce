@@ -146,7 +146,7 @@ def user_profile(request):
     user1 = User.objects.get(id=request.user.id)
 
     order_list = Order.objects.filter(
-        user=request.user, is_ordered=True).order_by('created_at')
+        user=request.user, is_ordered=True).order_by('-created_at')
     order_count = order_list.count()
     if UserAddress.objects.filter(user_id=user1.id).exists():
         user_details = UserAddress.objects.filter(user_id=user1.id).last()

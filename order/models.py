@@ -51,6 +51,8 @@ class Order(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
+
+        
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
 
@@ -74,6 +76,9 @@ class OrderProduct(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     user_cancelled=models.CharField(default=False,max_length=20,null=True)
     
+
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.product.product_name

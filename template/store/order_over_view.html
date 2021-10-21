@@ -122,7 +122,7 @@
                         </td>
                         {% endif %}
                       </tr>
-                      {% endfor %}
+                    
                     </tbody>
                   </table>
                 </div>
@@ -139,9 +139,30 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Item(s) Subtotal</td>
+                            <td>Item(s) Subtotal</td>  
                             <td>
-                              <div class="price-box"> <span class="price">₹{{total}} </span> </div>
+                              <div class="price-box"> <span class="price">₹{{cart_item.sub_total}} </span> </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>discount percentage</td>                         
+                            <td>
+                              <div class="price-box"> <span class="price">{{cart_item.product.offer_per}}%</span></div>
+                            </td>
+                          
+                          </tr>
+                          <tr>
+                            <td>Saved</td>                         
+                            <td>
+                              <div class="price-box"> <span class="price"> {{cart_item.product.savings}}</span></div>
+                            </td>
+                           
+                          </tr>
+                          {% endfor %}
+                          <tr>
+                            <td>offer price</td>
+                            <td>
+                              <div class="price-box"> <span class="price">₹{{total}} </span></div>
                             </td>
                           </tr>
                           <tr>

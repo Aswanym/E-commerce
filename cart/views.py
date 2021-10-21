@@ -6,8 +6,10 @@ from django.contrib import messages
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User, auth
-from admin_panel.models import Product
-from order.models import Order
+from admin_panel.models import Product,Offers
+from order.models import Order, OrderProduct
+
+
 from .models import Cart, CartItem, UserAddress
 import datetime
 
@@ -240,6 +242,8 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
         else:
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
+    
+
 
     tax  = int ( (2 * total)/100 )
     total_with_tax = total + tax
@@ -250,8 +254,11 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
         shipping = 80
     grand_total = total_with_tax + shipping
     razorpay_amount=grand_total*100
+
+
     if Order.objects.filter(user=request.user,is_ordered=False):
         order1 = Order.objects.get(user=request.user,is_ordered=False)
+
     else:
         useraddress =UserAddress.objects.filter(user=request.user).last()
         order1 = Order()
@@ -280,6 +287,8 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
         order_number    = current_date+str(order1.id)
         order1.order_number = order_number
         order1.save()
+
+    
         
     context = {
         'total': total,
@@ -290,6 +299,7 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
         'tax': tax,
         'order1' : order1,
         'razorpay_amount':razorpay_amount,
-        'useraddress' : useraddress,   
+        'useraddress' : useraddress,  
+        
     }
     return render(request,'store/order_over_view.html',context)

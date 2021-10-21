@@ -68,6 +68,19 @@ class Product(models.Model):
                 all_offers.product.save()
                 return False
 
+    def offer_per(self):
+        if Offers.objects.filter(product=self).exists():
+            all_offers = Offers.objects.get(product=self)
+            return all_offers.dis_percentage
+
+    def savings(self):
+        if Offers.objects.filter(product=self).exists():
+           # all_offers = Offers.objects.get(product=self)
+            save = self.price - self.offer_price
+            print(save)
+            return save
+
+
     def __str__(self) :
         return self.product_slug
 
@@ -90,6 +103,8 @@ class Offers(models.Model):
     dis_percentage = models.IntegerField(blank=False)
     is_avail = BooleanField(default=True,null=True)
     enddate = models .DateField(blank=False)
+
+    
 
     def __str__(self):
         return self.offername

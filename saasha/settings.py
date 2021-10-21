@@ -82,6 +82,20 @@ WSGI_APPLICATION = 'saasha.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3.db'),
+#     }
+# }
+
+# import dj_database_url 
+# DATABASES = {
+#     'default' : dj_database_url.config(default= 'postgres://hciuqczomaltfc:30014d95965a171142cfa42fc01954a530a20da702f912ae9fc146f79a92fdf9@ec2-52-70-107-254.compute-1.amazonaws.com:5432/d4olb67i4tmfgt',
+#     conn_max_age=600, ssl_require=True)
+#     }
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -137,6 +151,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 

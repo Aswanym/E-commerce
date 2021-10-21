@@ -56,8 +56,8 @@
                                             <td>{{order_list.payment.payment_method}}</td>
                                             <td><span class="badge badge-danger">{{order_list.order.status}}</span></td>
                                             <td>{{order_list.created_at}}</td>
-                                            <td>₹{{order_list.product_price}}</td>
-                                            {% if order_list.status != 'Cancelled' %}
+                                            <td>₹{{order_list.payment.amount_paid}}</td>
+                                            {% if order_list.order.status != "Cancelled" %}
                                             <td>
                                                 <select class="form-control mySelect selectOption" id="optionselected"
                                                     data-id={{order_list.order.order_number}}>
