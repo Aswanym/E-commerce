@@ -13,6 +13,13 @@ from order.models import Order, OrderProduct
 from .models import Cart, CartItem, UserAddress
 import datetime
 
+# import the logging library
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
+
 # Create your views here.
 
 '''   
@@ -32,7 +39,8 @@ def add_cart(request, product_id):
     if current_user.is_authenticated: # if user already has an account
         try:
             # CartItem.objects.filter(product=product, user=current_user).exists() #check if product and user exist
-            cart_item = CartItem.objects.get(product=product, user=current_user) 
+            cart_item = CartItem.objects.get(product=product,user=current_user) 
+
             cart_item.quantity += 1
             cart_item.save()
         except :
@@ -66,7 +74,7 @@ def add_cart(request, product_id):
                 cart=cart,
             )
             cart_item.save()
-    return redirect('/')
+    return redirect('cart')
 
 
 def minus_cart(request, product_id):
@@ -92,39 +100,60 @@ def minus_cart(request, product_id):
 def cart(request, total=0, quantity=0, cart_items=None):
     shipping = 0
     grand_total = 0
-    if request.user.is_authenticated:
-        cart_items = CartItem.objects.filter(user=request.user)
-    
-    else:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+    try:
+        if request.user.is_authenticated:
+            cart_items = CartItem.objects.filter(user=request.user)
         
-    for cart_item in cart_items:
-        if cart_item.product.is_offer_avail == True:
-                total += (cart_item.product.offer_price * cart_item.quantity)
-                quantity += cart_item.quantity
         else:
-            total += (cart_item.product.price * cart_item.quantity)
-            quantity += cart_item.quantity
+        
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+            
+        for cart_item in cart_items:
+            if cart_item.product.is_offer_avail == True:
+                    total += (cart_item.product.offer_price * cart_item.quantity)
+                    quantity += cart_item.quantity
+            elif cart_item.product.category_offer_avail == True:
+                total += (cart_item.product.category_offer_price * cart_item.quantity)
+                quantity += cart_item.quantity
+            else:
+                total += (cart_item.product.price * cart_item.quantity)
+                quantity += cart_item.quantity
 
-    tax  = int ( (2 * total)/100 )
-    total_with_tax = total + tax
+        tax  = int ( (2 * total)/100 )
+        total_with_tax = total + tax
 
-    if total_with_tax >= 1200:
-        shipping = 0
-    else:
-        shipping = 80
-    grand_total = total_with_tax + shipping
+        if total_with_tax >= 1200:
+            shipping = 0
+        else:
+            shipping = 80
+        grand_total = total_with_tax + shipping
 
-    context = {
-        'total': total,
-        'quantity': quantity,
-        'cart_items': cart_items,
-        'shipping': shipping,
-        'tax':tax,
-        'grand_total': grand_total,
-    }
+        context = {
+            'total': total,
+            'quantity': quantity,
+            'cart_items': cart_items,
+            'shipping': shipping,
+            'tax':tax,
+            'grand_total': grand_total,
+        }
+    except ObjectDoesNotExist:
+        total=0
+        grand_total=0
+        tax=0
+        quantity=0
+        shipping=0
+        cart_items=0
 
+        context = {
+            'total': total,
+            'grand_total':grand_total,
+            'tax': tax,
+            'shipping': shipping,
+            'quantity': quantity,
+            'cart_items': cart_items,
+        
+        }
     return render(request, 'account/cart.html', context)
 
 
@@ -188,8 +217,6 @@ def checkout(request):
                 user_id =request.user.id
                 )
             user_address.save()
-            if address_count > 0 :
-                return redirect('order_overview',address_count)
             
             messages.info(request,"select address and proceed.")
             return redirect('checkout')
@@ -211,14 +238,10 @@ def add_address(request):
     return render(request,'store/address_page.html')
 
 def delete_useraddress(request):
-
     if request.method == "GET":
-        print('inside get')
         useraddress_id=request.GET.get('addressid')
         delete_address = UserAddress.objects.get(id=useraddress_id)
-        print('inside yuihnjk')
         delete_address.delete()
-        print('inside fyguekj')
         return JsonResponse({'msg':'delete success'})
     return JsonResponse({'msg':'message couldnot delete'})
 
@@ -239,12 +262,15 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
         if cart_item.product.is_offer_avail:
             total += (cart_item.product.offer_price * cart_item.quantity)
             quantity += cart_item.quantity
+
+        elif cart_item.product.category_offer_avail:
+            total += (cart_item.product.category_offer_price * cart_item.quantity)
+            quantity += cart_item.quantity
+            
         else:
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
     
-
-
     tax  = int ( (2 * total)/100 )
     total_with_tax = total + tax
 

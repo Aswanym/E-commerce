@@ -1,0 +1,142 @@
+{% extends 'include/adminbase.html' %} 
+{% block content %}
+
+<div class="main-panel ">
+			<div class="content">
+				<div class="panel-header bg-white shadow-sm">
+					<div class="page-inner  py-3 mb-5">
+						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div class="">
+								<div class="header d-sm-flex align-items-center  text-center"> 
+				                    <h1 class="page-header banner-title">Create Coupon</h1>
+									<ul class="breadcrumb justify-content-sm-start justify-content-center">
+									  	
+									  	<li><a href="#">Offers</a></li>
+									  	<li><a href="#">Create Coupon</a></li>
+									</ul> 			
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="page-inner">
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-head-row">
+										<div class="card-title"><i class="fa fa-tag"></i> Discount Coupon Details</div>
+									</div>
+								</div>
+                                <div class="row">
+                                    <div class="col-md-5 card-body">
+                                        <ul class="nav nav-pills " id="pills-tab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="general-tab" data-toggle="tab" href="" role="tab" aria-controls="general" aria-selected="true">Create Offer</a>
+                                            </li>
+                                        </ul>
+                                        {% include  'include/alerts.html' %}
+                                        <div class="tab-content mt-2 mb-3" id="pills-tabContent">
+                                            <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+
+                                                <form class="main-form full" action="{% url 'addcoupon' %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="input-box form-group">
+                                                                <div class="row">
+                                                                    <label for="products-name" class="col-md-3 control-label">Coupon Name</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" name="couponname" class="form-control" id="products-name"  placeholder="Coupon Name" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="input-box form-group">
+                                                                <div class="row">
+                                                                    <label for="minimum-spend" class="col-md-3 control-label">Discount</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" name="discountprice" class="form-control" id="minimum-spend" placeholder="Discount" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="input-box form-group">
+                                                                <div class="row">
+                                                                    <label for="end-date" class="col-md-3 control-label">End date</label>
+                                                                    <div class="col-md-9">
+                                                                        <div class="input-group">
+                                                                            <input type="date" name="enddate" placeholder="End date" class="form-control" id="End date" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="input-box form-group">
+                                                            <div class="row">
+                                                                    <label for="end-date" class="col-md-3 control-label">Max limit</label>
+                                                                    <div class="col-md-9">
+                                                                        <div class="input-group">
+                                                                        <input type="text" name="limit" placeholder="Limit" class="form-control" id="maxlimit" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                    </div>
+                                                        <div class="col-12 text-right mt-4">
+                                                            <button class="btn btn-primary btn-round">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                    
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-7 mt-5 py-2 card-body">
+                                        <div class="table-responsive dataTables_scroll">
+                                            <table id="basic-datatables" class="display table table-hover table-fixed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Coupon</th>
+                                                        <th>Discount</th>
+                                                        <th>End Date</th>
+                                                        <th>Max limit</th>
+                                                        <th>Status</th>
+                                                        <th class="text-right">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for categoryoffer in categoryoffer %}
+                                                    <tr id="delete_offer">
+                                                        <td>{{categoryoffer.offername}}</td>
+                                                        <td>{{categoryoffer.category.category_name}}</td>
+                                                        <td>{{categoryoffer.dis_percentage}}%</td>
+                                                        <td>{{categoryoffer.enddate}}</td>
+                                                        <td style="color: green;" >Active</td>
+                                                        <td class="text-right">
+                                                            <div class="form-button-action">
+                                                                <button data-toggle="tooltip"
+                                                                    onclick="delete_product('{{categoryoffer.id}}')"
+                                                                    class="btn btn-link btn-danger offerdelete"
+                                                                    data-original-title="Remove">
+                                                                    <i class="fa fa-times"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+{% endblock %}

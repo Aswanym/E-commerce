@@ -35,4 +35,10 @@ urlpatterns = [
    path('productofferlist',views.productofferlist,name='productofferlist'),
    path('delete_product_offer',views.delete_product_offer,name='delete_product_offer'),
 
+   path('categoryoffer',views.category_offer,name='categoryoffer'),
+   path('categoryofferlist',views.categoryofferlist,name='categoryofferlist'),
+   path('deletecategoryoffer',views.delete_category_offer,name='deletecategoryoffer'),
+
+   path('addcoupon',views.add_coupon,name='addcoupon'),
+
 ]

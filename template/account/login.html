@@ -35,8 +35,8 @@
                 <div class="col-12">
                   <div class="input-box">
                     <label for="login-email">Username</label>
-                    <input id="login-username" name="username" type="text" placeholder="Username">
-                    <span id="nameError"></span>
+                    <input id="inputName" onkeyup="nameValidation()" name="username" type="text" placeholder="Username">
+                    <div><small style="color: red;" id="nameMessage"></small></div>
                   </div>
                 </div>
                 <div class="col-12">
@@ -67,5 +67,28 @@
   </div>
 </section>
 <!-- CONTAINER END -->
+<script>
+  function nameValidation(){
+   console.log("entered inside function")
+   var check1 = /^[-a-zA-Z-()]+(\s+[-a-zA-Z-()]+)*$/;
+   var regex = /^[0-9]*\d$/;
+   var name1 = document.getElementById("inputName").value
+   
+   if(name1==""){
+       
+       document.getElementById("nameMessage").innerHTML= "This field is required!";
+       return false;
+   }else if(check1.test(name1)){
+       document.getElementById("nameMessage").innerHTML ="";
+       return true;
+   }else if(regex.test(name1)){
+           document.getElementById("nameMessage").innerHTML ="Enter characters.";
+           return false;
+   }else{
+       document.getElementById("nameMessage").innerHTML = "Enter valid name."
+   }
+}
+</script>
 {% endblock content %}
-<script src="{% static 'js/myScript.js' %}"></script>
+
+

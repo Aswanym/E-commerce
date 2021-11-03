@@ -54,7 +54,7 @@
             </div>
             <div class="row justify-content-center">
               <div class="col-xl-6 col-lg-8 col-md-8">
-                <form action="{% url 'checkout' %}" method="POST" class="main-form full">
+                <form id="checkid" action="{% url 'checkout' %}" method="POST" class="main-form full">
                   {% csrf_token %}
                   <div class="row mb-20">
                     <div class="col-12 mb-20">
@@ -65,27 +65,32 @@
                     </div>
                     <div class="col-md-6">
                       <div class="input-box">
-                        <input type="text" required placeholder="First Name" name=first_name>
+                        <input type="text" id="firstname" onkeyup="firstnameValidation()" placeholder="First Name" name=first_name>
+                        <div><small style="color: red;" id="fnameMessage" ></small>  </div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="input-box">
-                        <input type="text" required placeholder="Last Name" name=last_name>
+                        <input type="text" id="lastname" onkeyup="lastnameValidation()"  placeholder="Last Name" name=last_name>
+                        <div><small style="color: red;" id="lnameMessage" ></small>  </div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="input-box">
-                        <input type="email" required placeholder="Email Address" name=email>
+                        <input type="email" id="InputEmail" onkeyup="emailValidation()"  placeholder="Email Address" name=email>
+                        <div><small style="color: red;" id="emailMessage" ></small>  </div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="input-box">
-                        <input type="text" required placeholder="Contact Number" name=phone_number>
+                        <input type="text" id="inputphone" onkeyup="numberValidation()" maxlength="10" placeholder="Contact Number" name=phone_number>
+                        <div><small style="color: red;" id="numberMessage" ></small>  </div>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="input-box">
-                        <input type="text" required placeholder="Address line 1" name=address1>
+                        <input type="text" id="inputaddress" onkeyup="addressValidation()" placeholder="Address line 1" name=address1>
+                        <div><small style="color: red;" id="addressMessage" ></small>  </div>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -119,12 +124,13 @@
 
                     <div class="col-md-6">
                       <div class="input-box">
-                        <input type="text" required placeholder="Select City" name=city>
+                        <input type="text" placeholder="City" name=city>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="input-box">
-                        <input type="text" required placeholder="Postcode/zip" name=pin>
+                        <input type="text" maxlength="6" id="zipcode" onkeyup="pincodeValidation()" placeholder="Postcode/zip" name=pin >
+                        <div><small style="color: red;" id="zipMessage" ></small></div>
                       </div>
                     </div>
                   </div>
@@ -147,11 +153,142 @@
                     </div>
                   </div>
                   <div class="col-md-12 align-center p-3">
-                    <button type="submit" class="btn btn-color ">Add Address</button>
+                    <button onclick="check()"  type="button" class="btn btn-color ">Add Address</button>
                   </div>
               </div>
               </form>
             </div>
           </div>
         </div>
-        {% endblock %}
+    <script>
+    function firstnameValidation(){
+        
+        var check1 = /^[-a-zA-Z-()]+(\s+[-a-zA-Z-()]+)*$/;
+        var regex = /^[0-9]*\d$/;
+        var name1 = document.getElementById("firstname").value
+        if(name1==""){
+            
+            document.getElementById("fnameMessage").innerHTML= "This field is required!";
+            return false;
+        }else if(check1.test(name1)){
+            document.getElementById("fnameMessage").innerHTML ="";
+            return true;
+        }else if(regex.test(name1)){
+                document.getElementById("fnameMessage").innerHTML ="Enter characters.";
+                return false;
+        }else{
+            document.getElementById("fnameMessage").innerHTML = "Enter valid name."
+        }
+    }
+    
+    function lastnameValidation(){
+        
+        var check1 = /^[-a-zA-Z-()]+(\s+[-a-zA-Z-()]+)*$/;
+        var regex = /^[0-9]*\d$/;
+        var name1 = document.getElementById("lastname").value
+        if(name1==""){
+            
+            document.getElementById("lnameMessage").innerHTML= "This field is required!";
+            return false;
+        }else if(check1.test(name1)){
+            document.getElementById("lnameMessage").innerHTML ="";
+            return true;
+        }else if(regex.test(name1)){
+                document.getElementById("lnameMessage").innerHTML ="Enter characters.";
+                return false;
+        }else{
+            document.getElementById("lnameMessage").innerHTML = "Not valid."
+        }
+    }
+    
+    function emailValidation(){
+        var pattern = /^[^]+@[^]+\.[a-z]{2,3}$/; 
+        var email1 = document.getElementById("InputEmail").value
+        if(email1==""){
+            document.getElementById("emailMessage").innerHTML= "This field is required!";
+            return false;
+        }else if(email1.match(pattern)){
+            document.getElementById("emailMessage").innerHTML ="";
+            return true;
+        }else{
+            document.getElementById("emailMessage").innerHTML ="Enter a valid email";
+            return false;
+        }
+    }
+
+    function addressValidation(){
+      var addresspattern = /^[a-zA-Z0-9\s,.'-]{3,}$/ 
+      var address = document.getElementById("inputaddress").value
+      if(address==""){
+            document.getElementById("addressMessage").innerHTML= "This field is required!";
+            return false;
+        }else if (address.match(addresspattern)){
+          document.getElementById("addressMessage").innerHTML= "";
+          return true;
+        }
+
+    }
+    function pincodeValidation(){
+      var val = /^[1-9][0-9]{5}$/
+
+      var zip = document.getElementById("zipcode").value;
+      if(isNaN(zip) ){
+        document.getElementById("zipMessage").innerHTML = "Not valid pincode."
+        return false;
+    }
+    else if(zip==""){
+        document.getElementById("zipMessage").innerHTML = "This feild is required!"
+        return false;
+    }else if(zip.match(val)){
+        document.getElementById("zipMessage").innerHTML = ""
+        return true
+    }
+
+  }
+
+    function numberValidation(){
+    var val = /^[6789]\d{9}$/
+    var charct =  /^[a-zA-Z ]*$/
+    
+    var number1 = document.getElementById("inputphone").value;
+    if(isNaN(number1) ){
+        document.getElementById("numberMessage").innerHTML = "Not valid number."
+        return false;
+
+    }
+    else if(number1==""){
+        document.getElementById("numberMessage").innerHTML = "This feild is required!"
+        return false;
+    }else if(number1.match(val)){
+        document.getElementById("numberMessage").innerHTML = ""
+        return true
+    }else{
+         
+       if(number1.length<10){
+            document.getElementById("numberMessage").innerHTML = "Enter minimum 10 digits."
+            return false
+        }
+        else{
+            document.getElementById("numberMessage").innerHTML = ""
+            return true
+        }
+    }
+}
+function check(){
+
+  if (firstnameValidation() && lastnameValidation() && emailValidation() && addressValidation() && pincodeValidation() && numberValidation()){
+    document.getElementById('checkid').submit()
+      
+  }else{
+
+    firstnameValidation();
+    lastnameValidation();
+    emailValidation();
+    addressValidation();
+    pincodeValidation();
+    numberValidation()
+  } 
+
+}
+</script>
+{% endblock %}

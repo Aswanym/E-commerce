@@ -26,7 +26,7 @@ def place_order(request,count, total=0, quantity=0):
 
         cart_items = CartItem.objects.filter(user=request.user)
         cart_count = cart_items.count()
-        if cart_count <=0 :
+        if cart_count <= 0:
             return redirect('cart')
 
 
@@ -100,8 +100,13 @@ def payment(request,order_number,total=0,quantity=0):
     
     for cart_item in cart_items:
         if cart_item.product.is_offer_avail == True:
-                total += (cart_item.product.offer_price * cart_item.quantity)
-                quantity += cart_item.quantity
+            total += (cart_item.product.offer_price * cart_item.quantity)
+            quantity += cart_item.quantity
+
+        elif cart_item.product.category_offer_avail == True:
+            total += (cart_item.product.category_offer_price * cart_item.quantity)
+            quantity += cart_item.quantity
+            
         else:
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
@@ -214,6 +219,11 @@ def razorpay(request,order_number,total=0,quantity=0):
         if cart_item.product.is_offer_avail == True:
                 total += (cart_item.product.offer_price * cart_item.quantity)
                 quantity += cart_item.quantity
+
+        elif cart_item.product.category_offer_avail == True:
+                total += (cart_item.product.category_offer_price * cart_item.quantity)
+                quantity += cart_item.quantity
+
         else:
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
@@ -267,7 +277,10 @@ def razorpay(request,order_number,total=0,quantity=0):
     return redirect('order_complete',order_number)
 
 def order_complete(request,order_number):
-
+    offer_total = 0
+    orginal_price = 0
+    savings = 0
+    total = 0
     order_confirms = Order.objects.get(user=request.user,order_number=order_number)
 
     order_product = OrderProduct.objects.filter(user=request.user,order_id=order_confirms.id)
@@ -276,10 +289,17 @@ def order_complete(request,order_number):
             orginal_price = order.quantity * order.product.price
             offer_total = order.quantity * order.product.offer_price
             savings = orginal_price - offer_total
+
+        elif order.product.category_offer_avail == True:
+            orginal_price = order.quantity * order.product.price
+            offer_total = order.quantity * order.product.category_offer_price
+            savings = orginal_price - offer_total
+        
         else:
             total = order.quantity * order.product.price
 
     context={
+        'total':total,
         'order_confirms': order_confirms,
         'order_product': order_product,
         'offer_total':offer_total,

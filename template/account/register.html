@@ -35,25 +35,29 @@
                 <div class="col-12">
                   <div class="input-box">
                     <label for="f-name">Username</label>
-                    <input type="text" id="f-name" name="username" placeholder="Username">
+                    <input id="inputName" onkeyup="usernameValidation()" type="text" name="username" placeholder="Username">
+                    <div><small style="color: red;" id="nameMessage" ></small>  </div>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="input-box">
                     <label for="f-name">First Name</label>
-                    <input type="text" id="f-name" name="first_name" placeholder="First Name">
+                    <input type="text"  id="firstname" onkeyup="firstnameValidation()" name="first_name" placeholder="First Name">
+                    <div><small style="color: red;" id="fnameMessage" ></small>  </div>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="input-box">
                     <label for="l-name">Last Name</label>
-                    <input type="text" id="l-name" name="last_name" placeholder="Last Name">
+                    <input type="text" id="lastname" name="last_name"  onkeyup="lastnameValidation()" placeholder="Last Name">
+                    <div><small style="color: red;" id="lnameMessage"></small>  </div>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="input-box">
                     <label for="login-email">Email address</label>
-                    <input id="login-email" type="email" name="email" placeholder="Email Address">
+                    <input id="InputEmail" onkeyup="emailValidation()" type="email" name="email" placeholder="Email Address">
+                    <div><small style="color: red;" id="emailMessage"></small>  </div>
                   </div>
                 </div>
                 <div class="col-12">
@@ -91,4 +95,83 @@
   </div>
 </section>
 <!-- CONTAINER END -->
+
+<script>
+  function usernameValidation(){
+   
+   var check1 = /^[-a-zA-Z-()]+(\s+[-a-zA-Z-()]+)*$/;
+   var regex = /^[0-9]*\d$/;
+   var name1 = document.getElementById("inputName").value
+   console.log('inside fun')
+   if(name1==""){
+       
+       document.getElementById("nameMessage").innerHTML= "This field is required!";
+       return false;
+   }else if(check1.test(name1)){
+       document.getElementById("nameMessage").innerHTML ="";
+       return true;
+   }else if(regex.test(name1)){
+           document.getElementById("nameMessage").innerHTML ="Enter characters.";
+           return false;
+   }else{
+       document.getElementById("nameMessage").innerHTML = "Enter valid name."
+   }
+}
+function firstnameValidation(){
+   
+   var check1 = /^[-a-zA-Z-()]+(\s+[-a-zA-Z-()]+)*$/;
+   var regex = /^[0-9]*\d$/;
+   var name1 = document.getElementById("firstname").value
+   console.log('inside fun')
+   if(name1==""){
+       
+       document.getElementById("fnameMessage").innerHTML= "This field is required!";
+       return false;
+   }else if(check1.test(name1)){
+       document.getElementById("fnameMessage").innerHTML ="";
+       return true;
+   }else if(regex.test(name1)){
+           document.getElementById("fnameMessage").innerHTML ="Enter characters.";
+           return false;
+   }else{
+       document.getElementById("fnameMessage").innerHTML = "Enter valid name."
+   }
+}
+
+function lastnameValidation(){
+   
+   var check1 = /^[-a-zA-Z-()]+(\s+[-a-zA-Z-()]+)*$/;
+   var regex = /^[0-9]*\d$/;
+   var name1 = document.getElementById("lastname").value
+   console.log('inside fun')
+   if(name1==""){
+       
+       document.getElementById("lnameMessage").innerHTML= "This field is required!";
+       return false;
+   }else if(check1.test(name1)){
+       document.getElementById("lnameMessage").innerHTML ="";
+       return true;
+   }else if(regex.test(name1)){
+           document.getElementById("lnameMessage").innerHTML ="Enter characters.";
+           return false;
+   }else{
+       document.getElementById("lnameMessage").innerHTML = "Enter valid name."
+   }
+}
+
+function emailValidation(){
+   var pattern = /^[^]+@[^]+\.[a-z]{2,3}$/; 
+   var email1 = document.getElementById("InputEmail").value
+   if(email1==""){
+       document.getElementById("emailMessage").innerHTML= "This field is required!";
+       return false;
+   }else if(email1.match(pattern)){
+       document.getElementById("emailMessage").innerHTML ="";
+       return true;
+   }else{
+       document.getElementById("emailMessage").innerHTML ="Enter a valid email";
+       return false;
+   }
+}
+</script>
 {% endblock content %}

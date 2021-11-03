@@ -79,28 +79,33 @@
                       <tr>
                         <th>Product</th>
                         <th>Product Detail</th>
-                        <th>Sub Total</th>
+                        <!-- <th>Sub Total</th> -->
                       </tr>
                     </thead>
                     <tbody>
                       {% for cart_item in cart_items %}
                       <tr>
-                        <td><a href="product-page.html">
-                            <div class="product-image"><img alt="Honour" src="{{cart_item.product.image1.url}}"></div>
-                          </a></td>
                         <td>
-                          <div class="product-title"> <a href="product-page.html">{{cart_item.product.product_name}}</a>
+                            <div class="product-image"><img alt="Honour" src="{{cart_item.product.image1.url}}"></div>
+                          </td>
+                        <td>
+                          <div class="product-title">{{cart_item.product.product_name}}
                             <div class="product-info-stock-sku m-0">
                               <div>
                                 <label>Price: </label>
                                 {% if cart_item.product.offer_status == True %}
-                                <div class="price-box"> <del>₹{{cart_item.product.price}}</del> <span
+                                  <div class="price-box"> <del>₹{{cart_item.product.price}}</del> <span
                                     class="info-deta price"> ₹{{cart_item.product.offer_price}}</span> </div>
+
+                                  {% elif cart_item.product.cat_offer_status == True  %}
+                                    <div class="price-box"> <del>₹{{cart_item.product.price}}</del> <span
+                                    class="info-deta price"> ₹{{cart_item.product.category_offer_price}}</span> </div>
+
                                 {% else %}
                                 <div class="price-box"> <span class="info-deta price">
                                     ₹{{cart_item.product.price}}</span> </div><br>
                                 {% endif %}
-                              </div>
+                              </div>                        
                             </div>
                             <div class="product-info-stock-sku m-0">
                               <div>
@@ -110,7 +115,7 @@
                             </div>
                           </div>
                         </td>
-                        {% if cart_item.product.offer_status == True %}
+                        <!-- {% if cart_item.product.offer_status == True %}
                         <td>
                           <div data-id="100" class="total-price price-box"> <span class="price">₹{{total}}</span> </div>
                         </td>
@@ -120,15 +125,14 @@
                           <div data-id="100" class="total-price price-box"> <span
                               class="price">₹{{cart_item.sub_total}}</span> </div>
                         </td>
-                        {% endif %}
+                        {% endif %} -->
                       </tr>
-                    
+                     {% endfor %}
                     </tbody>
                   </table>
                 </div>
 
                 <div class="checkout-content">
-
                   <div class="cart-total-table commun-table mb-30">
                     <div class="table-responsive">
                       <table class="table">
@@ -138,12 +142,14 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
+                          <!-- <tr>
                             <td>Item(s) Subtotal</td>  
                             <td>
-                              <div class="price-box"> <span class="price">₹{{cart_item.sub_total}} </span> </div>
+                              <div class="price-box"> <span class="price">₹{{total}} </span> </div>
                             </td>
-                          </tr>
+                          </tr> -->
+                          {% for cart_item in cart_items %}
+                          {% if cart_item.product.is_offer_avail == True %}
                           <tr>
                             <td>discount percentage</td>                         
                             <td>
@@ -158,13 +164,37 @@
                             </td>
                            
                           </tr>
-                          {% endfor %}
+                         
                           <tr>
                             <td>offer price</td>
                             <td>
                               <div class="price-box"> <span class="price">₹{{total}} </span></div>
                             </td>
                           </tr>
+                          {% elif cart_item.product.category_offer_avail == True %}
+                          <tr>
+                            <td>discount percentage</td>                         
+                            <td>
+                              <div class="price-box"> <span class="price">{{cart_item.product.cat_offer_per}}%</span></div>
+                            </td>
+                          
+                          </tr>
+                          <tr>
+                            <td>Saved</td>                         
+                            <td>
+                              <div class="price-box"> <span class="price"> {{cart_item.product.cat_savings}}</span></div>
+                            </td>
+                           
+                          </tr>
+                         
+                          <tr>
+                            <td>offer price</td>
+                            <td>
+                              <div class="price-box"> <span class="price">₹{{total}} </span></div>
+                            </td>
+                          </tr>
+                          {% endif %}
+                          {% endfor %}
                           <tr>
                             <td>Shipping (Free shipping for order above 1200)</td>
                             <td>
@@ -187,6 +217,7 @@
                       </table>
                     </div>
                   </div>
+                 
                   <div class="row pt-4">
                     <div class="col-12">
                       <div class="heading-part align-center">
@@ -240,7 +271,36 @@
                     data-prefill.email="aswany@example.com" data-theme.color="#dc3545"></script>
                 </form>
               </div>
+              <div class="col-md-4">
+                <div class="cart-total-table address-box commun-table mb-30">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Coupon</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <ul>
+                              <li>
+                                <label class="inner-heading">Enter coupon code</label>
+                                <input type="text">
+                              </li>
+                              <li>
+                                <button class="mt-2">apply Coupon</button>
+                              </li>
+                            </ul>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
+           
           </div>
         </div>
       </div>

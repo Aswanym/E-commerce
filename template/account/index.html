@@ -154,9 +154,15 @@
                 </div>
               </div>
               <div class="product-item-details">
-                <div class="product-item-name"> <a href="">{{product.product_name}}</a> </div>
+               
+                <div class="product-item-name"> <a href="">{{product.product_name}}</a></div>
                 {% if product.offer_status == True %}
                 <div class="price-box"><del >₹{{product.price}}  </del><span class="price ml-2">₹{{product.offer_price}}</span></div>
+                <div style="width: auto;" class=" new-label"><span>product offer</span></div>
+                {% elif product.cat_offer_status == True %}
+                <div class="price-box"><del >₹{{product.price}}  </del><span class="price ml-2">₹{{product.category_offer_price}}</span></div>
+                <div style="width: auto;" class=" new-label"><span>Category offer</span></div>
+
                 {% else %}
                 <div class="price-box"> <span class="price">₹{{product.price}}</span> </div>
                 {% endif %}

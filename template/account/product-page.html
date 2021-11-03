@@ -45,6 +45,11 @@
                     {% if all_data.is_offer_avail == True %}
                     <div class="price-box"> <span class="price">₹{{all_data.offer_price}}</span> <del
                         class="price old-price">₹{{all_data.price}}</del> </div>
+                    <div><b> Product offer applied</b></div>
+                    {% elif all_data.category_offer_avail == True %}
+                    <div class="price-box"> <span class="price">₹{{all_data.category_offer_price}}</span> <del
+                        class="price old-price">₹{{all_data.price}}</del> </div>
+                    <div><b>Category offer applied</b></div>
                     {% else %}
                     <div class="price-box"> <span class="price">₹{{all_data.price}}</span> </div>
                     {% endif %}
@@ -105,7 +110,7 @@
           </div>
         </div>
       </div>
-    </section>
+</section>
 <script src="https://kit.fontawesome.com/d476ce10a9.js" crossorigin="anonymous"></script>
 
 <!-- CONTAINER END -->

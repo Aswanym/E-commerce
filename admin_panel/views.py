@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from django.db.models.functions import ExtractMonth
-from admin_panel.models import Category, Offers, Product, SubCategory
+from admin_panel.models import Category, Offers, Product, SubCategory, CategoryOffers,CouponOffer
 from order.models import Order, OrderProduct, Payment
 import calendar
 from django.db.models import Q
@@ -91,6 +91,7 @@ def admindash(request):
     #===========================================================================================================#
         last_six_order = Order.objects.filter(
             is_ordered=True).order_by('-id')[:6]
+
         context = {'last_six_order': last_six_order,
                    'month_number': month_number,
                    'total_orders': total_orders,
@@ -147,21 +148,21 @@ def addproduct(request):
         ext = format.split('/')[-1]
         img_data2 = ContentFile(base64.b64decode(img2), name=request.POST.get('product_name') + '2.' + ext)
 
-        # image3_base64 = request.POST.get('img3-base64')
-        # format, img3 = image3_base64.split(';base64,')
-        # ext = format.split('/')[-1]
-        # img_data3 = ContentFile(base64.b64decode(img3), name=request.POST.get('product_name') + '3.' + ext)
+        image3_base64 = request.POST.get('img3-base64')
+        format, img3 = image3_base64.split(';base64,')
+        ext = format.split('/')[-1]
+        img_data3 = ContentFile(base64.b64decode(img3), name=request.POST.get('product_name') + '3.' + ext)
        
 
-        # image4_base64 = request.POST.get('img4-base64')
-        # format, img4 = image4_base64.split(';base64,')
-        # ext = format.split('/')[-1]
-        # img_data4 = ContentFile(base64.b64decode(img4), name=request.POST.get('product_name') + '4.' + ext)
+        image4_base64 = request.POST.get('img4-base64')
+        format, img4 = image4_base64.split(';base64,')
+        ext = format.split('/')[-1]
+        img_data4 = ContentFile(base64.b64decode(img4), name=request.POST.get('product_name') + '4.' + ext)
 
         data.image1 = img_data1
-        data.image2 = img_data1
-        data.image3 = img_data1
-        data.image4 = img_data1
+        data.image2 = img_data2
+        data.image3 = img_data3
+        data.image4 = img_data4
 
 
         data.save()
@@ -377,7 +378,6 @@ def productoffer(request):
             product_offer.product = Product.objects.get(
                 product_name=request.POST.get('product_name'))
             product_offer.dis_percentage = request.POST.get('offer')
-            product_offer.startdate = request.POST.get('startdate')
             product_offer.enddate = request.POST.get('enddate')
             product_offer.save()
 
@@ -421,3 +421,82 @@ def delete_product_offer(request):
 
         return JsonResponse({'msg': 'success', 'message': 'sucessfully deleted'})
     return JsonResponse({'message': 'wrong route'})
+
+#===========================================catrgory offers=======================================
+
+def category_offer(request):
+    
+    category = Category.objects.all()
+
+    if request.method == 'POST':
+        
+        try:
+            CategoryOffers.objects.get(category_id = request.POST.get('category_name'))
+            messages.success(request, 'Offer for this category already exists')
+            return redirect('categoryoffer')
+        except:
+            category_instance = CategoryOffers()
+            category_instance.offername = request.POST.get('offername')
+            category_instance.category = Category.objects.get(
+                id=request.POST.get('category_name'))
+            category_instance.dis_percentage = request.POST.get('offer')
+            category_instance.enddate = request.POST.get('enddate')
+            category_instance.save()
+
+            offer_avail_products = Product.objects.filter(
+                    category_id = request.POST.get('category_name'))
+            for off in offer_avail_products:
+                offers = CategoryOffers.objects.get(category = off.category_id)
+
+                #calculate the discount price.
+                product_price = off.price
+                savings = (product_price * offers.dis_percentage)/100
+                dicounted_price = product_price-savings
+
+                #save the discount price.
+                off.category_offer_avail = True
+                off.category_offer_price = dicounted_price
+                off.save()
+            
+            messages.success(request, 'Offer added successfully')
+            return redirect('categoryoffer')
+    else:
+        context ={
+            'category':category
+        }
+        print(context)
+        return render(request,'admin/categoryoffer.html',context)
+
+def delete_category_offer(request):
+
+    if request.method == "GET":
+        offer_id = request.GET.get('offer_id')
+        category_offer = CategoryOffers.objects.get(id = offer_id )
+
+        change_statuses = Product.objects.filter(category=category_offer.category_id)
+        for change_status in  change_statuses:
+            # if change_status.category_offer_avail == True:
+            change_status.category_offer_avail = False
+            change_status.save()
+        category_offer.delete()
+        return JsonResponse({'msg': 'success', 'message': 'sucessfully deleted'})
+    return JsonResponse({'message': 'wrong route'})
+
+def categoryofferlist(request):
+    categoryoffer = CategoryOffers.objects.all()
+    return render(request,'admin/categoryoffer-list.html',{'categoryoffer':categoryoffer})
+
+
+def add_coupon(request):
+    if request.method == "POST":
+        print(request.user)
+        coupon_instance = CouponOffer()
+        coupon_instance.coupon_title = request.POST.get('couponname')
+        coupon_instance.coupon_offer = request.POST.get('discountprice')
+        coupon_instance.coupon_end = request.POST.get('enddate')
+        coupon_instance.coupon_limit = request.POST.get('limit')
+
+        coupon_instance.save()
+        return redirect('addcoupon')
+    else:
+        return render(request,'admin/add-coupon.html')

@@ -126,7 +126,8 @@
         dataType: 'json',
         success: function (data) {
           alert('Address deleted successfully')
-          window.reload()
+          window.location='http://127.0.0.1:8000/cart/checkout'
+         
         },
         error: function () {
           alert('something went wrong')
@@ -134,7 +135,5 @@
       });
     }
   }
-
-
 </script>
 {% endblock %}

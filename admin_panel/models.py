@@ -1,12 +1,13 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.fields import BooleanField
 from django.db.models.signals import ModelSignal, pre_save
 from django.dispatch import receiver
 from django.template.defaultfilters import slugify, truncatechars
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 import datetime
-
 
 
 
@@ -47,11 +48,14 @@ class Product(models.Model):
     offer_price = models.FloatField(null=True)
     expired = models.BooleanField(default=False,null=True)
 
+    category    = models.ForeignKey(Category,on_delete= models.CASCADE)
     subcategory  = models.ForeignKey(SubCategory,on_delete= models.CASCADE)
+
+    category_offer_avail = models.BooleanField(default=False,null=True)
+    category_offer_price = models.FloatField(null=True)
 
     def get_url(self):
         return reverse('productpage',args=[self.id])
-
 
     def offer_status(self):
         date_time = datetime.date.today()
@@ -65,9 +69,10 @@ class Product(models.Model):
                 return True
             else:
                 all_offers.product.is_offer_avail=False
+                all_offers.product.expired = True
                 all_offers.product.save()
                 return False
-
+            
     def offer_per(self):
         if Offers.objects.filter(product=self).exists():
             all_offers = Offers.objects.get(product=self)
@@ -80,6 +85,33 @@ class Product(models.Model):
             print(save)
             return save
 
+    def cat_offer_status(self):
+        date_time = datetime.date.today()
+        today = date_time.strftime("%Y-%m-%d")
+        if CategoryOffers.objects.filter(category = self.category.id).exists():
+            all_offers = CategoryOffers.objects.get(category = self.category.id)
+            if today <= str(all_offers.enddate) :
+                
+                self.category_offer_avail = True
+                self.save()
+                return True
+            else:
+                self.category_offer_avail = False
+                self.save()
+                return False
+
+    def cat_offer_per(self):
+        if CategoryOffers.objects.filter(category = self.category.id).exists():
+            all_offers = CategoryOffers.objects.get(category = self.category.id)
+            return all_offers.dis_percentage
+
+    def cat_savings(self):
+        if CategoryOffers.objects.filter(category = self.category.id).exists():
+           # all_offers = Offers.objects.get(product=self)
+            save = self.price - self.category_offer_price
+            print(save)
+            return save
+    
 
     def __str__(self) :
         return self.product_slug
@@ -104,10 +136,30 @@ class Offers(models.Model):
     is_avail = BooleanField(default=True,null=True)
     enddate = models .DateField(blank=False)
 
-    
-
     def __str__(self):
         return self.offername
 
-       
+
+class CategoryOffers(models.Model):
+
+    offername = models.CharField(max_length = 200,blank=False)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE,blank=False)
+    dis_percentage = models.IntegerField(blank=False)
+    is_avail = BooleanField(default=True,null=True)
+    enddate = models .DateField(blank=False) 
+
+    def __str__(self):
+        return self.offername
+from order.models import OrderProduct      
+class CouponOffer(models.Model):
+    coupon_title=models.CharField(max_length=30,unique=True)  
+    coupon_limit=models.IntegerField(blank = False)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    order_details=models.ForeignKey(OrderProduct,on_delete=models.CASCADE,null=True)
+    coupon_offer=models.FloatField(blank = False)
+    coupon_end=models.DateField(blank = False)
+    is_available = models.BooleanField(default= True)
+    is_ordered = models.BooleanField(default= False)
+    
+
 

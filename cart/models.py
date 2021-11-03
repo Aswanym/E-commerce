@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+# from admin_panel.models import Product
 from admin_panel.models import Product
 # Create your models here.
 
