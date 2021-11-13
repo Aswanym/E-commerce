@@ -178,37 +178,11 @@ def addproduct(request):
             ext = format.split('/')[-1]
             img_data4 = ContentFile(base64.b64decode(img4), name=request.POST.get('product_name') + '4.' + ext)
 
-        
-        # image1_base64 = request.POST.get('img1-base64')
-        # format, img1 = image1_base64.split(';base64,')
-        # ext = format.split('/')[-1]
-        # img_data1 = ContentFile(base64.b64decode(img1), name=request.POST.get('product_name') + '1.' + ext)
-
-        # image2_base64 = request.POST.get('img2-base64')
-        # format, img2 = image2_base64.split(';base64,')
-        # ext = format.split('/')[-1]
-        # img_data2 = ContentFile(base64.b64decode(img2), name=request.POST.get('product_name') + '2.' + ext)
-
-        # image3_base64 = request.POST.get('img3-base64')
-        # format, img3 = image3_base64.split(';base64,')
-        # ext = format.split('/')[-1]
-        # img_data3 = ContentFile(base64.b64decode(img3), name=request.POST.get('product_name') + '3.' + ext)
-       
-
-        # image4_base64 = request.POST.get('img4-base64')
-        # format, img4 = image4_base64.split(';base64,')
-        # ext = format.split('/')[-1]
-        # img_data4 = ContentFile(base64.b64decode(img4), name=request.POST.get('product_name') + '4.' + ext)
-
         data.image1 = img_data1
         data.image2 = img_data2
         data.image3 = img_data3
         data.image4 = img_data4
 
-        # data.image1 = img_data1
-        # data.image2 = img_data2
-        # data.image3 = img_data3     
-        # data.image4 = img_data4   
 
         data.save()
         return redirect('productlist')
