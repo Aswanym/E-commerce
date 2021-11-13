@@ -3,7 +3,7 @@
 {% block content %}
 
 <!-- Bread Crumb STRAT -->
-<link href='https://fonts.googleapis.com/css?family=Bilbo Swash Caps' rel='stylesheet'>
+
 
 <div class="container mt-sm-15">
   <div class="banner inner-banner1 ">
@@ -22,9 +22,9 @@
 
 <!-- CONTAIN START -->
 <section class="ptb-70">
-  <div class="container">
+  <div class="container" id="delete_cartitems">
     {% if not cart_items %}
-    <div class="text-center">
+    <div id="cart_empty" class="text-center">
       <p style="font-family:Bilbo Swash Caps;font-size: 50px; ">Oops!! Your Cart is Empty</p>
       <div class="p-5"><i class="far fa-frown " style="font-size: 100px;color :#ec2d48"></i></div>
     </div>
@@ -38,11 +38,11 @@
       </div>
     </div>
     {% else %}
-    <div class="row">
+    <div  class=" row" id ="refresh_qty">
       <div class="col-12">
         <div class="cart-item-table commun-table">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table" >
               <thead>
                 <tr>
                   <th>Product</th>
@@ -53,8 +53,8 @@
                 </tr>
               </thead>
               <tbody>
-                {% for cart_item in cart_items %}
-                <tr>
+                {% for subtotal , cart_item in zipped_data %}
+                <tr >
                   <td>
                     <div class="product-image">
                       <img alt="Stylexpo" src="{{cart_item.product.image1.url}}">
@@ -72,17 +72,23 @@
                   <td>
                     <ul>
                       <li>
-                        {% if cart_item.product.is_offer_avail == True %}
+                        {% if cart_item.product.is_offer_avail and cart_item.product.category_offer_avail %}
                           <div class="base-price price-box">
-                            <span class="price"><del>₹{{cart_item.product.price}}</del> ₹{{cart_item.product.offer_price}}</span>
+                            <span class="price">₹{{subtotal}} </span>  
+                          </div>
+                        {% elif cart_item.product.is_offer_avail == True %}
+                          <div class="base-price price-box">
+                            <span class="price">₹{{subtotal}}</span>
+                          
                           </div>
                         {% elif cart_item.product.category_offer_avail == True %}
                           <div class="base-price price-box">
-                            <span class="price"><del>₹{{cart_item.product.price}}</del>  ₹{{cart_item.product.category_offer_price}}</span>
+                            <span class="price">₹{{subtotal}}</span>
+                            
                           </div>
                         {% else %}
                           <div class="base-price price-box">
-                            <span class="price">₹{{cart_item.product.price}}</span>
+                            <span class="price">₹{{subtotal}}</span>
                           </div>
                         {% endif %}
                       </li>
@@ -91,30 +97,29 @@
                   <td>
                     <div class="product-qty ">
                       <label for="qty">Qty:</label>
-                      <div class="custom-qty">
-                        <a href="{% url 'minus_cart' cart_item.product.id %}" class="reduced items"> <i
-                            class="fa fa-minus"></i> </a>
-                        <input type="text" class="input-text qty" title="Qty" value="{{cart_item.quantity}}"
-                          id="{{cart_item.product.id}}" name="qty">
-                        <a href="{% url 'add_cart' cart_item.product.id %}" class="increase items"> <i
+                      <div  class="custom-qty">
+                            <a onclick="minuscart('{{cart_item.product.id }}')" class="reduced items"> <i
+                              class="fa fa-minus"></i> </a>
+                        <input type="text" id="product_quantity" class="input-text qty" title="Qty" value="{{cart_item.quantity}}"
+                            name="qty">
+                        <a onclick="AddCart('{{cart_item.product.id}}')" class="increase items"> <i
                             class="fa fa-plus"></i> </a>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <a href="{% url 'delete_cart' cart_item.product.id %}"><i title="Remove Item From Cart"
-                        data-id="100" class="fa fa-trash cart-remove-item"></i></a>
+                    <a onclick="deletecart('{{cart_item.product.id}}')"><i title="Remove Item From Cart"
+                      data-id="100" class="fa fa-trash cart-remove-item"></i></a>
                   </td>
                 </tr>
                 {% endfor %}
-
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
-    <div class="mb-30">
+    <div id="hide_shop_button" class="mb-30">
       <div class="row">
         <div class="col-md-6">
           <div class="mt-30">
@@ -127,12 +132,12 @@
       </div>
     </div>
     <hr>
-    <div class="mtb-30">
+    <div id="hide_cart_total" class="mtb-30">
       <div class="row">
         <div class="col-md-6">
           <div class="cart-total-table commun-table">
-            <div class="table-responsive">
-              <table class="table">
+            <div id="here" class="table-responsive">
+              <table  class="table">
                 <thead>
                   <tr>
                     <th colspan="2">Cart Total</th>
@@ -143,7 +148,7 @@
                     <td>Item(s) Subtotal</td>
                     <td>
                       <div class="price-box">
-                        <span class="price">₹{{total}}</span>
+                        <span id="subtotal" class="price">₹{{total}}</span>
                       </div>
                     </td>
                   </tr>
@@ -160,14 +165,14 @@
                     <td>Tax</td>
                     <td>
                       <div class="price-box">
-                        <span class="price">{{tax}}</span>
+                        <span id="tax" class="price">{{tax}}</span>
                       </div>
                     </td>
                   </tr>
                   <td><b>Amount Payable</b></td>
                   <td>
                     <div class="price-box">
-                      <span class="price"><b>₹{{grand_total}}</b></span>
+                      <span id="grand_total" class="price"><b>₹{{grand_total}}</b></span>
                     </div>
                   </td>
                   </tr>
@@ -179,14 +184,22 @@
       </div>
     </div>
     <hr>
-    <div class="mt-30">
+    <div id="hide_button" class="mt-30">
       <div class="row">
         <div class="col-12">
+          {% if user.is_authenticated %}
           <div class="left-side float-none-xs">
             <a href="{% url 'checkout' %}" class="btn btn-color">Place Order
               <span><i class="fa fa-angle-right"></i></span>
             </a>
           </div>
+          {% else %}
+          <div class="left-side float-none-xs">
+            <a href="{% url 'loginnavigation' %}" class="btn btn-color">Login
+              <span><i class="fa fa-angle-right"></i></span>
+            </a>
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -194,6 +207,9 @@
   </div>
 </section>
 <script src="https://kit.fontawesome.com/d476ce10a9.js" crossorigin="anonymous"></script>
+
+
+
 
 
 <!-- CONTAINER END -->

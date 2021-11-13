@@ -1,4 +1,5 @@
 {% extends 'include/adminbase.html' %}
+{% load static %}
 {% block content %}
 <div class="main-panel">
 	<div class="content">
@@ -9,10 +10,9 @@
 						<div class="header d-sm-flex align-items-center  text-center">
 							<h1 class="page-header banner-title">Products</h1>
 							<ul class="breadcrumb justify-content-sm-start justify-content-center">
-								<li><a href="../index.html"><i class="icon-home"></i></a></li>
+								<li><a href=""></a></li>
 								<li><a href="{% url 'addproduct' %}">Products</a></li>
-								<li><a href="#">Add Product</a></li>
-								<li><a href="#">Edit Product</a></li>
+								<li><a href="">Edit Product</a></li>
 							</ul>
 						</div>
 					</div>
@@ -23,22 +23,15 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-
 						<div class="card-header">
 							<div class="card-head-row justify-content-between">
-								<div class="card-title"><i class="fas fa-pen"></i> Edit Product</div>
-								<form class="main-form full" method="POST"
-									action="{% url 'editedproduct' product_data.id %}" enctype="multipart/form-data">
-									{% csrf_token %}
-									<div class="add-btn">
-										<button class="btn btn-primary" data-toggle="tooltip" type="submit"
-											data-original-title="Save"><i class="fa fa-save"> Save</i></button>
-										<!-- <a class="btn btn-primary" href="{% url 'editedproduct' product_data.id %}"  data-toggle="tooltip" title="" data-original-title="Cancel"><i class="fa fa-times"></i></a>  -->
-									</div>
+								<div class="card-title"><i class="fa fa-edit"></i>Edit Product</div>
+									<form class="main-form full" method="POST" action="{% url 'editproduct' product_data.id %}" enctype="multipart/form-data">
+										{% csrf_token %}
+										
+								</div>
 							</div>
-						</div>
 						<div class="card-body">
-							<!-- <form class="main-form full"> -->
 							<div class="row">
 								<div class="col-12">
 									<div class="input-box form-group required">
@@ -46,8 +39,7 @@
 											<label for="p-name" class="col-md-3 control-label">Product Name</label>
 											<div class="col-md-9">
 												<input type="text" name="product_name" class="form-control" id="p-name"
-													value="{{product_data.product_name}}" required
-													placeholder="Product Name">
+													required placeholder="Product Name" value="{{product_data.product_name}}">
 											</div>
 										</div>
 									</div>
@@ -57,8 +49,8 @@
 										<div class="row">
 											<label for="input-status" class="col-md-3 control-label">Category</label>
 											<div class="col-md-9">
-												<select name="category" id="input-status" class="form-control">
-													<option value="">{{product_data.subcategory.category.category_name}}
+												<select name="category" class="form-control mySelect">
+													<option value="{{product_data.subcategory.category.category_name}}">{{product_data.subcategory.category.category_name}}
 													</option>
 													{% for category in category %}
 													<option value="{{category.category_name}}">
@@ -76,7 +68,7 @@
 												Category</label>
 											<div class="col-md-9">
 												<select name="subcategory" id="input-status" class="form-control">
-													<option value="">{{product_data.subcategory.sub_category}}</option>
+													<option value="{{product_data.subcategory.sub_category}}">{{product_data.subcategory.sub_category}}</option>
 													{% for subcategory in subcategory %}
 													<option value="{{subcategory.sub_category}}">
 														{{subcategory.sub_category}}</option>
@@ -89,23 +81,11 @@
 								<div class="col-12">
 									<div class="input-box form-group">
 										<div class="row">
-											<label for="input-brands" class="col-md-3 control-label">Slug</label>
-											<div class="col-md-9">
-												<input type="text" name="product_slug"
-													value="{{product_data.product_slug}}" class="form-control"
-													id="input-brands" placeholder="Slug">
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-12">
-									<div class="input-box form-group">
-										<div class="row">
 											<label for="description" class="col-md-3 control-label">Description</label>
 											<div class="col-md-9">
 												<textarea id="summernote" name="product_description"
-													class="form-control" placeholder="Description" rows="10"
-													cols="30">{{product_data.product_description}}</textarea>
+													class="form-control" placeholder="Description" rows="10" cols="30">{{product_data.product_description}}
+												</textarea>
 											</div>
 										</div>
 									</div>
@@ -115,8 +95,8 @@
 										<div class="row">
 											<label for="input-price" class="col-md-3 control-label">Price</label>
 											<div class="col-md-9">
-												<input type="text" name="price" value="{{product_data.price}}"
-													placeholder="Price" id="input-price" class="form-control">
+												<input type="text" name="price" value="{{product_data.price}}" placeholder="Price" id="input-price"
+													class="form-control" required>
 											</div>
 										</div>
 									</div>
@@ -126,65 +106,115 @@
 										<div class="row">
 											<label for="input-quantity" class="col-md-3 control-label">Stock</label>
 											<div class="col-md-9">
-												<input type="text" name="stock" value="{{product_data.stock}}"
-													class="form-control" id="input-quantity" placeholder="Stock">
+												<input type="text" name="stock" value="{{product_data.stock}}" class="form-control" id="input-quantity"
+													placeholder="Stock" required>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div class="col-12">
-									<div class="input-box form-group ">
-										<div class="row">
-											{% if product_data.pic1 %}
-											<img src="{{product_data.pic1.url}}" alt="">
-											{% endif %}
-											<label for="first-name" class="col-md-3 control-label">Upload Image1</label>
-											<div class="col-md-9">
-												<input type="file" name="pic1" class="form-control" id="coupan-name">
-											</div>
-										</div>
+								<!-- image1  start-->
+								
+								<!-- <div class="col-9"style="margin-left:260px">
+									<div class="custom-file mt-3">
+										<input type="file" value="{{product_data.image1.url}}" class="custom-file-input" name="pic1" id="image1" required>
+										<label class="custom-file-label" for="customFile">Choose file</label>
+										<textarea type="text" id="imageValue1" cols="20" rows="10" name="img1-base64" hidden></textarea>
 									</div>
-								</div>
-								<div class="col-12">
-									<div class="input-box form-group ">
-										<div class="row">
-											{% if product_data.pic2 %}
-											<img src="{{product_data.pic2.url}}" alt="">
-											{% endif %}
-											<label for="first-name" class="col-md-3 control-label">Upload Image2</label>
-											<div class="col-md-9">
-												<input type="file" name="pic2" class="form-control" id="coupan-name">
-											</div>
+										<div class="fileinput-new thumbnail mt-2">
+											<img src="{{product_data.image1.url}}" id="chekPreview1" alt="">
 										</div>
-									</div>
-								</div>
-								<div class="col-12">
-									<div class="input-box form-group ">
-										<div class="row">
-											{% if product_data.pic3 %}
-											<img src="{{product_data.pic3.url}}" alt="">
-											{% endif %}
-											<label for="first-name" class="col-md-3 control-label">Upload Image3</label>
-											<div class="col-md-9">
-												<input type="file" name="pic3" class="form-control" id="coupan-name">
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-12">
-									<div class="input-box form-group ">
-										<div class="row">
-											{% if product_data.pic4 %}
-											<img src="{{product_data.pic4.url}}" alt="">
-											{% endif %}
-											<label for="first-name" class="col-md-3 control-label">Upload Image4</label>
-											<div class="col-md-9">
-												<input type="file" name="pic4" class="form-control" id="coupan-name">
-											</div>
-										</div>
-									</div>
-								</div>
+								</div>  -->
 
+								<div class="col-9"style="margin-left:260px">
+									<div class="custom-file mt-3">
+										<input  type="file" class="custom-file-input"  name="pic1" id="id_image1">
+										<label class="custom-file-label" for="customFile">Choose file</label>
+										<!-- <textarea  type="text" id="pro_img1" cols="20" rows="10" name="pro_img1"hidden required></textarea> -->
+									</div>
+                                    
+										<div class="fileinput-new thumbnail mt-2">
+											<img class="thumbnail" src="{{product_data.image1.url}}" id="imageview1" style="height: 200px;width: 200px;" alt="">
+										</div>
+								</div> 
+								
+								<!-- image1  end-->
+
+								<!-- image2 start-->
+<!-- 								
+								<div class="col-9 "style="margin-left:260px">
+									<div class="custom-file mt-3">
+										<input type="file" value="{{product_data.image2.url}}" class="custom-file-input" name="pic2" id="image2" required>
+										<label class="custom-file-label" for="customFile">Choose file</label>
+										<textarea type="text" name="img2-base64" id="imageValue2" cols="20" rows="10" hidden></textarea>
+									  </div>
+									  <div class="fileinput-new thumbnail mt-2">
+										<img src="{{product_data.image2.url}}" id="chekPreview2" alt="">
+									  </div>
+								</div> -->
+								
+								<div class="col-9 "style="margin-left:260px">
+									<div class="custom-file mt-3">
+										<input type="file" class="custom-file-input"  name="pic2" id="id_image2">
+										<label class="custom-file-label" for="customFile">Choose file</label>
+										<!-- <textarea  type="text" name="pro_img2" id="pro_img2" cols="20" rows="10"hidden required></textarea> -->
+									  </div>
+									  <div class="fileinput-new thumbnail mt-2">
+										<img src="{{product_data.image2.url}}" id="imageview2" style="height: 200px;width: 200px;" alt="">
+									  </div>
+								</div>
+								<!-- image2  end-->
+
+								<!-- image3 start-->
+								<!-- <div class="col-9"style="margin-left:260px">
+									<div class="custom-file mt-3">
+										<input type="file" value="{{product_data.image3.url}}" class="custom-file-input" name="pic3" id="image3" required>
+										<label class="custom-file-label" for="customFile">Choose file</label>
+										<textarea type="text" name="img3-base64" id="imageValue3" cols="20" rows="10" hidden></textarea>
+									  </div>
+									  <div class="fileinput-new thumbnail mt-2">
+										<img src="{{product_data.image3.url}}" id="chekPreview3" alt="">
+									  </div>
+								</div> -->
+								<div class="col-9"style="margin-left:260px">
+									<div class="custom-file mt-3">
+										<input type="file"  class="custom-file-input"  name="pic3" id="id_image3">
+										<label class="custom-file-label" for="customFile">Choose file</label>
+										<!-- <textarea type="text" name="pro_img3" id="pro_img3" cols="20" rows="10" hidden required></textarea> -->
+									  </div>
+									  <div class="fileinput-new thumbnail mt-2">
+										<img src="{{product_data.image3.url}}" style="height: 200px;width: 200px;" id="imageview3" alt="">
+									  </div>
+								</div>
+								<!-- image3  end-->
+
+								<!-- image4 start-->
+								<!-- <div class="col-9"style="margin-left:260px">
+									<div class="custom-file mt-3">
+										<input type="file" value="{{product_data.image4.url}}" class="custom-file-input" name="pic4" id="image4" required>
+										<label class="custom-file-label" for="customFile">Choose file</label>
+										<textarea type="text" name="img4-base64" id="imageValue4" cols="20" rows="10" hidden></textarea>
+									  </div>
+									  <div class="fileinput-new thumbnail mt-2">
+										<img src="{{product_data.image4.url}}" id="chekPreview4" alt="">
+									  </div>
+								</div> -->
+								<div class="col-9"style="margin-left:260px">
+									<div class="custom-file mt-3">
+										<input type="file" class="custom-file-input"  name="pic4" id="id_image4">
+										<label class="custom-file-label" for="customFile">Choose file</label>
+										<!-- <textarea type="text" name="pro_img4" id="pro_img4" cols="20" rows="10" hidden required></textarea> -->
+									  </div>
+									  <div class="fileinput-new thumbnail mt-2">
+										<img src="{{product_data.image4.url}}" style="height: 200px;width: 200px;" id="imageview4" alt="">
+									  </div>
+								</div>
+								<!-- image4  end-->
+								
+							</div>
+							<div class="add-btn d-flex justify-content-center p-3">
+								<button class="btn btn-primary" data-toggle="tooltip" type="submit"
+									data-original-title="Save"><i class="fa fa-save"> Save</i>
+								</button>
 							</div>
 							</form>
 						</div>
@@ -195,12 +225,28 @@
 	</div>
 
 	<!-- custom JS -->
+
+
 	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/custom.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script>
+
+		$('.mySelect').on("change", function () {
+			$('option:selected', this).hide().siblings().show();
+		}).trigger('change');
+
+
 		$('#summernote').summernote({
 			placeholder: 'Description',
 			tabsize: 2,
 			height: 250
 		});
 	</script>
-	{% endblock content%}
+
+
+
+
+
+
+
+{% endblock content%}

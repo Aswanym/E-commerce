@@ -83,7 +83,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {% for cart_item in cart_items %}
+                     {% for subtotal , cart_item in zipped_data %}
                       <tr>
                         <td>
                             <div class="product-image"><img alt="Honour" src="{{cart_item.product.image1.url}}"></div>
@@ -93,17 +93,19 @@
                             <div class="product-info-stock-sku m-0">
                               <div>
                                 <label>Price: </label>
-                                {% if cart_item.product.offer_status == True %}
-                                  <div class="price-box"> <del>₹{{cart_item.product.price}}</del> <span
-                                    class="info-deta price"> ₹{{cart_item.product.offer_price}}</span> </div>
+                                {% if cart_item.product.is_offer_avail and cart_item.product.category_offer_avail %}
+                                  <div class="base-price price-box">
+                                    <span class="price">₹{{subtotal}} </span>  
+                                  </div>
+                                {% elif cart_item.product.offer_status == True %}
+                                  <div class="price-box"> ₹{{subtotal}} </div>
 
                                   {% elif cart_item.product.cat_offer_status == True  %}
-                                    <div class="price-box"> <del>₹{{cart_item.product.price}}</del> <span
-                                    class="info-deta price"> ₹{{cart_item.product.category_offer_price}}</span> </div>
+                                    <div class="price-box"> ₹{{subtotal}}</div>
 
                                 {% else %}
                                 <div class="price-box"> <span class="info-deta price">
-                                    ₹{{cart_item.product.price}}</span> </div><br>
+                                    ₹{{subtotal}}</span> </div><br>
                                 {% endif %}
                               </div>                        
                             </div>
@@ -148,6 +150,12 @@
                               <div class="price-box"> <span class="price">₹{{total}} </span> </div>
                             </td>
                           </tr> -->
+                          <tr>
+                            <td>offer price</td>
+                            <td>
+                              <div class="price-box"> <span class="price">₹{{total}} </span></div>
+                            </td>
+                          </tr>
                           {% for cart_item in cart_items %}
                           {% if cart_item.product.is_offer_avail == True %}
                           <tr>
@@ -165,12 +173,7 @@
                            
                           </tr>
                          
-                          <tr>
-                            <td>offer price</td>
-                            <td>
-                              <div class="price-box"> <span class="price">₹{{total}} </span></div>
-                            </td>
-                          </tr>
+                         
                           {% elif cart_item.product.category_offer_avail == True %}
                           <tr>
                             <td>discount percentage</td>                         
@@ -187,12 +190,6 @@
                            
                           </tr>
                          
-                          <tr>
-                            <td>offer price</td>
-                            <td>
-                              <div class="price-box"> <span class="price">₹{{total}} </span></div>
-                            </td>
-                          </tr>
                           {% endif %}
                           {% endfor %}
                           <tr>
@@ -207,10 +204,16 @@
                               <div class="price-box"> <span class="price">₹{{tax}}</span> </div>
                             </td>
                           </tr>
+                          <tr >
+                            <td>Coupon</td>
+                            <td>
+                              <div class="price-box"> <span class="price" id="coupon_price">-</span> </div>
+                            </td>
+                          </tr>
                           <tr>
                             <td><b>Amount Payable</b></td>
                             <td>
-                              <div class="price-box"> <span class="price"><b>₹{{grand_total}}</b></span> </div>
+                              <div class="price-box"> <span class="price"  id="coupon_amount" ><b>₹{{grand_total}}</b></span> </div>
                             </td>
                           </tr>
                         </tbody>
@@ -286,10 +289,10 @@
                             <ul>
                               <li>
                                 <label class="inner-heading">Enter coupon code</label>
-                                <input type="text">
+                                <input class="form-control" id = coupon_value type="text" name=coupon_name>
                               </li>
                               <li>
-                                <button class="mt-2">apply Coupon</button>
+                                <button onclick="couponCheck('{{grand_total}}','{{order_number}}')" type="submit" class="mt-2">apply Coupon</button>
                               </li>
                             </ul>
                           </td>
@@ -300,7 +303,6 @@
                 </div>
               </div>
             </div>
-           
           </div>
         </div>
       </div>
@@ -309,6 +311,11 @@
 
 <script
   src="https://www.paypal.com/sdk/js?client-id=AQYUbepS6pEYaSM3FMxqXGoDOa-B3_MvoiPtPjNVZ8C397I9g4OBaHVzFUWpVqhSLfVoznEURL2TUDFb&currency=USD"></script>
+
+  
+
+
+
 <script>
   function getCookie(name) {
     let cookieValue = null;
@@ -337,9 +344,13 @@
   paypal.Buttons({
 
     style: {
-      layout: 'horizontal',
-      height: 40
+
+      layout:  'horizontal',
+      color:   'blue',
+      shape:   'rect',
+      label:   'paypal'
     },
+   
 
     // Set up the transaction
     createOrder: function (data, actions) {

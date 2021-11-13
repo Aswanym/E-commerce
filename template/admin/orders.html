@@ -11,7 +11,7 @@
                         <div class="header d-sm-flex align-items-center  text-center">
                             <h1 class="page-header banner-title">Orders</h1>
                             <ul class="breadcrumb justify-content-sm-start justify-content-center">
-                                <li><a href="../index.html"><i class="icon-home"></i></a></li>
+                                <li><a href=""><i class=""></i></a></li>
                                 <li><a href="#">Sales</a></li>
                                 <li><a href="#">Orders</a></li>
                             </ul>
@@ -57,23 +57,48 @@
                                             <td><span class="badge badge-danger">{{order_list.order.status}}</span></td>
                                             <td>{{order_list.created_at}}</td>
                                             <td>₹{{order_list.payment.amount_paid}}</td>
-                                            {% if order_list.order.status != "Cancelled" %}
+                                            
+                                            {% if  order_list.order.status == 'Cancelled' or order_list.order.status == 'Delivered' %}
+                                            
+
+                                            {% else %}
                                             <td>
                                                 <select class="form-control mySelect selectOption" id="optionselected"
                                                     data-id={{order_list.order.order_number}}>
-
+                                                    
                                                     <option value="">Choose</option>
                                                     <option value="Shipped">Shipped</option>
-                                                    <option value="Accepted">Accepted</option>
-                                                    <option value="Placed">Placed</option>
+                                                    <option value="Delivered">Delivered</option>
+                                                    <option value="Placed">placed</option>
                                                     <option value="Cancelled">Cancelled</option>
+                                                    
                                                 </select>
                                             </td>
                                             {% endif %}
                                         </tr>
                                     </tbody>
                                     {% endfor %}
-                                </table>
+                                    
+                                </table> 
+                                
+                                <div class="pagination">
+                                    <span class="step-links">
+                                        {% if order_list.has_previous %}
+                                        <button class="btn btn-primary"><a href="?page=1">&laquo; </a>
+                                            <a  style="color: #fff;" href="?page={{ order_list.previous_page_number }}">previous</a></button>
+                                        {% endif %}
+
+                                        <span class="current">
+                                            Page {{ order_list.number }} of {{ order_list.paginator.num_pages }}.
+                                        </span>
+
+                                        {% if order_list.has_next %}
+                                            <button class="btn btn-primary"><a style="color: #fff;" href="?page={{ order_list.next_page_number }}">next</a>
+                                                <a href="?page={{ order_list.paginator.num_pages }}"> &raquo;</a></button>
+                                            
+                                        {% endif %}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>

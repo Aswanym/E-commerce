@@ -829,7 +829,7 @@ _______________________________________________________*/
 	-o-border-radius: 0px;
 }
 header#header {
-	top: 0;
+	top: -42px;
 	width: 100%;
 	z-index: 2;
 	border: none;
@@ -892,7 +892,7 @@ header#header {
 }
 
 .search-box button.search-btn {
-	background: url("../images/sprite.png") no-repeat scroll -5px -85px #ffffff;
+	background: url("../images/sprite.png") no-repeat scroll -5px -85px #ffffff; */
 	border: none;
 	height: 40px;
 	width: 40px;

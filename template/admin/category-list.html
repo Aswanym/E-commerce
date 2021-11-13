@@ -33,7 +33,8 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-body">
+						<div id="refresh_body" class="card-body">
+							{% include 'include/alerts.html' %}
 							<div class="table-responsive dataTables_scroll">
 								<table id="basic-datatables" class="display table table-hover table-fixed">
 									<thead>
@@ -41,6 +42,7 @@
 											<th>Category Name</th>
 											<th>Slug</th>
 											<th>Description</th>
+											<th>Edit</th>
 											<th>Delete</th>
 										</tr>
 									</thead>
@@ -52,7 +54,13 @@
 											<td>{{category.category_description}}</td>
 
 											<td class="">
-												<a class="btn btn-primary" href="{% url 'deletecategory' category.id %}"
+												<a class="btn btn-primary" href="{% url 'editcategory' category.id%}"
+													data-toggle="tooltip" title="" data-original-title="edit"><i
+														class="fa fa-edit"></i></a>
+											</td>
+
+											<td class="">
+												<a class="btn btn-primary" onclick="categorydelete('{{category.id}}')"
 													data-toggle="tooltip" title="" data-original-title="delete"><i
 														class="fa fa-trash"></i></a>
 											</td>
@@ -76,4 +84,9 @@
 			});
 		});
 	</script>
+
+
+	 
+
+
 	{% endblock content %}

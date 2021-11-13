@@ -221,3 +221,673 @@ function successHandler(data){
             return True
         else:
             return False
+
+
+
+
+            {% url 'add_cart' product.id %}
+
+
+
+
+========================================================
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/4f9ff9a3d7.js" crossorigin="anonymous"></script>
+<!-- Material Dashboard CSS -->
+<link href="/assets/css/material-dashboard.min.css?v=2.1.0" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+		<link rel="stylesheet" href="https://unpkg.com/dropzone/dist/dropzone.css" />
+	  <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
+
+  <script src="https://unpkg.com/dropzone"></script>
+	  <script src="https://unpkg.com/cropperjs"></script>
+
+
+
+
+<!-- Button trigger modal -->
+
+<style>
+  .preview {
+	  overflow: hidden;
+	  width: 160px;
+	  height: 160px;
+	  margin: 10px;
+	  border: 1px solid red;
+  }
+
+  .modal-lg {
+	  max-width: 1000px !important;
+  }
+</style>
+
+<!-- Modal 1-->
+<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		  <div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Crop Image Here</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+			  </button>
+		  </div>
+		  <div class="modal-body">
+			  <div class="img-container">
+				  <div class="row">
+					  <div class="col-md-6">
+						  <img src="" id="sampleImage1" />
+					  </div>
+					  <div class="col-md-3">
+						  <div class="preview" id="preview1"></div>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+		  <div class="modal-footer">
+
+			  <button type="button" id="crop1" class="btn btn-primary">Crop</button>
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+		  </div>
+	  </div>
+  </div>
+</div>
+<!-- Modal  1 end-->
+
+
+
+<!-- Modal 2-->
+<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		  <div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Crop Image Here</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+			  </button>
+		  </div>
+		  <div class="modal-body">
+			  <div class="img-container">
+				  <div class="row">
+					  <div class="col-md-6">
+						  <img src="" id="sampleImage2" />
+					  </div>
+					  <div class="col-md-3">
+						  <div class="preview" id="preview2"></div>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+		  <div class="modal-footer">
+			  <button type="button" id="crop2" class="btn btn-primary">Crop</button>
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+		  </div>
+	  </div>
+  </div>
+</div>
+<!-- Modal  2 end-->
+
+
+<!-- Modal 3-->
+<div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		  <div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Crop Image Here</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+			  </button>
+		  </div>
+		  <div class="modal-body">
+			  <div class="img-container">
+				  <div class="row">
+					  <div class="col-md-6">
+						  <img src="" id="sampleImage3" />
+					  </div>
+					  <div class="col-md-3">
+						  <div class="preview" id="preview3"></div>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+		  <div class="modal-footer">
+			  <button type="button" id="crop3" class="btn btn-primary">Crop</button>
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		  </div>
+	  </div>
+  </div>
+</div>
+<!-- Modal  3 end-->
+
+<!-- Modal 4-->
+<div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		  <div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Crop Image Here</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+			  </button>
+		  </div>
+		  <div class="modal-body">
+			  <div class="img-container">
+				  <div class="row">
+					  <div class="col-md-6">
+						  <img src="" id="sampleImage4" />
+					  </div>
+					  <div class="col-md-3">
+						  <div class="preview" id="preview4"></div>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+		  <div class="modal-footer">
+			  <button type="button" id="crop4" class="btn btn-primary">Crop</button>
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		  </div>
+	  </div>
+  </div>
+</div>
+<!-- Modal  4 end-->
+
+
+<script>
+  $('document').ready(function() {
+//modal1 and image 1
+  var image1 = document.getElementById('sampleImage1');
+  var modal1 = $('#modal1');
+  var cropper1;
+
+  $('#image1').change(function (event) {
+	  var files = event.target.files;
+
+	  var done = function (url) {
+		  image1.src = url;
+		  modal1.modal('show');
+	  };
+
+	  if (files && files.length > 0) {
+		  reader = new FileReader();
+		  reader.onload = function (event) {
+			  done(reader.result);
+		  };
+		  reader.readAsDataURL(files[0]);
+	  }
+  });
+
+  modal1.on('shown.bs.modal', function () {
+	  cropper1 = new Cropper(image1, {
+		  aspectRatio: 1,
+		  viewMode: 3,
+		  preview: '#preview1'
+	  });
+  }).on('hidden.bs.modal', function () {
+	  cropper1.destroy();
+	  cropper1 = null;
+  });
+
+  $('#crop1').click(function () {
+	  canvas = cropper1.getCroppedCanvas({
+		  width: 200,
+		  height: 200
+	  });
+
+	  canvas.toBlob(function (blob) {
+		  url = URL.createObjectURL(blob);
+		  var reader = new FileReader();
+		  reader.readAsDataURL(blob);
+		  reader.onloadend = function () {
+			  var base64data = reader.result;
+			  modal1.modal('hide');
+			  $("#imageValue1").val(base64data)
+			  $('#chekPreview1').attr('src', base64data);
+		  };
+	  });
+  });
+//modal1 and image 1 end
+
+//modal2 and image 2
+  var image2 = document.getElementById('sampleImage2');
+  var modal2 = $('#modal2');
+  var cropper2;
+
+  $('#image2').change(function (event) {
+	  var files = event.target.files;
+
+	  var done = function (url) {
+		  image2.src = url;
+		  modal2.modal('show');
+	  };
+
+	  if (files && files.length > 0) {
+		  reader = new FileReader();
+		  reader.onload = function (event) {
+			  done(reader.result);
+		  };
+		  reader.readAsDataURL(files[0]);
+	  }
+  });
+
+  modal2.on('shown.bs.modal', function () {
+	  cropper2 = new Cropper(image2, {
+		  aspectRatio: 1,
+		  viewMode: 3,
+		  preview: '#preview2'
+	  });
+  }).on('hidden.bs.modal', function () {
+	  cropper2.destroy();
+	  cropper2 = null;
+  });
+
+  $('#crop2').click(function () {
+	  canvas = cropper2.getCroppedCanvas({
+		  width: 200,
+		  height: 200
+	  });
+
+	  canvas.toBlob(function (blob) {
+		  url = URL.createObjectURL(blob);
+		  var reader = new FileReader();
+		  reader.readAsDataURL(blob);
+		  reader.onloadend = function () {
+			  var base64data = reader.result;
+			  modal2.modal('hide');
+			  $("#imageValue2").val(base64data)
+			  $('#chekPreview2').attr('src', base64data);
+		  };
+	  });
+  });
+//image 2 and modal 2 end
+
+
+//modal3 and image 3 start
+  var image3 = document.getElementById('sampleImage3');
+  var modal3 = $('#modal3');
+  var cropper3;
+
+  $('#image3').change(function (event) {
+	  var files = event.target.files;
+
+	  var done = function (url) {
+		  image3.src = url;
+		  modal3.modal('show');
+	  };
+
+	  if (files && files.length > 0) {
+		  reader = new FileReader();
+		  reader.onload = function (event) {
+			  done(reader.result);
+		  };
+		  reader.readAsDataURL(files[0]);
+	  }
+  });
+
+  modal3.on('shown.bs.modal', function () {
+	  cropper3 = new Cropper(image3, {
+		  aspectRatio: 1,
+		  viewMode: 3,
+		  preview: '#preview3'
+	  });
+  }).on('hidden.bs.modal', function () {
+	  cropper3.destroy();
+	  cropper3 = null;
+  });
+
+  $('#crop3').click(function () {
+	  canvas = cropper3.getCroppedCanvas({
+		  width: 200,
+		  height: 200
+	  });
+
+	  canvas.toBlob(function (blob) {
+		  url = URL.createObjectURL(blob);
+		  var reader = new FileReader();
+		  reader.readAsDataURL(blob);
+		  reader.onloadend = function () {
+			  var base64data = reader.result;
+			  modal3.modal('hide');
+			  $("#imageValue3").val(base64data)
+			  $('#chekPreview3').attr('src', base64data);
+		  };
+	  });
+  });
+//image 3 and modal 3 end
+
+//modal4 and image 4 start
+  var image4 = document.getElementById('sampleImage4');
+  var modal4 = $('#modal4');
+  var cropper4;
+
+  $('#image4').change(function (event) {
+	  var files = event.target.files;
+
+	  var done = function (url) {
+		  image4.src = url;
+		  modal4.modal('show');
+	  };
+
+	  if (files && files.length > 0) {
+		  reader = new FileReader();
+		  reader.onload = function (event) {
+			  done(reader.result);
+		  };
+		  reader.readAsDataURL(files[0]);
+	  }
+  });
+
+  modal4.on('shown.bs.modal', function () {
+	  cropper4 = new Cropper(image4, {
+		  aspectRatio: 1,
+		  viewMode: 3,
+		  preview: '#preview4'
+	  });
+  }).on('hidden.bs.modal', function () {
+	  cropper4.destroy();
+	  cropper4 = null;
+  });
+
+  $('#crop4').click(function () {
+	  canvas = cropper4.getCroppedCanvas({
+		  width: 200,
+		  height: 200
+	  });
+
+	  canvas.toBlob(function (blob) {
+		  url = URL.createObjectURL(blob);
+		  var reader = new FileReader();
+		  reader.readAsDataURL(blob);
+		  reader.onloadend = function () {
+			  var base64data = reader.result;
+			  modal4.modal('hide');
+			  $("#imageValue4").val(base64data)
+			  $('#chekPreview4').attr('src', base64data);
+		  };
+	  });
+  });
+//image 4 and modal 4 end
+  });
+
+</script>
+
+
+
+
+
+
+<header class="navbar navbar-custom container-full-sm" id="header">
+      
+	<div class="container">
+	  <div class="row">
+		<div class="col-6">
+		</div>
+
+		<div class="col-6">
+		  <div class="top-right-link right-side">
+			<ul>
+			  <li class="login-icon content">
+				<a class="content-link">
+				  <span class="content-icon"></span>
+				</a>
+				<a href="login.html" title="Login">nmnmnmmnLogin</a> or
+				<a href="register.html" title="Register">nmnmnmmnRegister</a>
+				<div class="content-dropdown">
+				  <ul>
+					<li class="login-icon"><a href="login.html" title="Login"><i class="fa fa-user"></i>nmnnnn Login</a>
+					</li>
+					<li class="register-icon"><a href="register.html" title="Register"><i
+						  class="fa fa-user-plus"></i>nmnmmnmn Register</a></li>
+				  </ul>
+				</div>
+			  </li>
+			</ul>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  
+  <div class="header-middle">
+	<div class="container">
+	  <div class="row">
+		<div class="col-lg-2 col-md-3 col-lg md-20per">
+		  <div class="header-middle-left">
+			<div class="navbar-header float-none-sm">
+			  <a class="navbar-brand page-scroll" href="{% url 'index' %}">
+				<h2 style="color: #fff;"> SAASHA Boutique</h2>
+			  </a>
+			</div>
+		  </div>
+		</div>
+		<div class="col-lg-8 col-md-6 col-lgmd-60per">
+		  <div class="header-right-part">
+			<div class="main-search">
+			  <div class="header_search_toggle desktop-view">
+				<form action="{% url 'search' %}" method="POST">
+				  <div class="row">
+					{% csrf_token %}
+					  <div class="search-box">
+						<input name="search" class="input-text" type="text" placeholder="Search here...">
+					  </div>
+					  <button type="submit" class="search-box">search</button>
+				  </div>
+				</form>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<div class="col-lg-2 col-md-3 col-lgmd-20per">
+		  <div class="right-side float-left-xs header-right-link">
+			<ul>
+
+			  <li class="cart-icon">
+				<a href="{% url 'cart' %}">
+				  <span > <small id="cart_count"class="cart-notification">{{cart_count_key}}</small> </span>
+				  <div class="cart-text">
+					<div class="my-cart">Shopping Cart</div>
+
+				  </div>
+				</a>
+			  </li>
+			  <li>
+				<div class="">
+				  {% if user.is_authenticated %}
+				  <p style="color: #fff; font-size: large">Hello, {{user.username}}!</p>
+				  {% else %}
+				  <p style="color: #fff; font-size: large">Hello There!!</p>
+				  {% endif %}
+				</div>
+			  </li>
+			  <li class="side-toggle">
+				<button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button"><i
+					class="fa fa-bars"></i></button>
+			  </li>
+			</ul>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+  <div class="header-bottom">
+	<div class="container position-s">
+	  <div id="menu" class="navbar-collapse collapse">
+		<div class="top-right-link mobile right-side">
+		  <ul>
+			<li class="login-icon content">
+			  <a class="content-link">
+				<span class="content-icon"></span>
+			  </a>
+			  <a href="login.html" title="Login">Login</a> or
+			  <a href="register.html" title="Register">Register</a>
+			  <div class="content-dropdown">
+				<ul>
+				  <li class="login-icon"><a href="login.html" title="Login"><i class="fa fa-user"></i> Login</a>
+				  </li>
+				  <li class="register-icon"><a href="register.html" title="Register"><i class="fa fa-user-plus"></i>
+					  Register</a></li>
+				</ul>
+			  </div>
+			</li>
+		  </ul>
+		</div>
+		<ul class="nav navbar-nav">
+		  
+
+		  <li class="level dropdown"> <span class="opener plus"></span> <a href="{% url 'shop_clothes' %}"
+			  class="page-scroll">Clothings</a>
+			
+		  <li class="level dropdown"> <span class="opener plus"></span> <a href="{% url 'shop_footwears' %}"
+			  class="page-scroll">Footwears</a>
+			
+		  </li>
+		</ul>
+	  </div>
+	</div>
+  </div>
+  <div class="popup-links ">
+	<div class="popup-links-inner">
+	  <ul>
+		<li class="cart-icon">
+		  <a class="popup-with-form" href="#cart_popup"><span class="icon"></span><span
+			  class="icon-text">Cart</span></a>
+		</li>
+		<li class="account">
+		  <a class="popup-with-form" href="#account_popup"><span class="icon"></span><span
+			  class="icon-text">Account</span></a>
+		</li>
+		<li class="search">
+		  <a class="popup-with-form" href="#search_popup"><span class="icon"></span><span
+			  class="icon-text">Search</span></a>
+		</li>
+		<li class="scroll scrollup">
+		  <a href="#"><span class="icon"></span><span class="icon-text">scrollup</span></a>
+		</li>
+	  </ul>
+	</div>
+	<div id="popup_containt">
+	  <div id="categories_popup" class="white-popup-block mfp-hide popup-position">
+		<div class="popup-detail">
+		  <ul class="cate-inner">
+			<li class="level sub-megamenu">
+			  <div class="megamenu  mega-sub-menu">
+				<div class="megamenu-inner-top">
+				  <ul class="sub-menu-level1">
+					<li class="level2">
+					  <ul class="sub-menu-level2 ">
+						<li class="level3"><a href="shop.html"><span>■</span>Blazer & Coat</a></li>
+						<li class="level3"><a href="shop.html"><span>■</span>Sport Shoes</a></li>
+						<li class="level3"><a href="shop.html"><span>■</span>Trousers</a></li>
+						<li class="level3"><a href="shop.html"><span>■</span>Purse</a></li>
+						<li class="level3"><a href="shop.html"><span>■</span>Wallets</a></li>
+						<li class="level3"><a href="shop.html"><span>■</span>Skirts</a></li>
+						<li class="level3"><a href="shop.html"><span>■</span>Tops</a></li>
+						<li class="level3"><a href="shop.html"><span>■</span>Sleepwear</a></li>
+						<li class="level3"><a href="shop.html"><span>■</span>Jeans</a></li>
+					  </ul>
+					</li>
+				  </ul>
+				</div>
+			  </div>
+			</li>
+		  </ul>
+		</div>
+	  </div>
+	  <div id="cart_popup" class="white-popup-block mfp-hide popup-position">
+		<div class="popup-title">
+		  <h2 class="main_title heading"><span>cart</span></h2>
+		</div>
+		<div class="popup-detail">
+		  <div class="cart-dropdown ">
+
+			<div class="clearfix"></div>
+			<div class="mt-20"> <a href="{% url 'cart' %}" class="btn-color btn left-side">Go to Cart</a> <a
+				href="checkout.html" class="btn-color btn right-side">Checkout</a> </div>
+		  </div>
+		</div>
+	  </div>
+	  <div id="account_popup" class="white-popup-block mfp-hide popup-position">
+		<div class="popup-title">
+		  <h2 class="main_title heading"><span>Account</span></h2>
+		</div>
+		<div class="popup-detail">
+		  <div class="row">
+			{% if user.is_authenticated and user.is_active %}
+
+			<div class="col-lg-4">
+			  <a href="{% url 'user_profile'  %}">
+				<div class="account-inner mb-30">
+				  <i class="fa fa-user"></i><br />
+				  <span>Account</span>
+				</div>
+			  </a>
+			</div>
+			{% comment %} <div class="col-lg-4">
+			  <a href="cart.html">
+				<div class="account-inner mb-30">
+				  <i class="fa fa-shopping-bag"></i><br />
+				  <span>Shopping</span>
+				</div>
+			  </a>
+			</div>
+			<div class="col-lg-4">
+			  <a href="account.html#step3">
+				<div class="account-inner">
+				  <i class="fa fa-history"></i><br />
+				  <span>history</span>
+				</div>
+			  </a>
+			</div> {% endcomment %}
+			<div class="col-lg-4">
+			  <a href="{% url 'logout' %}">
+				<div class="account-inner">
+				  <i class="fa fa-share-square-o"></i><br />
+				  <span>logout</span>
+				</div>
+			  </a>
+			</div>
+
+			{% else %}
+			<div class="col-lg-4">
+			  <a href="{% url 'register' %}">
+				<div class="account-inner mb-30">
+				  <i class="fa fa-user-plus"></i><br />
+				  <span>Register</span>
+				</div>
+			  </a>
+			</div>
+			<div class="col-lg-4">
+			  <a href="{% url 'login' %}">
+				<div class="account-inner">
+				  <i class="fa fa-sign-in"></i><br />
+				  <span>Login</span>
+				</div>
+			  </a>
+			</div>
+			{% endif %}
+		  </div>
+		</div>
+	  </div>
+	  <div id="search_popup" class="white-popup-block mfp-hide popup-position">
+		<div class="popup-title">
+		  <h2 class="main_title heading"><span>Search</span></h2>
+		</div>
+		<div class="popup-detail">
+		  <div class="main-search">
+			<div class="header_search_toggle desktop-view">
+			  <form>
+				<div class="search-box">
+				  <input class="input-text" type="text" placeholder="Search entire store here...">
+				  <button class="search-btn"></button>
+				</div>
+			  </form>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+</header> 

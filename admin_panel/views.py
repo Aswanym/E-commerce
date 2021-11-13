@@ -10,10 +10,17 @@ from admin_panel.models import Category, Offers, Product, SubCategory, CategoryO
 from order.models import Order, OrderProduct, Payment
 import calendar
 from django.db.models import Q
+
+from django.db.models import Count,Sum,F
 import os
 
 from django.core.files.base import ContentFile
 import base64
+from admin_panel.forms import BannerUpdateForm
+from admin_panel.models import BannerUpdate
+from django.core.paginator import Paginator
+import datetime
+
 
 def adminlogin(request):
     if request.session.has_key('admin_login'):
@@ -41,15 +48,18 @@ def adminlogin(request):
 @login_required(login_url='adminlogin')
 def admindash(request):
     if request.session.has_key('admin_login'):
-        #------------------------------------------------order by month-------------------------------#
-        orders = Order.objects.annotate(month=ExtractMonth('created_at')).values(
-            'month').annotate(count=Count('id')).values('month', 'count')
-        month_number = []
-        total_orders = []
-
-        for data in orders:
-            month_number.append(calendar.month_name[data['month']])
-            total_orders.append(data['count'])
+        
+        completed_order= OrderProduct.objects.filter(status = "Delivered")
+        sales = OrderProduct.objects.aggregate(sales=Sum( F('product_price')*F('quantity') ))['sales']
+        products = Product.objects.all()
+        stock_avail = Product.objects.aggregate(stock=Sum(F('stock') ))['stock']
+        
+        print("stock============",stock_avail)
+        revenue=0
+        for one_order in completed_order:
+            revenue += one_order.product_price*one_order.quantity
+        print("revenue---------------------------",revenue,sales)
+       
      #--------------------------------------payment graph----------------------------------------#
         payment_method = []
         payment_count = []
@@ -80,29 +90,25 @@ def admindash(request):
         for user in userall:
             users.append(user['is_active'])
             user_count.append(user['counter'])
-    #==================================order details========================================================#
-        status = []
-        totalcount = []
-        orderall = OrderProduct.objects.filter(status__in=('Placed', 'Cancelled', 'Accepted', 'Shipped', 'Ordered')).values(
-            'status').annotate(count=Count('status')).values('status', 'count')
-        for products in orderall:
-            status.append(products['status'])
-            totalcount.append(products['count'])
+   
     #===========================================================================================================#
         last_six_order = Order.objects.filter(
             is_ordered=True).order_by('-id')[:6]
 
+        admin_user = User.objects.get(id= request.user.id)
+
         context = {'last_six_order': last_six_order,
-                   'month_number': month_number,
-                   'total_orders': total_orders,
+                   
                    'payment_method': payment_method,
                    'payment_count': payment_count,
                    'stock': stock,
                    'allproduct': allproduct,
-                   'status': status,
-                   'totalcount': totalcount,
                    'users': users,
                    'user_count': user_count,
+                   'admin_user':admin_user,
+                    "revenue":revenue,
+                    "sales":sales,
+                    "stock_avail":stock_avail,
                    }
 
         return render(request, 'admin/admindash.html', context)
@@ -124,11 +130,18 @@ def adminbase(request):
 
 @login_required(login_url='adminlogin')
 def addproduct(request):
+
+    image1 = 0
+    image2 = 0
+    image3 = 0
+    image4 = 0
     if request.method == 'POST':
 
         data = Product()
 
         data.product_name = request.POST.get('product_name')
+        data.category = Category.objects.get(
+            category_name=request.POST.get('category'))
         data.subcategory = SubCategory.objects.get(
             sub_category=request.POST.get('subcategory'))
         data.product_description = request.POST.get('product_description')
@@ -137,33 +150,68 @@ def addproduct(request):
         data.price = request.POST.get('price')
         data.stock = request.POST.get('stock')
 
-        image1_base64 = request.POST.get('img1-base64')
-        format, img1 = image1_base64.split(';base64,')
-        ext = format.split('/')[-1]
-        img_data1 = ContentFile(base64.b64decode(img1), name=request.POST.get('product_name') + '1.' + ext)
+        
 
+        if request.POST.get('pro_img1'):
+            image1 = request.POST['pro_img1']
+            print(image1)
+            format, img1 = image1.split(';base64,')
+            ext = format.split('/')[-1]
+            img_data1 = ContentFile(base64.b64decode(img1), name=request.POST.get('product_name') + '1.' + ext)
 
-        image2_base64 = request.POST.get('img2-base64')
-        format, img2 = image2_base64.split(';base64,')
-        ext = format.split('/')[-1]
-        img_data2 = ContentFile(base64.b64decode(img2), name=request.POST.get('product_name') + '2.' + ext)
+        if request.POST.get('pro_img2'):
+            image2 = request.POST['pro_img2']
+            format, img2 = image2.split(';base64,')
+            ext = format.split('/')[-1]
+            img_data2 = ContentFile(base64.b64decode(img2), name=request.POST.get('product_name') + '2.' + ext)
+                # else:
+                #     image2 = request.FILES['image2']
 
-        image3_base64 = request.POST.get('img3-base64')
-        format, img3 = image3_base64.split(';base64,')
-        ext = format.split('/')[-1]
-        img_data3 = ContentFile(base64.b64decode(img3), name=request.POST.get('product_name') + '3.' + ext)
+        if request.POST.get('pro_img3'):
+            image3 = request.POST['pro_img3']
+            format, img3 = image3.split(';base64,')
+            ext = format.split('/')[-1]
+            img_data3 = ContentFile(base64.b64decode(img3), name=request.POST.get('product_name') + '3.' + ext)
+        # else:
+        #     image3 = request.FILES['image3']
+
+        if request.POST.get('pro_img4'):
+            image4 = request.POST['pro_img4']
+            format, img4 = image4.split(';base64,')
+            ext = format.split('/')[-1]
+            img_data4 = ContentFile(base64.b64decode(img4), name=request.POST.get('product_name') + '4.' + ext)
+
+        
+        # image1_base64 = request.POST.get('img1-base64')
+        # format, img1 = image1_base64.split(';base64,')
+        # ext = format.split('/')[-1]
+        # img_data1 = ContentFile(base64.b64decode(img1), name=request.POST.get('product_name') + '1.' + ext)
+
+        # image2_base64 = request.POST.get('img2-base64')
+        # format, img2 = image2_base64.split(';base64,')
+        # ext = format.split('/')[-1]
+        # img_data2 = ContentFile(base64.b64decode(img2), name=request.POST.get('product_name') + '2.' + ext)
+
+        # image3_base64 = request.POST.get('img3-base64')
+        # format, img3 = image3_base64.split(';base64,')
+        # ext = format.split('/')[-1]
+        # img_data3 = ContentFile(base64.b64decode(img3), name=request.POST.get('product_name') + '3.' + ext)
        
 
-        image4_base64 = request.POST.get('img4-base64')
-        format, img4 = image4_base64.split(';base64,')
-        ext = format.split('/')[-1]
-        img_data4 = ContentFile(base64.b64decode(img4), name=request.POST.get('product_name') + '4.' + ext)
+        # image4_base64 = request.POST.get('img4-base64')
+        # format, img4 = image4_base64.split(';base64,')
+        # ext = format.split('/')[-1]
+        # img_data4 = ContentFile(base64.b64decode(img4), name=request.POST.get('product_name') + '4.' + ext)
 
         data.image1 = img_data1
         data.image2 = img_data2
         data.image3 = img_data3
         data.image4 = img_data4
 
+        # data.image1 = img_data1
+        # data.image2 = img_data2
+        # data.image3 = img_data3     
+        # data.image4 = img_data4   
 
         data.save()
         return redirect('productlist')
@@ -176,60 +224,109 @@ def addproduct(request):
                    }
         return render(request, 'admin/add-product.html', context)
 
-
 @login_required(login_url='adminlogin')
-def EditProduct(request, id):
+def edit_product(request,id):
+
     product_data = Product.objects.get(id=id)
     category = Category.objects.all()
     subcategory = SubCategory.objects.all()
+
+    if request.method == "POST":
+
+        # if len(request.FILES !=0):
+        #     if len(product_data.image1 > 0):
+        #         os.remove(product_data.image1.path)
+        #     product_data.image1 = request.FILES['pro_img1']
+        
+        product_data.product_name = request.POST.get('product_name')
+        product_data.product_description = request.POST.get('product_description')
+        product_data.price = request.POST.get('price')
+        product_data.stock = request.POST.get('stock')
+        product_data.category = Category.objects.get(
+            category_name=request.POST.get('category'))
+        product_data.subcategory = SubCategory.objects.get(
+            sub_category=request.POST.get('subcategory'))
+
+        product_data.image1 = request.FILES['pic1']
+        product_data.image2 = request.FILES['pic2']
+        product_data.image3 = request.FILES['pic3']
+        product_data.image4 = request.FILES['pic4']
+        
+
+        product_data.save()
+        messages.success(request,'Edited successfully')
+        return redirect('productlist')
+ 
     context = {
         'category': category,
         'subcategory': subcategory,
         'product_data': product_data
-    }
-    return render(request, 'admin/edit-product.html', context)
+    }    
+    messages.success(request,'Edited successfully')
+    return render(request,'admin/edit-product.html',context)
+
+# @login_required(login_url='adminlogin')
+# def EditProduct(request, id):
+    
+#     product_data = Product.objects.get(id=id)
+#     category = Category.objects.all()
+#     subcategory = SubCategory.objects.all()
+#     context = {
+#         'category': category,
+#         'subcategory': subcategory,
+#         'product_data': product_data
+#     }
+#     return render(request, 'admin/edit-product.html', context)
 
 
-@login_required(login_url='adminlogin')
-def EditedProduct(request, id):
+# @login_required(login_url='adminlogin')
+# def EditedProduct(request, id):
 
-    data = Product.objects.get(id=id)
-    data.product_name = request.POST.get('product_name')
-    data.category = Category.objects.filter(
-        category_name=request.POST.get('category'))
-    data.product_description = request.POST.get('product_description')
-    data.product_slug = request.POST.get('product_slug')
+#     data = Product.objects.get(id=id)
+#     data.product_name = request.POST.get('product_name')
+#     data.category = Category.objects.filter(
+#         category_name=request.POST.get('category'))
+#     data.product_description = request.POST.get('product_description')
+#     data.product_slug = request.POST.get('product_slug')
 
-    data.price = request.POST.get('price')
-    data.stock = request.POST.get('stock')
+#     data.price = request.POST.get('price')
+#     data.stock = request.POST.get('stock')
 
-    if len(request.FILES) != 0:
-        if len(data.image1) > 0:
-            os.remove(data.image1.path)
-        data.image1 = request.FILES['pic1']
-        data.image2 = request.FILES['pic2']
-        data.image3 = request.FILES['pic3']
-        data.image4 = request.FILES['pic4']
+#     if len(request.FILES) != 0:
+#         if len(data.image1) > 0:
+#             os.remove(data.image1.path)
+#         data.image1 = request.FILES['pic1']
+#         data.image2 = request.FILES['pic2']
+#         data.image3 = request.FILES['pic3']
+#         data.image4 = request.FILES['pic4']
 
-    data.save()
-    return redirect('productlist')
-    # else:
-    #     context = {'data': data}
-    #     return render(request,'edit-product.html',context)
+#     data.save()
+#     messages.success(request,'Edited successfully')
+#     return redirect('productlist')
+    
 
 
 @login_required(login_url='/adminlogin/')
 def productlist(request):
+    search_query = ''
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
 
-    data = Product.objects.all()
-    context = {'data': data}
+    data = Product.objects.filter(Q(product_name__icontains=search_query) | 
+                                    Q(price__icontains=search_query))
+    context = {'data': data,
+                'search_query':search_query 
+    }
     return render(request, 'admin/product-list.html', context)
 
+def DeleteProduct(request):
 
-def DeleteProduct(request, id):
-    data = Product.objects.get(id=id)
-    data.delete()
-    return redirect('productlist')
+    if request.method == "GET":
+        id = request.GET.get('prod_offerid')
+        data = Product.objects.get(id=id)
+        data.delete()
+        return JsonResponse({'msg': 'success', 'message': 'sucessfully deleted'})
+    return JsonResponse({'message': 'wrong route'})
 
 
 #========================================  Category ==============================================#
@@ -254,15 +351,37 @@ def addcategory(request):
 
 @login_required(login_url='adminlogin')
 def categorylist(request):
-    all_category = Category.objects.all()
-    context = {'all_category': all_category}
+
+    search_query = ''
+
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
+
+    all_category = Category.objects.filter(category_name__icontains=search_query)
+    context = {'all_category': all_category,'search_query':search_query }
     return render(request, 'admin/category-list.html', context)
 
+def editCategory(request,id):
+    category_edit = Category.objects.get(id=id)
+    if request.method == 'POST':
+        category_edit.category_name = request.POST.get('category_name')
+        category_edit.category_description = request.POST.get('category_description')
+        category_edit.save()
+        messages.success(request,'Edited successfully')
+        return redirect('categorylist')
+    
+    return render(request,'admin/edit-category.html',{'category_edit':category_edit})
 
-def deleteCatergory(request, id):
-    data = Category.objects.get(id=id)
-    data.delete()
-    return redirect('categorylist')
+
+def deleteCatergory(request):
+
+    if request.method == "GET":
+        id = request.GET.get('cat_offerid')
+        data = Category.objects.get(id=id)
+        data.delete()
+        return JsonResponse({'msg': 'success', 'message': 'sucessfully deleted'})
+    return JsonResponse({'message': 'wrong route'})
+    
 #======================================== Sub Category ==============================================#
 
 
@@ -288,20 +407,41 @@ def AddSubCategory(request):
 
 
 def SubCategoryList(request):
+    search_query = ''
+
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
 
     category = Category.objects.all()
-    all_sub_category = SubCategory.objects.all()
+    all_sub_category = SubCategory.objects.filter(sub_category__icontains=search_query)
     context = {'all_sub_category': all_sub_category,
                'category': category,
+               'search_query':search_query
                }
     return render(request, 'admin/sub-category-list.html', context)
 
+def editSubCatergory(request,id):
+    subcategory_edit = SubCategory.objects.get(id=id)
+    category = Category.objects.all()
+    if request.method == 'POST':
+        subcategory_edit.sub_category  = request.POST.get('sub_category')
+        subcategory_edit.category = Category.objects.get(category_name = request.POST.get('category')) 
+        subcategory_edit.sub_category_description = request.POST.get('subcategorydescription')
+        subcategory_edit.save()
+        messages.success(request,'Edited successfully')
+        return redirect('subcategorylist')
+    
+    return render(request,'admin/edit-subcategory.html',{'subcategory_edit':subcategory_edit,'category':category})
 
-def deleteSubCatergory(request, id):
 
-    data = SubCategory.objects.get(id=id)
-    data.delete()
-    return redirect('subcategorylist')
+def deleteSubCatergory(request):
+
+    if request.method == "GET":
+        id = request.GET.get('subcat_offerid')
+        data = SubCategory.objects.get(id=id)
+        data.delete()
+        return JsonResponse({'msg': 'success', 'message': 'sucessfully deleted'})
+    return JsonResponse({'message': 'wrong route'})
 
 
 #========================================  user ==============================================#
@@ -309,9 +449,12 @@ def deleteSubCatergory(request, id):
 
 @login_required(login_url='adminlogin')
 def userlist(request):
-    data = User.objects.all()
-    return render(request, 'admin/userlist.html', {'data': data})
+    search_query = ''
 
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
+    data = User.objects.filter(username__icontains=search_query)
+    return render(request, 'admin/userlist.html', {'data': data,'search_query':search_query})
 
 def userblock(request, id):
 
@@ -329,20 +472,22 @@ def userblock(request, id):
 
 
 def orders(request):
+    
     order_list = OrderProduct.objects.all()
-    context = {
-        'order_list': order_list
-    }
-    return render(request, 'admin/orders.html', context)
+    paginator = Paginator(order_list,10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'admin/orders.html', {'order_list': page_obj})
 
 # =======================================sales report====================================
-
 
 def salesreport(request):
 
     if request.method == "POST":
         fdate = request.POST['fdate']
-        ldate = request.POST['ldate']
+        ldate = request.POST['enddate']
         amount = 0
         try:
             check = True
@@ -357,7 +502,7 @@ def salesreport(request):
         amount = 0
         check = False
         orderedproducts = OrderProduct.objects.all()
-        data = OrderProduct.objects.filter(~Q(status='Cancelled'))
+        data = OrderProduct.objects.filter(status='Delivered')
         for order in data:
             amount += order.payment.amount_paid
         return render(request, 'admin/sales-report.html', {'datas': orderedproducts, 'sum': amount, 'check': check})
@@ -499,4 +644,45 @@ def add_coupon(request):
         coupon_instance.save()
         return redirect('addcoupon')
     else:
-        return render(request,'admin/add-coupon.html')
+        print('fgvhbjnbvcdfrgyhbn')
+        coupons = CouponOffer.objects.all()
+        context = {'coupons':coupons}
+        print(context)
+        return render(request,'admin/add-coupon.html',context)
+
+def deletecoupon(request):
+   
+    if request.method == 'GET':
+        coupon_id = request.GET.get('coupon_id')
+        delete_coupon = CouponOffer.objects.get(id = coupon_id)
+        delete_coupon.is_available = False
+        delete_coupon.save()
+        delete_coupon.delete()
+
+        return JsonResponse({'msg': 'success', 'message': 'sucessfully deleted'})
+    return JsonResponse({'message': 'wrong route'})
+
+def admin_banners(request):
+    banners = BannerUpdate.objects.all()
+    context = {
+        'banners': banners,
+    }
+    return render(request, 'admin/admin_banners.html',context)
+
+def add_banner(request):
+    form = BannerUpdateForm(request.POST or None, request.FILES or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return redirect('admin_banners')
+        else:
+            messages.error(request,'form not valid')            
+            context = {
+            'form':form
+            }
+            return render(request,'admin/add_banner.html',context)
+    else:
+        context = {
+            'form':form
+        }
+        return render(request,'admin/add_banner.html',context)

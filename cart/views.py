@@ -32,7 +32,125 @@ def _cart_id(request):
         cart = request.session.create()
     return cart
 
-def add_cart(request, product_id):
+
+
+def add_cart_ajax(request):
+
+    print('jkkjj')
+
+    product_id=request.GET.get('product_id')
+    if request.GET.get('product_quantity'):
+        product_quantity_input = int( request.GET.get('product_quantity') )
+
+    else: 
+        product_quantity_input = 1
+
+    total =0
+    grand_total=0
+    tax=0    
+    product_quantity = 0
+    current_user = request.user
+    product = Product.objects.get(id=product_id) #get the product
+    if product.stock <1 :
+        return JsonResponse({'status':False,'message':"Product Out Of Stock"})
+
+    #if user is authenticated
+    if current_user.is_authenticated:
+      
+        if CartItem.objects.filter(product=product, user=current_user).exists():
+            cart_item = CartItem.objects.get(product=product, user=current_user)
+            cart_item.quantity += product_quantity_input #custom quantity updation
+            cart_item.save()
+            product_quantity = cart_item.quantity # setting quantity
+        else:
+            cart_item = CartItem.objects.create(
+                product = product,
+                quantity = product_quantity_input,   #custom quantity updation
+                user = current_user,
+            )
+            product_quantity = 1   # setting quantity
+            cart_item.save()
+        sub_total = cart_item.sub_total()  
+        #=========================cart count
+        cart_count=0
+        try:
+            cart = Cart.objects.filter(cart_id=_cart_id(request))
+            if request.user.is_authenticated:
+                cart_items = CartItem.objects.all().filter(user=request.user)
+            else:
+                cart_items = CartItem.objects.all().filter(cart= cart[:1])
+            for cart_item in cart_items:
+                cart_count += cart_item.quantity
+                #calculate subtotal tax and grand total====================
+                if  product.offer_status() : #check if offer price exists
+                    print("offer cart added in ajax")
+                    total += (cart_item.product.offer_price * cart_item.quantity)
+                else:
+                    total += (cart_item.product.price * cart_item.quantity)
+                    print("original price cart added in ajax") 
+            tax = int ( (2 * total)/100  )
+            grand_total = total + tax                
+        except Cart.DoesNotExist:
+            cart_count = 0  
+        
+        return JsonResponse({'status':True,'message':"Product Added to Cart Succesfully",'cart_count':cart_count,'sub_total':sub_total,'product_quantity':product_quantity,'total':total,'tax':tax,'grand_total':grand_total})
+    
+
+    #if user is not autheticated
+    else:
+        try:
+            cart = Cart.objects.get(cart_id=_cart_id(request)) # get the cart using the cart_id present in the session
+        except Cart.DoesNotExist:
+            cart = Cart.objects.create(
+                cart_id = _cart_id(request)
+            )
+        cart.save()
+
+        try:
+            cart_item = CartItem.objects.get(product=product, cart=cart)
+            cart_item.quantity += product_quantity_input      #custom quantity updation
+            cart_item.save()
+            product_quantity = cart_item.quantity 
+
+        except CartItem.DoesNotExist:
+            cart_item = CartItem.objects.create(
+                product = product,
+                quantity = product_quantity_input,     #custom quantity updation
+                cart = cart,
+            )
+            product_quantity = 1
+
+            cart_item.save()
+        sub_total = cart_item.sub_total()  
+        #=========================cart count
+        cart_count=0
+        try:
+            cart = Cart.objects.filter(cart_id=_cart_id(request))
+            if request.user.is_authenticated:
+                cart_items = CartItem.objects.all().filter(user=request.user)
+            else:
+                cart_items = CartItem.objects.all().filter(cart= cart[:1])
+            for cart_item in cart_items:
+                cart_count += cart_item.quantity
+                #calculate subtotal tax and grand total====================
+                if  product.offer_status() : #check if offer price exists
+                    print("offer cart added in ajax")
+                    total += (cart_item.product.offer_price * cart_item.quantity)
+                else:
+                    total += (cart_item.product.price * cart_item.quantity)
+                    print("original price cart added in ajax") 
+            tax = int ( (2 * total)/100  )
+            grand_total = total + tax                
+        except Cart.DoesNotExist:
+            cart_count = 0
+        
+        return JsonResponse({'status':True,'message':"Product Added to Cart  Succesfully",'cart_count':cart_count,'sub_total':sub_total,'product_quantity':product_quantity,'total':total,'tax':tax,'grand_total':grand_total})
+
+def add_cart(request,product_id):
+
+    # if request.method == 'POST':
+    #     product_id = request.method.POST.get('id')
+
     product = Product.objects.get(id=product_id)  # get the product
     cart = Cart.objects.filter(cart_id= _cart_id(request))
     current_user = request.user
@@ -40,7 +158,7 @@ def add_cart(request, product_id):
         try:
             # CartItem.objects.filter(product=product, user=current_user).exists() #check if product and user exist
             cart_item = CartItem.objects.get(product=product,user=current_user) 
-
+            
             cart_item.quantity += 1
             cart_item.save()
         except :
@@ -77,48 +195,78 @@ def add_cart(request, product_id):
     return redirect('cart')
 
 
-def minus_cart(request, product_id):
+def minus_cart(request):
 
-    if request.user.is_authenticated:
-        
-        product = get_object_or_404(Product, id=product_id)
-        cart_item = CartItem.objects.get(product=product, user=request.user)
-        
+    if request.method == "GET":
+        product_id = request.GET.get('cartitem_id')
+
+        if request.user.is_authenticated:
+            
+            product = get_object_or_404(Product, id=product_id)
+            cart_item = CartItem.objects.get(product=product, user=request.user)
+            
+        else:
+            
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            product = get_object_or_404(Product, id=product_id)
+            cart_item = CartItem.objects.get(product=product, cart=cart)
+
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+            return JsonResponse({'msg':'success','message': 'updated successfully'})
+        else:
+            cart_item.delete()
+            return JsonResponse({'msg':'confirm','message': 'confirm???'})
     else:
-        
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        product = get_object_or_404(Product, id=product_id)
-        cart_item = CartItem.objects.get(product=product, cart=cart)
-    if cart_item.quantity > 1:
-        cart_item.quantity -= 1
-        cart_item.save()
-    else:
-        cart_item.delete()
-    return redirect('cart')
-
-
+        return JsonResponse({'msg':'error','message': 'something went wrong'})
+    
 def cart(request, total=0, quantity=0, cart_items=None):
     shipping = 0
     grand_total = 0
+    user=0
+    zipped_data=0
+    subtotals=[]
+    user=request.user
     try:
+        
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user)
-        
+            
         else:
         
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
-            
+
+        for item in cart_items:
+            if item.product.is_offer_avail and item.product.category_offer_avail:
+                p=item.product.compare()
+                subtotals.append(p*item.quantity)
+            elif item.product.is_offer_avail:
+                subtotals.append(item.product.offer_price*item.quantity)
+            elif item.product.category_offer_avail:
+                subtotals.append(item.product.category_offer_price*item.quantity)
+            else:
+                subtotals.append(item.product.price*item.quantity)
+             
+
         for cart_item in cart_items:
-            if cart_item.product.is_offer_avail == True:
-                    total += (cart_item.product.offer_price * cart_item.quantity)
-                    quantity += cart_item.quantity
+            
+            if cart_item.product.is_offer_avail and cart_item.product.category_offer_avail:
+                total += (cart_item.product.compare() * cart_item.quantity)
+                quantity += cart_item.quantity
+
+            elif cart_item.product.is_offer_avail == True:
+                total += (cart_item.product.offer_price * cart_item.quantity)
+                quantity += cart_item.quantity
             elif cart_item.product.category_offer_avail == True:
                 total += (cart_item.product.category_offer_price * cart_item.quantity)
                 quantity += cart_item.quantity
+               
             else:
                 total += (cart_item.product.price * cart_item.quantity)
                 quantity += cart_item.quantity
+                
 
         tax  = int ( (2 * total)/100 )
         total_with_tax = total + tax
@@ -128,18 +276,23 @@ def cart(request, total=0, quantity=0, cart_items=None):
         else:
             shipping = 80
         grand_total = total_with_tax + shipping
-
+        zipped_data = zip(subtotals,cart_items)
         context = {
             'total': total,
             'quantity': quantity,
+            'user':user,
             'cart_items': cart_items,
             'shipping': shipping,
             'tax':tax,
             'grand_total': grand_total,
+            'subtotals':subtotals,
+            'zipped_data':zipped_data
         }
     except ObjectDoesNotExist:
         total=0
+        zipped_data=0
         grand_total=0
+        user=0
         tax=0
         quantity=0
         shipping=0
@@ -152,30 +305,32 @@ def cart(request, total=0, quantity=0, cart_items=None):
             'shipping': shipping,
             'quantity': quantity,
             'cart_items': cart_items,
-        
+            'subtotals':subtotals,
         }
     return render(request, 'account/cart.html', context)
 
 
-def delete_cart(request, product_id):
+def delete_cart(request):
 
-    if request.user.is_authenticated:
-        
-        product = get_object_or_404(Product, id=product_id)
-        cart_item = CartItem.objects.get(product=product, user=request.user)
-        cart_item.delete()
-        return redirect('cart')
+        product_id = request.GET.get('cart_id')
+        if request.user.is_authenticated:
+            
+            product = get_object_or_404(Product, id=product_id)
+            cart_item = CartItem.objects.get(product=product, user=request.user)
+            cart_item.delete()
+            cart_count = CartItem.objects.filter(user=request.user).count()
+            print("cart count is ",cart_count)
+            return JsonResponse({ 'message': 'sucessfully deleted','cart_count':cart_count})
 
-    else:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        product = get_object_or_404(Product, id=product_id)
-        cart_item = CartItem.objects.get(product=product, cart=cart)
-        cart_item.delete()
-        return redirect('cart')
-
-# def buy_now(request):
-#     pass
-
+        else:
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            product = get_object_or_404(Product, id=product_id)
+            cart_item = CartItem.objects.get(product=product, cart=cart)
+            cart_item.delete()
+            cart_count = CartItem.objects.filter(user=request.user).count()
+            print("cart count is ",cart_count)
+            return JsonResponse({ 'message': 'sucessfully deleted','cart_count':cart_count})
+  
 def checkout_shipping(request):
     return redirect('checkout')
 
@@ -186,22 +341,21 @@ def checkout(request):
     if request.method == 'POST':
         if address_count < 3:  
 
-            first_name      = request.POST.get('first_name')
-            last_name       = request.POST.get('last_name')
-            email           = request.POST.get('email')
-            phone_number    = request.POST.get('phone_number')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            email  = request.POST.get('email')
+            phone_number = request.POST.get('phone_number')
 
-            first_address        = request.POST.get('address1')
-            second_address        = request.POST.get('address2')
-            pin             = request.POST.get('pin')
+            first_address = request.POST.get('address1')
+            second_address = request.POST.get('address2')
+            pin = request.POST.get('pin')
 
-            country         = request.POST.get('country')
-            city            = request.POST.get('city')
-            state           = request.POST.get('state')
+            country = request.POST.get('country')
+            city = request.POST.get('city')
+            state = request.POST.get('state')
 
-            address_type    = request.POST.get('address_type')
+            address_type = request.POST.get('address_type')
 
-        
             user_address = UserAddress.objects.create(
                 first_name=first_name, 
                 last_name=last_name, 
@@ -249,17 +403,35 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
     shipping = 0
     grand_total = 0
     razorpay_amount = 0
+    order_number=0
+    subtotals=[]
    
     useraddress = UserAddress.objects.filter(user=request.user)
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
-    
     else:
         cart = Cart.objects.get(cart_id=_cart_id(request))
         cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+
+    for item in cart_items:
+        if item.product.is_offer_avail and item.product.category_offer_avail:
+                p=item.product.compare()
+                subtotals.append(p*item.quantity)
+        elif item.product.is_offer_avail:
+            subtotals.append(item.product.offer_price*item.quantity)
+        elif item.product.category_offer_avail:
+            subtotals.append(item.product.category_offer_price*item.quantity)
+        else:
+            subtotals.append(item.product.price*item.quantity)
+       
         
     for cart_item in cart_items:
-        if cart_item.product.is_offer_avail:
+
+        if cart_item.product.is_offer_avail and cart_item.product.category_offer_avail:
+            total += (cart_item.product.compare() * cart_item.quantity)
+            quantity += cart_item.quantity
+
+        elif cart_item.product.is_offer_avail:
             total += (cart_item.product.offer_price * cart_item.quantity)
             quantity += cart_item.quantity
 
@@ -280,7 +452,7 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
         shipping = 80
     grand_total = total_with_tax + shipping
     razorpay_amount=grand_total*100
-
+    zipped_data = zip(subtotals,cart_items)
 
     if Order.objects.filter(user=request.user,is_ordered=False):
         order1 = Order.objects.get(user=request.user,is_ordered=False)
@@ -314,8 +486,11 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
         order1.order_number = order_number
         order1.save()
 
-    
+
+    order_number=order1.order_number
+    print('order number===========',order_number)
         
+
     context = {
         'total': total,
         'quantity': quantity,
@@ -324,8 +499,9 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
         'grand_total': grand_total,
         'tax': tax,
         'order1' : order1,
+        'order_number':order_number,
         'razorpay_amount':razorpay_amount,
-        'useraddress' : useraddress,  
-        
+        'useraddress' : useraddress,   
+        'zipped_data':zipped_data  
     }
     return render(request,'store/order_over_view.html',context)

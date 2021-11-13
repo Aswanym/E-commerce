@@ -30,19 +30,60 @@
 	<link rel="shortcut icon" href="https://aaryaweb.info/html/stylexpo/admin/assets/img/favicon.png">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}" />
 
+	<!-- sales reprot table -->
+
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/tabletools/2.2.1/css/dataTables.tableTools.css">
+  	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+   	<script type="text/javascript" language="javascript" src="~/Scripts/DataTables/dataTables.tableTools.min.js"></script>
+
+
+	<style>
+		.sidebar{
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			width: 280px;
+    		margin-top: 62px;
+			display: block;
+			z-index: 1000;
+			color: #ffffff;
+			font-weight: 300;
+			
+		}
+		.logo-header{
+			background: #3e4856;
+			float: left;
+			width: 280px;
+			height: 62px;
+			line-height: 60px;
+			color: #333333;
+			z-index: 1001;
+			font-size: 17px;
+			font-weight: 400;
+			padding-left: 25px;
+			padding-right: 25px;
+			z-index: 1001;
+			display: flex;
+			align-items: center;
+			position: relative;
+			transition: all .3s;
+			justify-content: space-between;
+		}
+	</style>
 
 </head>
+
 
 <body>
 	<div class="wrapper">
 		<div class="main-header">
-			<!-- Logo Header -->
 			<div class="logo-header">
 				<a href="" class="logo">
-					<h3 style="color: #ff3030;"> SAASHA Boutique</h3>
+					<h3 class="navbar-brand" style="color: #ff3030;"> SAASHA Boutique</h3>
 				</a>
-				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
-					data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon">
 						<i class="icon-menu"></i>
 					</span>
@@ -56,25 +97,65 @@
 			</div>
 			<!-- End Logo Header -->
 
+			
+
 			<!-- Navbar Header -->
 			<nav class="navbar navbar-header navbar-expand-lg">
 				<div class="container-fluid">
-					<form class="navbar-left navbar-form " action="{% url 'adminlogout' %}">
-						<div class="">
-							<button style="background: #ff3030; color:white;" href="" type="submit"
-								class="btn btn-search ">
-								<i class="fa fa-sign-out">Logout</i>
-							</button>
-						</div>
-					</form>
+					<div class="collapse" id="search-nav">
+						<form class="navbar-left navbar-form nav-search mr-md-3" action="" method="get">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<button type="submit" class="btn btn-search pr-1">
+										<i class="fa fa-search search-icon"></i>
+									</button>
+								</div>
+								<input type="text" value="{{search_query}}" placeholder="Search ..." class="form-control" name="search_query">
+							</div>
+						</form>
+					</div>
+					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+						<li class="nav-item toggle-nav-search hidden-caret">
+							<a class="nav-link" data-toggle="collapse" href="" role="button" aria-expanded="false" aria-controls="search-nav">
+								<i class="fa fa-search"></i>
+							</a>
+						</li>
+						
+						<li class="nav-item dropdown hidden-caret">
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
+								<div class="profile-sm">
+									<img src="{% static 'images/aswany.jpg' %}" alt="..." class="profile-img rounded-circle">
+								</div>
+							</a>
+							<ul class="dropdown-menu dropdown-user animated fadeIn">
+								<div class="dropdown-user-scroll scrollbar-outer">
+									<li>
+										<div class="user-box">
+											<div class="profile-lg"><img src="{% static 'images/aswany.jpg' %}" alt="image profile" class="profile-img rounded"></div>
+											<div class="user-detail">
+												<h4>{{admin_user}}</h4>
+												<p class="text-muted">{{admin_user.email}}</p>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="dropdown-divider"></div>
+										<!-- <a class="dropdown-item" href="#"><i class="fa fa-user"></i> My Profile</a> -->
+										<a class="dropdown-item" href="{% url 'adminlogout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+									</li>
+								</div>
+							</ul>
+						</li>
+					</ul>
 				</div>
 			</nav>
 			<!-- End Navbar -->
 		</div>
 		<!-- Sidebar -->
-		<div class="sidebar dark-bg">
-			<div class="sidebar-wrapper scrollbar scrollbar-inner">
-				<div class="sidebar-content">
+		
+		<div class="sidebar dark-bg " >
+			<div class="sidebar-wrapper  scrollbar-inner" >
+				<div class="sidebar-content"style="overflow-x:hidden;">
 					<ul class="nav nav-primary">
 						<li class="nav-item active">
 							<a href="{% url 'admindash' %}">
@@ -91,7 +172,7 @@
 						<li class="nav-item">
 							<a data-toggle="collapse" href="#product">
 								<i class="fa fa-pen-square"></i>
-								<p>Product Management</p>
+								<span>Product Management</span>
 								<span class="caret"></span>
 							</a>
 							<div class="collapse" id="product">
@@ -113,7 +194,7 @@
 						<li class="nav-item ">
 							<a data-toggle="collapse" href="#category">
 								<i class="fa fa-tag"></i>
-								<p>Category Management</p>
+								<span>Category Management</span>
 								<span class="caret"></span>
 							</a>
 							<div class="collapse" id="category">
@@ -134,7 +215,8 @@
 						<li class="nav-item ">
 							<a data-toggle="collapse" href="#subcategory">
 								<i class="fa fa-tag"></i>
-								<p>Sub Category Management</p>
+								<span>Sub Category Management</span>
+								
 								<span class="caret"></span>
 							</a>
 							<div class="collapse" id="subcategory">
@@ -156,7 +238,7 @@
 						<li class="nav-item ">
 							<a data-toggle="collapse" href="#orders">
 								<i class="fa fa-dollar-sign"></i>
-								<p>Order Management</p>
+								<span>Order Management</span>
 								<span class="caret"></span>
 							</a>
 							<div class="collapse" id="orders">
@@ -182,7 +264,7 @@
 						<li class="nav-item">
 							<a data-toggle="collapse" href="#users">
 								<i class="fa fa-user-plus"></i>
-								<p>Users Management</p>
+								<span>Users Management</span>
 								<span class="caret"></span>
 							</a>
 							<div class="collapse" id="users">
@@ -199,7 +281,7 @@
 						<li class="nav-item">
 							<a data-toggle="collapse" href="#reports">
 								<i class="fa fa-chart-bar"></i>
-								<p>Sales Management</p>
+								<p>Sales report</p>
 								<span class="caret"></span>
 							</a>
 							<div class="collapse" id="reports">
@@ -209,13 +291,14 @@
 											<span class="sub-item">Sales report</span>
 										</a>
 									</li>
+									
 								</ul>
 							</div>
 						</li>
 						<li class="nav-item ">
 							<a data-toggle="collapse" href="#offers">
 								<i class="fa fa-tag"></i>
-								<p>Offer Management</p>
+								<span>Offer Management</span>
 								<span class="caret"></span>
 							</a>
 							<div class="collapse" id="offers">
@@ -248,11 +331,33 @@
 								</ul>
 							</div>
 						</li>
+						<!-- <li class="nav-item">
+							<a data-toggle="collapse" href="#banner">
+								<i class="fa fa-chart-bar"></i>
+								<p>Add banners</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="banner">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="{% url 'add_banner' %}">
+											<span class="sub-item">Add banner</span>
+										</a>
+									</li>
+									<li>
+										<a href="{% url 'add_banner' %}">
+											<span class="sub-item">Viewbanner</span>
+										</a>
+									</li>
+									
+								</ul>
+							</div>
+						</li> -->
 					</ul>
 				</div>
 			</div>
 		</div>
-		<!-- End Sidebar -->
+
 		<body>
 			{% block content%}
 
@@ -290,24 +395,481 @@
 	</div>
 
 	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+	
+	<script>
+		$(document).ready(function () {
+			$('#salestable').DataTable({
+				"footerCallback": function (row, data, start, end, display) {
+					var api = this.api(), data;
+	
+					// Remove the formatting to get integer data for summation
+					var intVal = function (i) {
+						return typeof i === 'string' ?
+							i.replace(/[\$,]/g, '') * 1 :
+							typeof i === 'number' ?
+								i : 0;
+					};
+	
+					// Total over all pages
+					total = api
+						.column(6)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+	
+				  
+					// Update footer
+					$(api.column(6).footer()).html('Total '+ total);
+				},
+				dom: 'Bfrtip',
+				buttons: [
+					'excel', 'pdf', 'print'
+				],
+			});
+		});
+	</script> 
 	<!--   Global JS Files (used by all pages) Start  -->
-	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/global/jquery.3.2.1.min.js"></script>
+	<!-- <script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/global/jquery.3.2.1.min.js"></script> -->
 	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/global/popper.min.js"></script>
 	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/global/bootstrap.min.js"></script>
 	<!--   Global JS Files (used by all pages) End  -->
 
 	<!--   Plugin  JS Files  (used by this page) Start -->
-	<script
+	<!-- <script
 		src="https://aaryaweb.info/html/stylexpo/admin/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 	<script
 		src="https://aaryaweb.info/html/stylexpo/admin/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-	<script
-		src="https://aaryaweb.info/html/stylexpo/admin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/plugin/datatables/datatables.min.js"></script>
+	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+	<script src="https://aaryaweb.info/html/stylexpo/admin/assets/js/plugin/datatables/datatables.min.js"></script> -->
 	<!--   Plugin  JS Files (used by this page) End -->
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+  <!-- data table script  -->
+
+
+
+  
+<!-- disable date before today -->
+	<script>
+		var today = new Date().toISOString().split('T')[0];
+		document.getElementsByName("enddate")[0].setAttribute('min', today);
+	</script>
+
+<script>
+	var today = new Date().toISOString().split('T')[0];
+	document.getElementsByName("fdate")[0].setAttribute('max', today);
+	
+</script>
+
+<!--  validations -->
+	<script>
+			function nameValidation() {
+
+				var addresspattern = /^[a-zA-Z\s,.'-]{3,}$/   
+				var address = document.getElementById("offer-name").value
+				if (address == "") {
+					document.getElementById("nameError").innerHTML = "This field is required!";
+					return false;
+				} else if(address.match(addresspattern)) {
+					document.getElementById("nameError").innerHTML = "";
+					return true;
+				}
+			}
+			function dateValidate() {
+					var address = document.getElementById("datefield").value
+					if (address == "") {
+					document.getElementById("checkdateError").innerHTML = "This field is required!";
+					return false;
+					} else {
+					document.getElementById("checkdateError").innerHTML = "";
+					return true;
+					}
+				}
+				function productlistValidate() {
+					var address = document.getElementById("category-type").value
+					if (address == "") {
+					document.getElementById("productlistError").innerHTML = "This field is required!";
+					return false;
+					} else {
+					document.getElementById("productlistError").innerHTML = "";
+					return true;
+					}
+				}
+			function checkDiscountLimit() {
+				var valid = /^[1-9][0-9]|[1-9]$/
+				var discount_amount = document.getElementById('minimum-spend').value
+				if (discount_amount == "") {
+					document.getElementById("checkError").innerHTML = "This field is required!";
+					return false;
+				} else if (discount_amount.match(valid)) {
+
+					if (discount_amount > 60) {
+						document.getElementById("checkError").innerHTML = "above 60% is not applicable";
+						return false;
+					} else {
+						document.getElementById("checkError").innerHTML = "";
+						return true;
+					}
+
+				} else {
+					document.getElementById("checkError").innerHTML = "invalid";
+					return false;
+				}
+			}
+
+			function check_productoffer() {
+				console.log("inside function")
+
+				if (nameValidation()&&checkDiscountLimit()&&dateValidate()&&productlistValidate() ) {
+					return true
+
+				} else {
+					
+					nameValidation();
+					checkDiscountLimit();
+					dateValidate();
+					productlistValidate();
+					return false
+				}
+
+			}
+			function maxLimit(){
+				var val = /^[1-9][0-9]*$/
+
+		var limit = document.getElementById("maxlimitid").value;
+		if(isNaN(limit) ){
+			document.getElementById("maxlimitError").innerHTML = "Not valid limit."
+			return false;
+		}
+		else if(limit==""){
+			document.getElementById("maxlimitError").innerHTML = "This feild is required!"
+			return false;
+		}else if(limit.match(val)){
+			document.getElementById("maxlimitError").innerHTML = ""
+			return true;
+		}
+
+		}
+
+		
+		function check_couponoffer() {
+
+			if (nameValidation()&&checkDiscountLimit()&&dateValidate()&& maxLimit()) {
+				return true;
+
+			} else {
+				nameValidation();
+				checkDiscountLimit();
+				dateValidate();
+				maxLimit();
+				return false;
+			}
+		}
+
+	function catnameValidation(){
+		console.log('inside cate name')
+		var check1 = /^[-a-zA-Z-()]+(\s+[-a-zA-Z-()]+)*$/;
+		var regex = /^[0-9]*\d$/;
+		var name1 = document.getElementById("inputcatName").value;
+		
+		if(name1==""){
+			
+			document.getElementById("namecatMessage").innerHTML= "This field is required!";
+			return false;
+		}else if(check1.test(name1)){
+			document.getElementById("namecatMessage").innerHTML ="";
+			return true;
+		}else if(regex.test(name1)){
+				document.getElementById("namecatMessage").innerHTML ="Enter characters.";
+				return false;
+		}else{
+			document.getElementById("namecatMessage").innerHTML ="Not valid."
+		}
+	}
+
+	function textAreaValidation(){
+		console.log("entered inside function")
+		var check1 = /^[-a-zA-Z-()]+(\s+[-a-zA-Z-()]+)*$/;
+		var regex = /^[0-9]*\d$/;
+		var name1 = document.getElementById("textareavalid").value;
+		
+		if(name1==""){
+			
+			document.getElementById("cattextMessage").innerHTML= "This field is required!";
+			return false;
+		}else if(check1.test(name1)){
+			document.getElementById("cattextMessage").innerHTML ="";
+			return true;
+		}else if(regex.test(name1)){
+				document.getElementById("cattextMessage").innerHTML ="Enter characters.";
+				return false;
+		}else{
+			document.getElementById("cattextMessage").innerHTML = "Not valid."
+		}
+
+	}
+	 
+	function checkCategoryValidation(){
+		if(catnameValidation()&&textAreaValidation()){
+			return true
+		}else{
+			catnameValidation();
+			textAreaValidation();
+			return false;
+		}
+	}
+
+	function checksubCategoryValidation(){
+
+	if(catnameValidation()&&textAreaValidation()){
+		return true
+	}else{
+		catnameValidation();
+		textAreaValidation();
+	
+		return false;
+	}
+}
+	</script>
+	<!-- image validation -->
+	
+	
+<!-- ajax for deleting category offer -->
+	<script>
+        function deleteCatOffer(offerid) {
+            swal({
+                title: "Are you sure?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+            if (willDelete) {
+                var offer_id = offerid;
+                $.ajax({
+
+                    type: "GET",
+                    url: '{% url 'deletecategoryoffer' %}',
+                    data: { offer_id: offer_id },
+                    dataType: 'json',
+                    success: function (data) {
+                        swal("Poof! deleted successfully!", {
+                          icon: "success",
+                        });
+                        $( "#refresh_body" ).load(window.location.href + " #refresh_body" );
+                    },
+                    error: function () {
+                        alert('something went wrong')
+                    }
+                });
+            }
+            else {
+            swal("Your product not deleted");
+            }
+        })
+           
+        }
+    </script>
+<!-- ajax for deleting coupon offer -->
+	<script>
+		function delete_coupon(offerid) {
+			swal({
+				title: "Are you sure?",
+				icon: "warning",
+				buttons: true,
+				dangerMode: true,
+			})
+			.then((willDelete) => {
+			if (willDelete) {
+				var coupon_id = offerid;
+				$.ajax({
+
+					type: "GET",
+					url: '{% url 'deletecoupon' %}',
+					data: { coupon_id: coupon_id },
+					dataType: 'json',
+					success: function (data) {
+						swal("Poof! deleted successfully!", {
+						icon: "success",
+						});
+						$( "#refresh_body" ).load(window.location.href + " #refresh_body" );
+					},
+					error: function () {
+						alert('something went wrong')
+					}
+				});
+			}
+			else {
+			swal("Your product not deleted");
+			}
+		})
+		
+		}
+	</script>
+<!-- ajax function to delete category -->
+	<script>
+		function categorydelete(catofferid) {
+			swal({
+				title: "Are you sure?",
+				icon: "warning",
+				buttons: true,
+				dangerMode: true,
+			})
+			.then((willDelete) => {
+			if (willDelete) {
+				var cat_offerid = catofferid;
+				console.log('entred inside')
+				$.ajax({
+					
+					type: "GET",
+					url: '{% url 'deletecategory' %}',
+					data: { cat_offerid: cat_offerid },
+					dataType: 'json',
+					success: function (data) {
+						swal("Poof! deleted successfully!", {
+						  icon: "success",
+						});
+						$( "#refresh_body" ).load(window.location.href + " #refresh_body" );
+					},
+					error: function () {
+						alert('something went wrong')
+					}
+				});
+			}
+			else {
+			swal("Your product not deleted");
+			}
+		})
+		   
+		}
+	</script>
+<!-- ajax function to delete subcategory -->
+	<script>
+		function subCategorydelete(subcatofferid) {
+			swal({
+				title: "Are you sure?",
+				icon: "warning",
+				buttons: true,
+				dangerMode: true,
+			})
+			.then((willDelete) => {
+			if (willDelete) {
+				var subcat_offerid = subcatofferid;
+				console.log('entred inside')
+				$.ajax({
+					
+					type: "GET",
+					url: '{% url 'deletesubcategory' %}',
+					data: { subcat_offerid: subcat_offerid },
+					dataType: 'json',
+					success: function (data) {
+						swal("Poof! deleted successfully!", {
+						icon: "success",
+						});
+						$( "#refresh_body" ).load(window.location.href + " #refresh_body" );
+					},
+					error: function () {
+						alert('something went wrong')
+					}
+				});
+			}
+			else {
+			swal("Your product not deleted");
+			}
+		})
+		
+		}
+	</script>
+<!-- ajax function to delete product -->
+	<script>
+		function productdelete(prodofferid) {
+			swal({
+				title: "Are you sure?",
+				icon: "warning",
+				buttons: true,
+				dangerMode: true,
+			})
+			.then((willDelete) => {
+			if (willDelete) {
+				var prod_offerid = prodofferid;
+				console.log('entred inside')
+				$.ajax({
+					
+					type: "GET",
+					url: '{% url 'deleteproduct' %}',
+					data: { prod_offerid: prod_offerid },
+					dataType: 'json',
+					success: function (data) {
+						swal("Poof! deleted successfully!", {
+						icon: "success",
+						});
+						$( "#refresh_body" ).load(window.location.href + " #refresh_body" );
+					},
+					error: function () {
+						alert('something went wrong')
+					}
+				});
+			}
+			else {
+			swal("Your product not deleted");
+			}
+		})
+		
+		}
+	</script>
+<!-- ajax for deleting product offer -->
+	<script>
+		function delete_product(offerid) {
+			swal({
+				title: "Are you sure?",
+				icon: "warning",
+				buttons: true,
+				dangerMode: true,
+			})
+			.then((willDelete) => {
+			if (willDelete) {
+				var offer_id = offerid;
+				$.ajax({
+
+					type: "GET",
+					url: '{% url 'delete_product_offer' %}',
+					data: { offer_id: offer_id },
+					dataType: 'json',
+					success: function (data) {
+						swal("Poof! deleted successfully!", {
+						icon: "success",
+						});
+						$( "#refresh_body" ).load(window.location.href + " #refresh_body" );
+					},
+					error: function () {
+						alert('something went wrong')
+					}
+				});
+			}
+			else {
+			swal("Your product not deleted");
+			}
+		})
+		
+		}
+	</script>
 
 </body>
 

@@ -75,7 +75,7 @@
                     <th>Product Detail</th>
                   </tr>
                 </thead>
-                {% for order_product in order_product %}
+                {% for subtotal,order_product in zipped_data %}
                 <tbody>
                   <tr>
                     <td>
@@ -90,35 +90,49 @@
                         <p>{{order_product.product}}</p>
                         <div class="product-info-stock-sku m-0">
                           <div>
-                            <label>Price: </label>
-                            {% if order_product.product.is_offer_avail == True %}
+                          
+                            {% if coupon_use.is_ordered %}
                             <div class="price-box">
-                              <span class="info-deta price">₹{{orginal_price}}</span>
+                              <span class="info-deta price">₹{{subtotal}}</span>
                             </div><br>
-                            <label>Product offer price: </label>
+                            <label>coupon price: </label>
+                            <div class="price-box">
+                              <span class="info-deta price">₹{{order_confirms.coupon_price}}</span>
+                            </div>
+                            {% elif order_product.product.is_offer_avail and order_product.product.category_offer_avail %}
+                            
+                            <label> offer price: </label>
                             <div class="price-box">
                               <span class="info-deta price">₹{{offer_total}}</span>
+                            </div>
+                            <div>
+                              <label>Saved: </label>
+                              <span class="info-deta">₹{{savings}}</span>
+                            </div>
+                            {% elif order_product.product.is_offer_avail == True %}
+                            
+                            <label>Product offer price: </label>
+                            <div class="price-box">
+                              <span class="info-deta price">₹{{subtotal}}</span>
                             </div>
                             <div>
                               <label>Saved: </label>
                               <span class="info-deta">₹{{savings}}</span>
                             </div>
                             {% elif order_product.product.category_offer_avail == True %}
-                            <div class="price-box">
-                              <span class="info-deta price">₹{{orginal_price}}</span>
-                            </div><br>
+                            
                             <label>Category offer price: </label>
                             <div class="price-box">
-                              <span class="info-deta price">₹{{offer_total}}</span>
+                              <span class="info-deta price">₹{{subtotal}}</span>
                             </div>
                             <div>
                               <label>Saved: </label>
                               <span class="info-deta">₹{{savings}}</span>
                             </div>
-
                             {% else %}
                             <div class="price-box">
-                              <span class="info-deta price">₹{{order_product.product.price}}</span>
+                              <label>Price: </label>
+                              <span class="info-deta price">₹{{subtotal}}</span>
                             </div>
                             {% endif %}
                           </div>
@@ -150,9 +164,15 @@
                   </tr>
                   <tr>
                     <td><b>Total :</b></td>
+                    {% if coupon_use.is_ordered %}
+                    <td>
+                      <div class="price-box"> <span class="price">₹{{order_confirms.coupon_price}}</span> </div>
+                    </td>
+                    {% else %}
                     <td>
                       <div class="price-box"> <span class="price">₹{{order_confirms.payment.amount_paid}}</span> </div>
                     </td>
+                    {% endif %}
                   </tr>
                   <tr>
                     <td><b>Payment :</b></td>

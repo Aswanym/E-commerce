@@ -124,7 +124,8 @@
 
                     <div class="col-md-6">
                       <div class="input-box">
-                        <input type="text" placeholder="City" name=city>
+                        <input type="text" placeholder="City" onkeyup="pincodeValidation()" name=city id="cityid">
+                        <div><small style="color: red;" id="cityMessage" ></small></div>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -140,14 +141,14 @@
                     <div class="col-md-6">
                       <div class="custom-control custom-radio">
                         <input type="radio" class="custom-control-input" id="defaultChecked" value="home"
-                          name="address_type" checked>
+                          name="address_type" checked required>
                         <label class="custom-control-label" for="defaultChecked">Home</label>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="custom-control custom-radio">
                         <input type="radio" class="custom-control-input" id="defaultChecked2" value="company"
-                          name="address_type">
+                          name="address_type" required>
                         <label class="custom-control-label" for="defaultChecked2">Company</label>
                       </div>
                     </div>
@@ -178,6 +179,26 @@
                 return false;
         }else{
             document.getElementById("fnameMessage").innerHTML = "Enter valid name."
+        }
+    }
+
+    function cityValidation(){
+        
+        var check1 = /^[-a-zA-Z-()]+(\s+[-a-zA-Z-()]+)*$/;
+        var regex = /^[0-9]*\d$/;
+        var name1 = document.getElementById("cityid").value
+        if(name1==""){
+            
+            document.getElementById("cityMessage").innerHTML= "This field is required!";
+            return false;
+        }else if(check1.test(name1)){
+            document.getElementById("cityMessage").innerHTML ="";
+            return true;
+        }else if(regex.test(name1)){
+                document.getElementById("cityMessage").innerHTML ="Enter characters.";
+                return false;
+        }else{
+            document.getElementById("cityMessage").innerHTML = "Enter valid name."
         }
     }
     

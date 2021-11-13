@@ -4,15 +4,79 @@ from django.http.response import JsonResponse
 from cart.models import CartItem, UserAddress
 from django.shortcuts import render,redirect
 from order.models import Order, OrderProduct,Payment
-from admin_panel.models import Product
+from admin_panel.models import CouponOffer, Product, CouponUsed
 from django.contrib.auth.models import User, auth
 import datetime
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 import razorpay
 
 # Create your views here.
 
+def checkcoupon(request):
+    print("user of the rquest===",request.user)
+    print('inside function coupon')
+    if request.method=="GET":
+        couponname = request.GET.get('coupon')
+        grand_total = request.GET.get('total_ammount')
+        order_number = request.GET.get('order_number')
+
+        print("grant_total===",grand_total)
+        print(type(grand_total))
+        print("coupon check===",couponname)
+        if CouponOffer.objects.filter(coupon_title=couponname,is_available = True):
+        
+            coupon_instance = CouponOffer.objects.get(coupon_title=couponname,is_available = True)
+            print("coupon_instance---------------",coupon_instance)
+
+            if coupon_instance.coupon_expiry() :
+                return JsonResponse({'status':'expired','message':"Coupon Expired"})
+
+            elif CouponUsed.objects.filter(user=request.user,coupon=coupon_instance,is_ordered = True).exists():
+                return JsonResponse({'status':'used','message':"Coupon already used" })
+
+            elif CouponUsed.objects.filter(user=request.user,coupon=coupon_instance ,is_ordered = False).exists():
+                print("inside elif")
+                use_coupon=CouponUsed.objects.get(user=request.user,coupon=coupon_instance)
+               
+            else:
+                print("inside else")
+                use_coupon=CouponUsed()
+
+            use_coupon.user = request.user
+            use_coupon.coupon = coupon_instance
+            use_coupon.order_number = order_number
+            use_coupon.save()
+
+            print("type====",type(coupon_instance.coupon_offer),"value====",coupon_instance.coupon_offer)
+            print("type====",type(grand_total),"value====",grand_total)
+            val = float(grand_total)
+            print("type==",type(val),"value==",val)
+
+            percent_value = (float(grand_total)*coupon_instance.coupon_offer/100)
+            print("type of percent value",type(percent_value))
+            print(" percent value",percent_value)
+
+            if percent_value > coupon_instance.coupon_limit:
+                grand_total = float(grand_total )- (coupon_instance.coupon_limit)
+                coupon_price = coupon_instance.coupon_limit
+            else:
+                grand_total = int(float(grand_total) - percent_value)
+                coupon_price= int(percent_value)
+
+            
+            order = Order.objects.get(user=request.user,order_number=order_number)
+            order.coupon_price = grand_total
+            print(order)
+            order.save()
+            
+
+            print(coupon_price,grand_total)
+            return JsonResponse({'status':'success','message': ' coupon applied sucessfully','grand_total':grand_total,'coupon_price':coupon_price})
+        return JsonResponse({'status':'error','message': 'coupon not available'})
+
+@login_required(login_url = 'login')  
 def place_order(request,count, total=0, quantity=0):
 
     shipping = 0
@@ -31,10 +95,19 @@ def place_order(request,count, total=0, quantity=0):
 
 
         for cart_item in cart_items:
+
+            if cart_item.product.is_offer_avail and cart_item.product.category_offer_avail:
+                total += (cart_item.product.compare() * cart_item.quantity)
+                quantity += cart_item.quantity
             
-            if cart_item.product.is_offer_avail == True:
+            elif cart_item.product.is_offer_avail == True:
                 total += (cart_item.product.offer_price * cart_item.quantity)
                 quantity += cart_item.quantity
+
+            elif cart_item.product.category_offer_avail == True:
+                total += (cart_item.product.category_offer_price * cart_item.quantity)
+                quantity += cart_item.quantity
+
             else:
                 total += (cart_item.product.price * cart_item.quantity)
                 quantity += cart_item.quantity
@@ -95,11 +168,17 @@ def place_order(request,count, total=0, quantity=0):
 
 def payment(request,order_number,total=0,quantity=0):
     tax=0
+    couponuse=0
     orders = Order.objects.filter(user= request.user,is_ordered = False,order_number=order_number)
     cart_items=CartItem.objects.filter(user=request.user,is_active=True)
     
     for cart_item in cart_items:
-        if cart_item.product.is_offer_avail == True:
+
+        if cart_item.product.is_offer_avail and cart_item.product.category_offer_avail:
+            total += (cart_item.product.compare() * cart_item.quantity)
+            quantity += cart_item.quantity
+
+        elif cart_item.product.is_offer_avail == True:
             total += (cart_item.product.offer_price * cart_item.quantity)
             quantity += cart_item.quantity
 
@@ -153,6 +232,16 @@ def payment(request,order_number,total=0,quantity=0):
             product.save()
 
             order_id = orderproduct.order_id 
+
+            if CouponUsed.objects.filter(order_number=order_number,is_ordered=False).exists():
+                couponuse = CouponUsed.objects.get(order_number=order_number)
+                couponuse.is_ordered = True
+                couponuse.save()
+            # else:
+            #     couponuse = CouponUsed.objects.get(order_number=order_number)
+            #     couponuse.is_ordered = False
+            #     couponuse.save()
+
 
         #clear cart
         CartItem.objects.filter(user=request.user).delete()
@@ -216,7 +305,12 @@ def razorpay(request,order_number,total=0,quantity=0):
     cart_items=CartItem.objects.filter(user=request.user,is_active=True)
     
     for cart_item in cart_items:
-        if cart_item.product.is_offer_avail == True:
+
+        if cart_item.product.is_offer_avail and cart_item.product.category_offer_avail:
+            total += (cart_item.product.compare() * cart_item.quantity)
+            quantity += cart_item.quantity
+            
+        elif cart_item.product.is_offer_avail == True:
                 total += (cart_item.product.offer_price * cart_item.quantity)
                 quantity += cart_item.quantity
 
@@ -271,6 +365,17 @@ def razorpay(request,order_number,total=0,quantity=0):
             product.stock -= item.quantity
             product.save()
 
+            
+            if CouponUsed.objects.filter(order_number=order_number,is_ordered=False).exists():
+                couponuse = CouponUsed.objects.get(order_number=order_number)
+                couponuse.is_ordered = True
+                couponuse.save()
+            # else:
+                
+            #     couponuse = CouponUsed.objects.get(order_number=order_number)
+            #     couponuse.is_ordered = False
+            #     couponuse.save()
+
         #clear cart
         CartItem.objects.filter(user=request.user).delete()
     
@@ -281,11 +386,38 @@ def order_complete(request,order_number):
     orginal_price = 0
     savings = 0
     total = 0
+    coupon_use=0
+    subtotals = []
+    savings = []
+
+
     order_confirms = Order.objects.get(user=request.user,order_number=order_number)
 
     order_product = OrderProduct.objects.filter(user=request.user,order_id=order_confirms.id)
+
+    for item in order_product:
+        
+        if item.product.is_offer_avail and item.product.category_offer_avail:
+            p=item.product.compare()
+            subtotals.append(p*item.quantity)
+      
+        elif item.product.is_offer_avail:
+            subtotals.append(item.product.offer_price*item.quantity)
+        elif item.product.category_offer_avail:
+            subtotals.append(item.product.category_offer_price*item.quantity)
+        else:
+            subtotals.append(item.product.price*item.quantity)
+
     for order in order_product:
-        if order.product.is_offer_avail == True:
+
+        if order.product.is_offer_avail and order.product.category_offer_avail:
+            orginal_price = order.quantity * order.product.price
+            offer_total = order.quantity * order.product.compare()
+            savings = orginal_price - offer_total
+            # total += (order.product.compare() * order.quantity)
+            # quantity += order.quantity
+        
+        elif order.product.is_offer_avail == True:
             orginal_price = order.quantity * order.product.price
             offer_total = order.quantity * order.product.offer_price
             savings = orginal_price - offer_total
@@ -296,7 +428,14 @@ def order_complete(request,order_number):
             savings = orginal_price - offer_total
         
         else:
-            total = order.quantity * order.product.price
+            orginal_price = order.quantity * order.product.price
+
+        zipped_data = zip(subtotals,order_product)
+
+    if CouponUsed.objects.filter(order_number=order_number).exists():
+        coupon_use =  CouponUsed.objects.get(order_number=order_number)
+    
+
 
     context={
         'total':total,
@@ -304,7 +443,9 @@ def order_complete(request,order_number):
         'order_product': order_product,
         'offer_total':offer_total,
         'orginal_price':orginal_price,
-        'savings':savings
+        'savings':savings,
+        'coupon_use':coupon_use,
+        'zipped_data':zipped_data
     }
     return render(request,'store/order_complete.html',context)
 

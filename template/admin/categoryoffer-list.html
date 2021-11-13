@@ -33,8 +33,8 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-body">
-							<div class="table-responsive dataTables_scroll">
+						<div  class="card-body" id="refresh_body">
+							<div  class="table-responsive dataTables_scroll">
 								<table id="basic-datatables" class="display table table-hover table-fixed">
 									<thead>
 										<tr>
@@ -53,11 +53,15 @@
 											<td>{{categoryoffer.category.category_name}}</td>
 											<td>{{categoryoffer.dis_percentage}}%</td>
 											<td>{{categoryoffer.enddate}}</td>
+											{% if categoryoffer.cat_offer_status %}
+												<td style="color: red;" >Expired</td>
+											{% else %}
 											<td style="color: green;" >Active</td>
+											{% endif %}
 											<td class="text-right">
 												<div class="form-button-action">
 													<button data-toggle="tooltip"
-														onclick="delete_product('{{categoryoffer.id}}')"
+														onclick="deleteCatOffer('{{categoryoffer.id}}')"
 														class="btn btn-link btn-danger offerdelete"
 														data-original-title="Remove">
 														<i class="fa fa-times"></i>
@@ -75,28 +79,6 @@
 			</div>
 		</div>
 	</div>
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-	<script>
-		function delete_product(offerid) {
-			var offer_id = offerid;
-			if (confirm('are you sure?')) {
-
-				$.ajax({
-
-					type: "GET",
-					url: '{% url 'deletecategoryoffer' %}',
-					data: { offer_id: offer_id },
-					dataType: 'json',
-					success: function (data) {
-						document.getElementById('delete_offer').style.display = 'none';
-					},
-					error: function () {
-						alert('something went wrong')
-					}
-				});
-			}
-		}
-	</script>
+	
 
 	{% endblock %}

@@ -11,6 +11,7 @@ urlpatterns=[
     path('place_order/<int:count>',views.place_order,name='place_order'),
 
     path('order_status',views.order_status,name='order_status'),
+    path('checkcoupon',views.checkcoupon,name='checkcoupon'),
 
     
 ]

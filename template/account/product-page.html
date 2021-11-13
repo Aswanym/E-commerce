@@ -42,7 +42,9 @@
                     <div class="rating-summary-block">
                       <div title="53%" class="rating-result"> <span style="width:53%"></span> </div>
                     </div>
-                    {% if all_data.is_offer_avail == True %}
+                    {% if all_data.is_offer_avail and all_data.category_offer_avail %}
+                  <div class="price-box"><del >₹{{all_data.price}} </del><span class="price ml-2">₹{{all_data.compare}}</span></div>
+                    {% elif all_data.is_offer_avail == True %}
                     <div class="price-box"> <span class="price">₹{{all_data.offer_price}}</span> <del
                         class="price old-price">₹{{all_data.price}}</del> </div>
                     <div><b> Product offer applied</b></div>

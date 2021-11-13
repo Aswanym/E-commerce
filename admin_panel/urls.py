@@ -15,17 +15,18 @@ urlpatterns = [
 
    path('product/productlist',views.productlist, name ='productlist'),
    path('product/addproduct',views.addproduct,name = 'addproduct'),
-   path('product/addproduct/editproduct/<id>',views.EditProduct,name='editproduct'),
-   path('product/addproduct/editedproduct/<id>',views.EditedProduct,name='editedproduct'),
-   path('product/addproduct/deleteproduct/<id>',views.DeleteProduct,name='deleteproduct'),
+   path('product/addproduct/editproduct/<id>',views.edit_product,name='editproduct'),
+   path('product/addproduct/deleteproduct',views.DeleteProduct,name='deleteproduct'),
 
    path('category/addcategory',views.addcategory,name = 'addcategory'),
    path('category/categorylist',views.categorylist,name = 'categorylist'),
-   path('category/categorylist/deletecategory/<id>',views.deleteCatergory,name='deletecategory'),
+   path('category/categorylist/editcategory/<id>',views.editCategory,name='editcategory'),
+   path('category/categorylist/deletecategory',views.deleteCatergory,name='deletecategory'),
 
    path('subcategory/subcategorylist',views.SubCategoryList,name = 'subcategorylist'),
    path('subcategory/addsubcategory',views.AddSubCategory,name = 'addsubcategory'),
-   path('subcategory/addsubcategory/deletesubcategory/<id>',views.deleteSubCatergory,name='deletesubcategory'),
+   path('subcategory/addsubcategory/editsubcatgory/<id>',views.editSubCatergory,name='editsubcatgory'),
+   path('subcategory/addsubcategory/deletesubcategory',views.deleteSubCatergory,name='deletesubcategory'),
 
    path('orders/orders',views.orders,name='orders'),
 
@@ -40,5 +41,9 @@ urlpatterns = [
    path('deletecategoryoffer',views.delete_category_offer,name='deletecategoryoffer'),
 
    path('addcoupon',views.add_coupon,name='addcoupon'),
+   path('deletecoupon',views.deletecoupon,name='deletecoupon'),
+
+   path('admin_banners',views.admin_banners, name='admin_banners'),    
+   path('add_banner',views.add_banner, name='add_banner'),
 
 ]

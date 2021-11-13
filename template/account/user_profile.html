@@ -35,22 +35,23 @@
                 </div>
                 <hr />
                 <br />
+               
                 <p>
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                  Donec eros tellus, scelerisque nec, rhoncus eget, laoreet sit
-                  amet.
-                  >
+                  Welcome to our shop!!!
+                  
                 </p>
                 <hr />
+               
               </div>
             </div>
           </div>
-          <div class="card">
+          <div class="card mt-5">
             <div class="card-body">
+              
               <div class="row">
                 <div class="col-md-6">
-                  <div class="card" style="text-align: center;">
-                    <div class="card-body">
+                  <div class="card" style="text-align: center; height: 255px;">
+                    <div class="card-body My-auto>
                       <h5 class="card-title">Total order</h5>
                       <h4>{{order_count}}</h4>
                       <a href="">View order</a>
@@ -60,12 +61,14 @@
                 <div class="col-md-6">
                   <div class="card" style="text-align: center; ">
                     <div class="card-body">
-                      <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar" width="50"
-                        height="50" style="border-radius: 50%" />
+                    
+                        <img src="{{user_picture.profile_picture.url}}" alt="Avatar" class="avatar" width="100"
+                        height="100" style="border-radius: 50%" />
                       <br>
                       <p>{{user_details.full_name}}</p>
                       <p>{{user_details.email}}</p>
                       <p>{{user_details.phone_number}}</p>
+                      
                     </div>
                   </div>
                 </div>
@@ -83,44 +86,56 @@
           </div>
           <hr>
           <div class="m-0">
-            <form class="main-form full" action="{% url 'edit_profile' user_details.id %}" method="POST">
+            <form class="main-form full" onsubmit="return checkFileValid()" action="{% url 'editprofile' %}" method="POST" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="mb-20">
                 <div class="row">
                   <div class="col-12 mb-20">
-                    <div class="">
-                      <h5>Shipping Address</h5>
-                    </div>
                     <hr />
                     <br />
                   </div>
+                  <div class="col-md-12 pb-2 float-right">
+                    {% if user_picture.profile_picture %}
+                  <img  src="{{user_picture.profile_picture.url}}" alt="Avatar" class="avatar" width="100"
+                    {% else %}
+                    
+                    {% endif %}
+                  height="100" style="border-radius: 50%" /></div>
                   <div class="col-md-6">
                     <div class="input-box">
                       <input type="text" required placeholder="First Name" name="first_name"
                         value="{{user_details.first_name}}" />
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <div class="input-box">
-                      <input type="text" required placeholder="Last Name" name="last_name"
-                        value="{{user_details.last_name}}" />
+                  
+                    <div class="col-md-6">
+                      <div class="input-box">
+                        <input type="text" required placeholder="Last Name" name="last_name"
+                          value="{{user_details.last_name}}" />
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="input-box">
-                      <input type="email" required placeholder="Email Address" name="email"
-                        value="{{user_details.email}}" />
+                    <div class="col-md-6">
+                      <div class="input-box">
+                        <input type="email" required placeholder="Email Address" name="email"
+                          value="{{user_details.email}}" />
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="input-box">
-                      <input type="text" required placeholder="Contact Number" name="phone_number"
-                        value="{{user_details.phone_number}}" />
+                    <div class="col-md-6">
+                      <div class="input-box">
+                        <input type="text" required placeholder="Contact Number" name="phone_number"
+                          value="{{user_details.phone_number}}" />
+                      </div>
                     </div>
-                  </div>
+                    <div class="col-12" >
+                      <div class="custom-file mt-3">
+                        <input type="file" class="custom-file-input" name="pic" id="image" accept=".jpg,.jpeg,.png"  onchange=" validateFileType()">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <div><small style="color: red;" id="imageError" ></small>  </div>
+                    </div>
                   <div class="col-md-12 align-center p-3">
-                    <button type="submit" class="btn btn-color">
-                      Change Address
+                    <button type="submit" onckick="checkFileValid"  class="btn btn-color">
+                      Save
                     </button>
                   </div>
                 </div>
@@ -190,6 +205,23 @@
                       </tbody>
                       {% endfor %}
                     </table>
+                    <div class="pagination">
+                      <span class="step-links">
+                          {% if order_list.has_previous %}
+                          <button class="btn btn-primary"><a style="color: #fff;" href="?page=1">&laquo;</a>
+                            <a style="color: #fff;" href="?page={{ page_obj.previous_page_number }}">previous</a></button>
+                          {% endif %}
+                  
+                          <span class="current">
+                              Page {{ order_list.number }} of {{ order_list.paginator.num_pages }}.
+                          </span>
+                  
+                          {% if order_list.has_next %}
+                              <button class="btn btn-primary"><a style="color: #fff;" href="?page={{ order_list.next_page_number }}">next</a>
+                              <a href="?page={{ order_list.paginator.num_pages }}">&raquo;</a></button>
+                          {% endif %}
+                      </span>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -243,7 +275,7 @@
 
     $.ajax({
       type: 'POST',
-      url: '{% url 'change_password'  %}',
+      url: '{% url 'change_password' %}',
       data: $("#changepassword").serialize(),
       dataType: 'json',
       success: successHandler,
@@ -265,6 +297,34 @@
   }
 </script>
 
+
+<!-- image validation -->
+
+<script>
+  let file = document.getElementById("image");
+function validateFileType(){
+  var fileName = file.value,
+  idxDot = fileName.lastIndexOf(".") + 1,
+  extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+  if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+    return true
+  }else{
+    // alert("Only jpg/jpeg and png files are allowed!");
+    document.getElementById("imageError").innerHTML = "Only jpg/jpeg and png files are allowed!"
+    file.value = "";  // Reset the input so no files are uploaded
+    return false
+  }
+}
+
+function checkFileValid(){
+ if(validateFileType()) {
+   return true
+
+ }else{
+   return false
+ }
+}
+</script>
 
 
 <!-- CONTAINER END -->

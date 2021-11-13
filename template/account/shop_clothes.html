@@ -14,7 +14,13 @@
             </div>
             <div class="sidebar-contant">
               <ul>
-                <li><a href="#">Clothing</a></li>
+                <li><a href="#">Clothing</a>
+                  <div class="ml-2">
+                    <a href="{% url 'shopindianwears' %}">* Indian wears</a> 
+                    <a href="{% url 'shopweasternwears' %}">* Weastern wears</a> 
+                  </div>
+                 
+                </li>
                 <li><a href="{% url 'shop_footwears' %}">Footwears</a></li>
               </ul>
             </div>
@@ -44,7 +50,7 @@
                         <ul>
                           <li class="pro-cart-icon">
                             <form action="{% url 'add_cart' product.id %}">
-                              <button title="Add to Cart"><span></span>Add to Cart</button>
+                              <button type="submit" title="Add to Cart"><span></span>Add to Cart</button>
                             </form>
                           </li>
                         </ul>
@@ -53,15 +59,21 @@
                   </div>
                   <div class="product-item-details">
                     <div class="product-item-name"> <a href="">{{product.product_name}}</a> </div>
-                    {% if product.is_offer_avail == True %}
+                    {% if product.cat_offer_status and product.offer_status %}
+                        <div class="price-box"><del >₹{{product.price}} </del><span class="price ml-2">₹{{product.compare}}</span></div>
+                    {% elif product.offer_status == True %}
                     <div class="price-box"><del>₹{{product.price}}</del> <span
                         class="price">₹{{product.offer_price}}</span>
+                        {% elif product.cat_offer_status == True %}
+                        <div class="price-box"><del>₹{{product.price}}</del> <span
+                          class="price">₹{{product.category_offer_price}}</span>
                       {% else %}
                       <div class="price-box"> <span class="price">₹{{product.price}}</span>
-                      {% endif %}
+                        {% endif %}
                       </div>
                     </div>
                   </div>
+                
                 </div>
                 {% endif %}
                 {% endfor %}

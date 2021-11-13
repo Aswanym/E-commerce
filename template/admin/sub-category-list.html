@@ -33,16 +33,17 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-body">
+						<div class="card-body" id="refresh_body">
+							{% include 'include/alerts.html' %}
 							<div class="table-responsive dataTables_scroll">
 								<table id="basic-datatables" class="display table table-hover table-fixed">
 									<thead>
 										<tr>
-
 											<th>Sub Category</th>
 											<th>Category</th>
 											<th>Slug</th>
 											<th>Description</th>
+											<th>Edit</th>
 											<th>Delete</th>
 										</tr>
 									</thead>
@@ -53,10 +54,14 @@
 											<td>{{subcategory.category}}</td>
 											<td>{{subcategory.sub_category_slug}}</td>
 											<td>{{subcategory.sub_category_description}}</td>
-
+											<td class="">
+												<a class="btn btn-primary" href="{% url 'editsubcatgory' subcategory.id %}"
+													data-toggle="tooltip" title="" data-original-title="edit"><i
+														class="fa fa-edit"></i></a>
+											</td>
 											<td class="">
 												<a class="btn btn-primary"
-													href="{% url 'deletesubcategory' subcategory.id %}"
+													onclick="subCategorydelete('{{subcategory.id}}')"
 													data-toggle="tooltip" title="" data-original-title="delete"><i
 														class="fa fa-trash"></i></a>
 											</td>

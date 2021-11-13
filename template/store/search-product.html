@@ -1,0 +1,92 @@
+{% extends 'include/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- CONTAIN START -->
+<section class="ptb-70">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-2 col-lg-3 mb-sm-30 col-lgmd-20per">
+        <div class="sidebar-block">
+          <div class="sidebar-box listing-box mb-40"> <span class="opener plus"></span>
+            <div class="sidebar-title">
+              <h3><span>Categories</span></h3>
+            </div>
+            <div class="sidebar-contant">
+              <ul>
+                <li><a href="#">Clothing</a>
+                  <div class="ml-2">
+                    <a href="{% url 'shopindianwears' %}">* Indian wears</a> 
+                    <a href="{% url 'shopweasternwears' %}">* Weastern wears</a> 
+                  </div>
+                 
+                </li>
+                <li><a href="{% url 'shop_footwears' %}">Footwears</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="sidebar-box sidebar-item"> <span class="opener plus"></span>
+          
+            <div class="sidebar-contant">
+              <ul>
+             
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-10 col-lg-9 col-lgmd-80per">
+        <div class="product-listing">
+          <div class="inner-listing">
+            <div class="row">
+              {% if count == 0 %}
+              <div id="cart_empty" class="text-center d-flex justify-content-center">
+                <p style="font-family:Bilbo Swash Caps;font-size: 30px; ">Oops!! No products available</p>
+               
+              </div>
+              {% else %}
+              {% for product in products %}
+         
+              <div class="col-xl-3 col-md-4 col-6 item-width mb-30">
+                <div class="product-item">
+                  <div class="product-image"> <a href="product-page.html"> <img src="{{product.image1.url}}"
+                        style="height: 340px;width:300px;" alt="Stylexpo"> </a>
+                    <div class="product-detail-inner">
+                      <div class="detail-inner-left align-center">
+                        <ul>
+                          <li class="pro-cart-icon">
+                            <form action="{% url 'add_cart' product.id %}">
+                              <button type="submit" title="Add to Cart"><span></span>Add to Cart</button>
+                            </form>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-item-details">
+                    <div class="product-item-name"> <a href="">{{product.product_name}}</a> </div>
+                    {% if product.offer_status == True %}
+                    <div class="price-box"><del>₹{{product.price}}</del> <span
+                        class="price">₹{{product.offer_price}}</span>
+                        {% elif product.cat_offer_status == True %}
+                        <div class="price-box"><del>₹{{product.price}}</del> <span
+                          class="price">₹{{product.category_offer_price}}</span>
+                      {% else %}
+                      <div class="price-box"> <span class="price">₹{{product.price}}</span>
+                      {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+<!-- CONTAINER END -->
+
+{% endblock %}

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'admin_panel',
     'cart',
     'order',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [

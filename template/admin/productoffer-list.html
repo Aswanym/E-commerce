@@ -33,7 +33,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-body">
+						<div id="refresh_body" class="card-body">
 							<div class="table-responsive dataTables_scroll">
 								<table id="basic-datatables" class="display table table-hover table-fixed">
 									<thead>
@@ -94,28 +94,5 @@
 			</div>
 		</div>
 	</div>
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-	<script>
-		function delete_product(offerid) {
-			var offer_id = offerid;
-			if (confirm('are you sure?')) {
-
-				$.ajax({
-
-					type: "GET",
-					url: '{% url 'delete_product_offer' %}',
-					data: { offer_id: offer_id },
-					dataType: 'json',
-					success: function (data) {
-						document.getElementById('delete_offer').style.display = 'none';
-					},
-					error: function () {
-						alert('something went wrong')
-					}
-				});
-			}
-		}
-	</script>
-
-	{% endblock %}
+{% endblock %}

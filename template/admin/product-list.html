@@ -24,6 +24,7 @@
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header">
+
 							<div class="card-head-row justify-content-between">
 								<div class="card-title"><i class="fa fa-list"></i> Products List</div>
 								<div class="add-btn">
@@ -33,7 +34,8 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-body">
+						<div id="refresh_body" class="card-body">
+							{% include 'include/alerts.html' %}
 							<div class="table-responsive">
 								<table id="multi-filter-select" class="display table table-hover">
 									<thead>
@@ -69,7 +71,7 @@
 														class="fa fa-edit"></i></a>
 											</td>
 											<td class="text-right">
-												<a class="btn btn-primary" href="{% url 'deleteproduct' product.id%}"
+												<a class="btn btn-primary" onclick="productdelete('{{product.id}}')" 
 													data-toggle="tooltip" title="" data-original-title="delete"><i
 														class="fa fa-trash"></i></a>
 											</td>

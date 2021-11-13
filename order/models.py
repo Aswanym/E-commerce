@@ -50,8 +50,7 @@ class Order(models.Model):
     is_ordered=models.BooleanField(default=False)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
-
-
+    coupon_price=models.FloatField(null=True,blank=True)
         
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -75,6 +74,7 @@ class OrderProduct(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     user_cancelled=models.CharField(default=False,max_length=20,null=True)
+    
     
 
     class Meta:

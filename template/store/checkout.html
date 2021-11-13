@@ -47,8 +47,8 @@
           {% include 'include/alerts.html' %}
           <div class="col-8 pt-4">
             <div class="cart-total-table address-box commun-table mb-30">
-              <div class="table">
-                <table class="table">
+              <div id="here" class="table">
+                <table   class="table">
                   <thead>
                     <tr>
                       <th>Shipping Address</th>
@@ -70,9 +70,9 @@
                             <div class="row" id="hide_address">
                               <div class=" col-md-8 custom-control custom-radio mt-3">
 
-                                <input type="radio" name="address-id" value="{{address.id}}">
+                                <input type="radio"  name="address-id" value="{{address.id}}" required>
 
-                                <label id="{{address.id}}" style="font-weight: bold;">{{address.first_name}}</label>
+                                <label style="font-weight: bold;">{{address.first_name}}</label>
 
                                 <li>
                                   <p>{{address.first_address}}</p>
@@ -84,7 +84,7 @@
                                 </li>
                               </div>
                               <div class="col-md-4 ml-5">
-                                <button onclick="delete_address('{{address.id}}')"><i class="fa fa-trash fa-lg"></i>
+                                <button type="button" onclick="delete_address('{{address.id}}')"><i class="fa fa-trash fa-lg"></i>
                                 </button>
                               </div>
 
@@ -96,9 +96,11 @@
                   </tbody>
                 </table>
                 <div class="row">
+                  {% if address_count != 0 %}
                   <div class="col-md-6 align-left p-3">
                     <button type="submit" class="btn btn-color ">Continue</button>
                   </div>
+                  {% endif %}
                   <div class="col-md-6 align-right p-3">
                     <a href="{% url 'add_address' %}" class="btn btn-color ">Add Address</a>
                   </div>
@@ -113,27 +115,43 @@
   </div>
 </section>
 <!-- CONTAINER END -->
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
-  function delete_address(id) {
-    var addressid = id;
-    if (confirm('are you sure?')) {
+  function delete_address(id)
+  {
+    swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+        .then((willDelete) => {
+          
+          if (willDelete) {
+            var addressid = id;
+            $.ajax({
 
-      $.ajax({
-
-        type: "GET",
-        url: '{% url 'delete_useraddress' %}',
-        data: { addressid: addressid },
-        dataType: 'json',
-        success: function (data) {
-          alert('Address deleted successfully')
-          window.location='http://127.0.0.1:8000/cart/checkout'
-         
-        },
-        error: function () {
-          alert('something went wrong')
-        }
-      });
+                type: "GET",
+                url: "{% url 'delete_useraddress' %}",
+                data: { addressid: addressid },
+                dataType: 'json',
+                success: function (data) {
+                  swal("Poof! Your imaginary file has been deleted!", {
+                          icon: "success",
+                        });
+                      $( "#here" ).load(window.location.href + " #here" );
+                },
+                error: function (data) {
+                    alert('something went wrong')
+                }
+            });
     }
+    else {
+              swal("Your product not deleted");
+            }
+    });
   }
+  
 </script>
 {% endblock %}

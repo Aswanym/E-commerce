@@ -38,7 +38,7 @@
                       <h1 class="banner-title">fashion Week 2021</h1>
                       <span class="offer">Popular Brand Products 20% off</span>
                     </div>
-                    <a class="btn btn-color" href="shop.html">Shop Now!</a>
+                    <a class="btn btn-color" href="">Shop Now!</a>
                   </div>
                   <div class="col-lg-3 col-4"></div>
                 </div>
@@ -80,33 +80,32 @@
       <div class="row">
         <div class="col-md-4">
           <div class="sub-banner sub-banner1">
-            <img alt="Stylexpo" src="{% static 'images/sub-banner1.jpg' %}">
+            <img alt="Stylexpo" src="{% static 'images/bannerimage112.jpg' %}">
             <div class="sub-banner-detail">
-              <div class="sub-banner-subtitle">Fashion Shop</div>
-              <div class="sub-banner-title sub-banner-title-color">Women's</div>
-              <a class="btn btn-color" href="shop.html">Shop Now!</a>
+              <div class="sub-banner-subtitle">Weastern wears</div>
+              
+              <a class="btn btn-color" href="{% url 'shopweasternwears' %}">Shop Now!</a>
             </div>
           </div>
         </div>
         <div class="col-md-4 mt-xs-30">
           <div class="">
             <div class="sub-banner sub-banner2">
-              <img alt="Stylexpo" src="{% static 'images/sub-banner2.jpg' %}">
+              <img alt="Stylexpo" src="{% static 'images/bannerimage33.jpg' %}">
               <div class="sub-banner-detail">
-                <div class="sub-banner-subtitle">Fashion Shop</div>
-                <div class="sub-banner-title sub-banner-title-color">Couple's</div>
-                <a class="btn btn-color " href="">Shop Now!</a>
+                <div class="sub-banner-subtitle" style="color: white;">Indian wears</div>
+                
+                <a class="btn btn-color " href="{% url 'shopindianwears' %}">Shop Now!</a>
               </div>
             </div>
           </div>
         </div>
         <div class="col-md-4 mt-xs-30">
           <div class="sub-banner sub-banner3">
-            <img alt="Stylexpo" src="{% static 'images/sub-banner3.jpg' %}">
+            <img alt="Stylexpo" src="{% static 'images/subbanner1.jpeg' %}">
             <div class="sub-banner-detail">
-              <div class="sub-banner-subtitle">Fashion Shop</div>
-              <div class="sub-banner-title sub-banner-title-color">Men's</div>
-              <a class="btn btn-color " href="shop.html">Shop Now!</a>
+              <div class="sub-banner-subtitle">Footwears</div>
+              <a class="btn btn-color " href="{% url 'shop_footwears' %}">Shop Now!</a>
             </div>
           </div>
         </div>
@@ -140,36 +139,28 @@
                   <div class="detail-inner-left align-center">
                     <ul>
                       <li class="pro-cart-icon">
-                        <form action="{% url 'add_cart' product.id %}">
-                          <button type="submit" title="Add to Cart"><span></span>Add to Cart</button>
-                        </form>
+                       
+                          <button onclick="AddCart('{{product.id}}')" title="Add to Cart"><span></span>Add to Cart</button>
+                        
                       </li>
-                      <!-- <li class="buy-now">
-                        <form action="{% url 'add_cart' product.id %}">
-                          <button type="submit" title="buy now">Buy Now</button> 
-                        </form>
-                      </li> -->
                     </ul>
                   </div>
                 </div>
               </div>
               <div class="product-item-details">
-               
-                <div class="product-item-name"> <a href="">{{product.product_name}}</a></div>
-                {% if product.offer_status == True %}
-                <div class="price-box"><del >₹{{product.price}}  </del><span class="price ml-2">₹{{product.offer_price}}</span></div>
-                <div style="width: auto;" class=" new-label"><span>product offer</span></div>
+                <div class="product-item-name"> <p>{{product.product_name}}</p></div>
+                {% if product.cat_offer_status and product.offer_status %}
+                  <div class="price-box"><del >₹{{product.price}} </del><span class="price ml-2">₹{{product.compare}}</span></div>
+                {% elif product.offer_status == True %}
+                  <div class="price-box"><del >₹{{product.price}}  </del><span class="price ml-2">₹{{product.offer_price}}</span></div>
                 {% elif product.cat_offer_status == True %}
-                <div class="price-box"><del >₹{{product.price}}  </del><span class="price ml-2">₹{{product.category_offer_price}}</span></div>
-                <div style="width: auto;" class=" new-label"><span>Category offer</span></div>
-
+                  <div class="price-box"><del >₹{{product.price}}  </del><span class="price ml-2">₹{{product.category_offer_price}}</span></div>
                 {% else %}
-                <div class="price-box"> <span class="price">₹{{product.price}}</span> </div>
+                  <div class="price-box"> <span class="price">₹{{product.price}}</span> </div>
                 {% endif %}
               </div>
             </div>
           </div>
-
           {% endfor %}
         </div>
       </div>
@@ -198,7 +189,6 @@
 </section>
 <!-- perellex-banner End -->
 
-<!-- Daily Deals Start -->
 
 <!--  Site Services Features Block Start  -->
 <div class="ser-feature-block">
@@ -247,10 +237,6 @@
 </div>
 <!--  Site Services Features Block End  -->
 
-<!--  Special products Products Slider Block Start  -->
-
-<!--  Special products Products Slider Block End  -->
-
 
 <!-- Brand logo block Start  -->
 <div class="brand-logo">
@@ -281,19 +267,6 @@
 <!-- Brand logo block End  -->
 <!-- CONTAINER END -->
 </div>
-{% endblock content %}
-
-<script src="js/jquery-1.12.3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.downCount.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/fotorama.js"></script>
-<script src="highlight.html"></script>
-<script src="app.html"></script>
-<script src="js/jquery.magnific-popup.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/custom.js"></script>
 
 <script>
   var tag = document.createElement('script');
@@ -338,15 +311,5 @@
       event.target.setPlaybackQuality('hd720');
     }
   }
-
-
 </script>
-<script>
-  /* ------------ Newslater-popup JS Start ------------- */
-  $(window).load(function () {
-    $.magnificPopup.open({
-      items: { src: '#newslater-popup' }, type: 'inline'
-    }, 0);
-  });
-    /* ------------ Newslater-popup JS End ------------- */
-</script>
+{% endblock content %}

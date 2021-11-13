@@ -39,363 +39,297 @@
   <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.html' %}">
   <link rel="apple-touch-icon" sizes="72x72" href="{% static 'images/apple-touch-icon-72x72.html' %}">
   <link rel="apple-touch-icon" sizes="114x114" href="{% static 'images/apple-touch-icon-114x114.html' %}">
+  <link href='https://fonts.googleapis.com/css?family=Bilbo Swash Caps' rel='stylesheet'>
+
 </head>
 
 <body>
   <div class="se-pre-con"></div>
   <div class="main">
 
-    <!-- HEADER START -->
-    <header class="navbar navbar-custom container-full-sm" id="header">
-      <div class="header-top">
-        <div class="container">
-          <div class="row">
-            <div class="col-6">
-            </div>
-
-            <div class="col-6">
-              <div class="top-right-link right-side">
-                <ul>
-                  <li class="login-icon content">
-                    <a class="content-link">
-                      <span class="content-icon"></span>
-                    </a>
-                    <a href="login.html" title="Login">Login</a> or
-                    <a href="register.html" title="Register">Register</a>
-                    <div class="content-dropdown">
-                      <ul>
-                        <li class="login-icon"><a href="login.html" title="Login"><i class="fa fa-user"></i> Login</a>
-                        </li>
-                        <li class="register-icon"><a href="register.html" title="Register"><i
-                              class="fa fa-user-plus"></i> Register</a></li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li class="track-icon">
-                    <a href="#" title="Track your order"><span></span> Track your order</a>
-                  </li>
-                  <li class="gift-icon">
-                    <a href="#" title="Gift card"><span></span> Gift card</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="header-middle">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-2 col-md-3 col-lg md-20per">
-              <div class="header-middle-left">
-                <div class="navbar-header float-none-sm">
-                  <a class="navbar-brand page-scroll" href="{% url 'index' %}">
-                    <h2 style="color: #fff;"> SAASHA Boutique</h2>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-8 col-md-6 col-lgmd-60per">
-              <div class="header-right-part">
-                <div class="main-search">
-                  <div class="header_search_toggle desktop-view">
-                    <form>
-                      <div class="search-box">
-                        <input class="input-text" type="text" placeholder="Search entire store here...">
-                        <button class="search-btn"></button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-3 col-lgmd-20per">
-              <div class="right-side float-left-xs header-right-link">
-                <ul>
-
-                  <li class="cart-icon">
-                    <a href="{% url 'cart' %}">
-                      <span> <small class="cart-notification">{{cart_count_key}}</small> </span>
-                      <div class="cart-text">
-                        <div class="my-cart">Shopping Cart</div>
-                        <!-- <div class="total-price">$Welcome aswany</div> -->
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <div class="">
-                      {% if user.is_authenticated %}
-                      <p style="color: #fff; font-size: large">Hello, {{user.username}}!</p>
-                      {% else %}
-                      <p style="color: #fff; font-size: large">Hello There!!</p>
-                      {% endif %}
-                    </div>
-                  </li>
-                  <li class="side-toggle">
-                    <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button"><i
-                        class="fa fa-bars"></i></button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="header-bottom">
-        <div class="container position-s">
-          <div id="menu" class="navbar-collapse collapse">
-            <div class="top-right-link mobile right-side">
+     <!-- HEADER START -->
+  <header class="navbar navbar-custom container-full-sm" id="header">
+    <div class="header-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <div class="top-right-link right-side">
               <ul>
                 <li class="login-icon content">
                   <a class="content-link">
-                    <span class="content-icon"></span>
-                  </a>
-                  <a href="login.html" title="Login">Login</a> or
-                  <a href="register.html" title="Register">Register</a>
+                  <span class="content-icon"></span> 
+                  </a> 
+                  <a href="" title="Login">Login</a> or
+                  <a href="" title="Register">Register</a>
                   <div class="content-dropdown">
                     <ul>
-                      <li class="login-icon"><a href="login.html" title="Login"><i class="fa fa-user"></i> Login</a>
-                      </li>
-                      <li class="register-icon"><a href="register.html" title="Register"><i class="fa fa-user-plus"></i>
-                          Register</a></li>
+                      <li class="login-icon"><a href="" title="Login"><i class="fa fa-user"></i>Login</a></li>
+                      <li class="register-icon"><a href="" title="Register"><i class="fa fa-user-plus"></i> Register</a></li>
                     </ul>
                   </div>
                 </li>
-                <li class="track-icon">
-                  <a title="Track your order"><span></span> Track your order</a>
-                </li>
-                <li class="gift-icon">
-                  <a href="#" title="Gift card"><span></span> Gift card</a>
-                </li>
               </ul>
             </div>
-            <ul class="nav navbar-nav">
-              
-
-              <li class="level dropdown"> <span class="opener plus"></span> <a href="{% url 'shop_clothes' %}"
-                  class="page-scroll">Clothings</a>
-                <!-- <div class="megamenu mobile-sub-menu">
-                <div class="megamenu-inner-top">
-                  <ul class="sub-menu-level1">
-                    <li class="level2 "> <a href="shop.html"><span>Women Fashion</span></a>
-                      <ul class="sub-menu-level2">
-                        <li class="level3"><a href="shop.html"><span>■</span>Dresses</a></li>
-                        <li class="level3"><a href="shop.html"><span>■</span>Tops </a></li>
-                        <li class="level3"><a href="shop.html"><span>■</span>Jumbsuits</a></li>
-                      </ul>
-                    </li>
-                    <li class="level2">
-                      <div class="megamenu-inner-bottom mt-20 d-none d-lg-block">
-                        <a href="shop.html">
-                          <img src="{% static 'images/banner_image.jpeg' %}" alt="Stylexpo">
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div> -->
-              <li class="level dropdown"> <span class="opener plus"></span> <a href="{% url 'shop_footwears' %}"
-                  class="page-scroll">Footwears</a>
-                <!-- <div class="megamenu mobile-sub-menu">
-                <div class="megamenu-inner-top">
-                  <ul class="sub-menu-level1">
-                    <li class="level2"> <a href="shop.html"><span>Footwears </span></a>
-                      <ul class="sub-menu-level2 ">
-                        <li class="level3"><a href="shop.html"><span>■</span>Flats</a></li>
-                        <li class="level3"><a href="shop.html"><span>■</span>Casual Shoes</a></li>
-                        <li class="level3"><a href="shop.html"><span>■</span>Heels</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div> -->
-              </li>
-            </ul>
           </div>
         </div>
       </div>
-      <div class="popup-links ">
-        <div class="popup-links-inner">
-          <ul>
-            <li class="cart-icon">
-              <a class="popup-with-form" href="#cart_popup"><span class="icon"></span><span
-                  class="icon-text">Cart</span></a>
-            </li>
-            <li class="account">
-              <a class="popup-with-form" href="#account_popup"><span class="icon"></span><span
-                  class="icon-text">Account</span></a>
-            </li>
-            <li class="search">
-              <a class="popup-with-form" href="#search_popup"><span class="icon"></span><span
-                  class="icon-text">Search</span></a>
-            </li>
-            <li class="scroll scrollup">
-              <a href="#"><span class="icon"></span><span class="icon-text">scrollup</span></a>
-            </li>
-          </ul>
-        </div>
-        <div id="popup_containt">
-          <div id="categories_popup" class="white-popup-block mfp-hide popup-position">
-            <div class="popup-detail">
-              <ul class="cate-inner">
-                <li class="level sub-megamenu">
-                  <div class="megamenu  mega-sub-menu">
-                    <div class="megamenu-inner-top">
-                      <ul class="sub-menu-level1">
-                        <li class="level2">
-                          <ul class="sub-menu-level2 ">
-                            <li class="level3"><a href="shop.html"><span>■</span>Blazer & Coat</a></li>
-                            <li class="level3"><a href="shop.html"><span>■</span>Sport Shoes</a></li>
-                            <li class="level3"><a href="shop.html"><span>■</span>Trousers</a></li>
-                            <li class="level3"><a href="shop.html"><span>■</span>Purse</a></li>
-                            <li class="level3"><a href="shop.html"><span>■</span>Wallets</a></li>
-                            <li class="level3"><a href="shop.html"><span>■</span>Skirts</a></li>
-                            <li class="level3"><a href="shop.html"><span>■</span>Tops</a></li>
-                            <li class="level3"><a href="shop.html"><span>■</span>Sleepwear</a></li>
-                            <li class="level3"><a href="shop.html"><span>■</span>Jeans</a></li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div id="cart_popup" class="white-popup-block mfp-hide popup-position">
-            <div class="popup-title">
-              <h2 class="main_title heading"><span>cart</span></h2>
-            </div>
-            <div class="popup-detail">
-              <div class="cart-dropdown ">
-
-                <div class="clearfix"></div>
-                <div class="mt-20"> <a href="{% url 'cart' %}" class="btn-color btn left-side">Go to Cart</a> <a
-                    href="checkout.html" class="btn-color btn right-side">Checkout</a> </div>
+    </div>
+    <div class="header-middle">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-2 col-md-3 col-lgmd-20per">
+            <div class="header-middle-left">
+              <div class="navbar-header float-left-sm">
+                <a class="navbar-brand page-scroll" href="{% url 'index' %}">
+                  <h3 style="color: #fff; font-weight: bold;">SASHAA Boutique</h3>
+                </a> 
               </div>
             </div>
           </div>
-          <div id="account_popup" class="white-popup-block mfp-hide popup-position">
-            <div class="popup-title">
-              <h2 class="main_title heading"><span>Account</span></h2>
-            </div>
-            <div class="popup-detail">
-              <div class="row">
-                {% if user.is_authenticated and user.is_active %}
-
-                <div class="col-lg-4">
-                  <a href="{% url 'user_profile'  %}">
-                    <div class="account-inner mb-30">
-                      <i class="fa fa-user"></i><br />
-                      <span>Account</span>
-                    </div>
-                  </a>
-                </div>
-                {% comment %} <div class="col-lg-4">
-                  <a href="cart.html">
-                    <div class="account-inner mb-30">
-                      <i class="fa fa-shopping-bag"></i><br />
-                      <span>Shopping</span>
-                    </div>
-                  </a>
-                </div>
-                <div class="col-lg-4">
-                  <a href="account.html#step3">
-                    <div class="account-inner">
-                      <i class="fa fa-history"></i><br />
-                      <span>history</span>
-                    </div>
-                  </a>
-                </div> {% endcomment %}
-                <div class="col-lg-4">
-                  <a href="{% url 'logout' %}">
-                    <div class="account-inner">
-                      <i class="fa fa-share-square-o"></i><br />
-                      <span>logout</span>
-                    </div>
-                  </a>
-                </div>
-
-                {%else%}
-                <div class="col-lg-4">
-                  <a href="{% url 'register' %}">
-                    <div class="account-inner mb-30">
-                      <i class="fa fa-user-plus"></i><br />
-                      <span>Register</span>
-                    </div>
-                  </a>
-                </div>
-                <div class="col-lg-4">
-                  <a href="{% url 'login' %}">
-                    <div class="account-inner">
-                      <i class="fa fa-sign-in"></i><br />
-                      <span>Login</span>
-                    </div>
-                  </a>
-                </div>
-                {% endif %}
+          <div class="col-xl-8 col-md-6 col-lgmd-60per">
+            <div class="header-right-part">
+              <div class="category-dropdown select-dropdown">
+                <fieldset>
+                  <select id="search-category" class="option-drop" name="search-category">
+                    <option value="">All Categories</option>
+        
+                    <option value="26">■ Clothings</option>
+                    <option value="43">&nbsp;&nbsp;&nbsp;- Indian wears</option>
+                    <option value="44">&nbsp;&nbsp;&nbsp;- Weastern wears</option>
+                   
+                    <option value="27">■ Footwears</option>
+                    <option value="48">&nbsp;&nbsp;&nbsp;- Flats</option>
+                  </select>
+                </fieldset>
               </div>
-            </div>
-          </div>
-          <div id="search_popup" class="white-popup-block mfp-hide popup-position">
-            <div class="popup-title">
-              <h2 class="main_title heading"><span>Search</span></h2>
-            </div>
-            <div class="popup-detail">
               <div class="main-search">
                 <div class="header_search_toggle desktop-view">
-                  <form>
+                  <form action="{% url 'search' %}" method="POST">
                     <div class="search-box">
-                      <input class="input-text" type="text" placeholder="Search entire store here...">
-                      <button class="search-btn"></button>
+                      {% csrf_token %}
+                      <input class="input-text" name="search" type="text" placeholder="Search entire store here...">
+                      <button type="submit" class="search-btn"></button>
                     </div>
                   </form>
                 </div>
               </div>
             </div>
           </div>
+          <div class="col-xl-2 col-md-3 col-lgmd-20per">
+            <div class="right-side float-left-xs header-right-link">
+              <ul>
+                <li class="cart-icon"> 
+                  <a href="{% url 'cart' %}"> 
+                    <span id="cart_count" > <small class="cart-notification">{{cart_count_key}}</small> </span>
+                    <div class="cart-text">
+                      <div class="my-cart">Shopping Cart</div> 
+                      <div class="total-price"></div>
+                    </div> 
+                  </a>
+                  <!-- <div class="cart-dropdown header-link-dropdown">
+                    <ul class="cart-list link-dropdown-list">
+                      <li> <a class="close-cart"><i class="fa fa-times-circle"></i></a>
+                        <div class="media"> <a class="pull-left"> <img alt="Stylexpo" src="images/1.jpg"></a>
+                          <div class="media-body"> <span><a href="#">Black African Print Skirt</a></span>
+                            <p class="cart-price">$14.99</p>
+                            <div class="product-qty">
+                              <label>Qty:</label>
+                              <div class="custom-qty">
+                                <input type="text" name="qty" maxlength="8" value="1" title="Qty" class="input-text qty">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li> <a class="close-cart"><i class="fa fa-times-circle"></i></a>
+                        <div class="media"> <a class="pull-left"> <img alt="Stylexpo" src="images/2.jpg"></a>
+                          <div class="media-body"> <span><a href="#">Black African Print Skirt</a></span>
+                            <p class="cart-price">$14.99</p>
+                            <div class="product-qty">
+                              <label>Qty:</label>
+                              <div class="custom-qty">
+                                <input type="text" name="qty" maxlength="8" value="1" title="Qty" class="input-text qty">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                    <p class="cart-sub-totle"> <span class="pull-left">Cart Subtotal</span> <span class="pull-right"><strong class="price-box">$29.98</strong></span> </p>
+                    <div class="clearfix"></div>
+                    <div class="mt-20"> <a href="cart.html" class="btn-color btn left-side">Cart</a> <a href="checkout.html" class="btn-color btn right-side">Checkout</a> </div>
+                  </div> -->
+                </li>
+                <li class="side-toggle">
+                  <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button"><i class="fa fa-bars"></i></button>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-    </header>
-    <!-- HEADER END -->
+    </div>
+    <div class="header-bottom"> 
+      <div class="container position-s">
+        <div id="menu" class="navbar-collapse collapse" >
+          <div class="top-right-link mobile right-side">
+            <ul>
+              <li class="login-icon content">
+                <a class="content-link">
+                <span class="content-icon"></span> 
+                </a> 
+                <a href="" title="Login">Login</a> or
+                <a href="" title="Register">Register</a>
+                <div class="content-dropdown">
+                  <ul>
+                    <li class="login-icon"><a href="" title="Login"><i class="fa fa-user"></i> Login</a></li>
+                    <li class="register-icon"><a href="" title="Register"><i class="fa fa-user-plus"></i> Register</a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <ul class="nav navbar-nav">
+            
+            <li class="level dropdown"> <span class="opener plus"></span> <a href="{% url 'shop_clothes' %}" class="page-scroll">Clothings</a>
+              <div class="megamenu mobile-sub-menu">
+                <div class="megamenu-inner-top">
+                  <ul class="sub-menu-level1">
+                    <li class="level2 "> <a><span>Women Cloths</span></a>
+                      <ul class="sub-menu-level2">
+                        <li class="level3"><a href="{% url 'shopindianwears' %}"><span>■</span>Indian Wears</a></li>
+                        <li class="level3"><a href="{% url 'shopweasternwears' %}"><span>■</span>Weastern Wears</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li class="level dropdown"> <span class="opener plus"></span> <a href="{% url 'shop_footwears' %}" class="page-scroll">Footwears</a>
+            </li>
+            <!-- {% if user.is_active %} -->
+            <div class="top-right-link right-side">
+              <li class="level page-scroll"><span>Hello, {{user.username}}!</span></li>
+              <!-- {% else %} -->
+              <li class="level page-scroll top-right-link right-side"><span>Hello, There!</span></li>
+            <!-- {% endif %} -->
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-links ">
+      <div class="popup-links-inner">
+        <ul>
+          <li class="categories">
+            <a class="popup-with-form" href="#categories_popup"><span class="icon"></span><span class="icon-text">Categories</span></a>
+          </li>
+          <li class="cart-icon">
+            <a class="popup-with-form" href="#cart_popup"><span class="icon"></span><span class="icon-text">Cart</span></a>
+          </li>
+          <li class="account">
+            <a class="popup-with-form" href="#account_popup"><span class="icon"></span><span class="icon-text">Account</span></a>
+          </li>
+          <li class="scroll scrollup">
+            <a href="#"><span class="icon"></span><span class="icon-text">Scroll-top</span></a>
+          </li>
+        </ul>
+      </div>
+      <div id="popup_containt">
+        <div id="categories_popup" class="white-popup-block mfp-hide popup-position">
+          <div class="popup-title">
+            <h2 class="main_title heading"><span>categories</span></h2>
+          </div>
+          <div class="popup-detail">
+            <ul class="cate-inner">
+              <li class="level sub-megamenu">
+                <span class="opener plus"></span>
+                <a href="{% url 'shop_clothes' %}" class="page-scroll"><i class="fa fa-female"></i>Clothings</a>
+                <div class="megamenu  mega-sub-menu">
+                  <div class="megamenu-inner-top">
+                    <ul class="sub-menu-level1">
+                      <li class="level2">
+                        <ul class="sub-menu-level2 ">
+                          <li class="level3"><a href="{% url 'shopindianwears' %}"><span>■</span>Indian wears</a></li>
+                          <li class="level3"><a href="{% url 'shopweasternwears' %}"><span>■</span>Weastern wears</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>           
+                </div>
+              </li>
+              <li class="level sub-megamenu">
+                <span class="opener plus"></span>
+                <a href="V" class="page-scroll"><i class="far fa-boots"></i>Footwears</a>
+              </li>
+            </ul>
+          </div>  
+        </div>
+        <div id="cart_popup" class="white-popup-block mfp-hide popup-position">
+          <div class="popup-title">
+            <h2 class="main_title heading"><span>cart</span></h2>
+          </div>
+          <div class="popup-detail">
+            <div class="cart-dropdown ">
+              <div class="clearfix"></div>
+              <div class="mt-20 d-flex justify-content-center"> <a href="{% url 'cart' %}" class="btn-color btn float-center">Cart</a>  </div>
+            </div>
+          </div>
+        </div>
+        <div id="account_popup" class="white-popup-block mfp-hide popup-position">
+          <div class="popup-title">
+            <h2 class="main_title heading"><span>Account</span></h2>
+          </div>
+          {% if user.is_active %}
+          <div class="popup-detail">
+            <div class="row">
+              <div class="col-lg-4">
+                <a href="{% url 'user_profile'  %}">
+                  <div class="account-inner mb-30">
+                    <i class="fa fa-user"></i><br/>
+                    <span>Account</span>
+                  </div>
+                </a>
+              </div>
+              <div class="col-lg-4">
+                <a href="{% url 'logout' %}">
+                  <div class="account-inner">
+                    <i class="fa fa-share-square-o"></i><br/>
+                    <span>log out</span>
+                  </div>
+                </a>
+              </div>
+              {% else %}
+              <div class="col-lg-4">
+                <a href="{% url 'register' %}">
+                  <div class="account-inner mb-30">
+                    <i class="fa fa-user-plus"></i><br/>
+                    <span>Register</span>
+                  </div>
+                </a>
+                <div class="col-lg-4">
+                  <a href="{% url 'login' %}">
+                  <div class="account-inner">
+                    <i class="fa fa-sign-in"></i><br />
+                    <span>Login</span>
+                  </div>
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
     <body>
       {% block content %}
 
       {% endblock content %}
     </body>
-    <!-- News Letter Start -->
-    <section>
-      <div class="newsletter">
-        <div class="container">
-          <div class="newsletter-inner center-sm">
-            <div class="row justify-content-center">
-              <div class=" col-xl-10 col-md-12">
-                <div class="newsletter-bg">
-                  <div class="row">
-                    <div class="col-lg-5">
-                      <div class="newsletter-title">
-                        <h2 class="main_title">Subscribe to our newsletter</h2>
-                        <div class="sub-title">Sign up for newsletter and Get upto 50% off</div>
-                      </div>
-                    </div>
-                    <div class="col-lg-7">
-                      <form>
-                        <div class="newsletter-box">
-                          <input type="email" placeholder="Email Here...">
-                          <button title="Subscribe" class="btn-color">Subscribe</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- News Letter End -->
+   
 
     <!-- FOOTER START -->
     <div class="footer">
@@ -520,7 +454,7 @@
     </div>
     <!-- FOOTER END -->
   </div>
-
+ 
   <script src="{% static 'js/jquery-1.12.3.min.js' %}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -530,8 +464,177 @@
   <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
   <script src="{% static 'js/owl.carousel.min.js' %}"></script>
   <script src="{% static 'js/custom.js' %}"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
+
+  <script>
+    function couponCheck(total,ordernumber) {
+      console.log("entered function")
+   
+         var coupon = document.getElementById("coupon_value").value;
+         total_ammount = total
+         order_number=ordernumber
+         console.log(" order number  ==== ", order_number)
+         console.log(" total_ammount ==== ", total_ammount)
+         console.log("copon name ==== ",coupon)
+           $.ajax({
+             type: "GET",
+             url: '{% url 'checkcoupon' %}',
+             data: { coupon: coupon ,
+                 total_ammount :total_ammount ,
+                 order_number:order_number
+             },
+             dataType: 'json',
+             success: function (data) {
+               console.log(data)
+               if(data.status=='expired'){
+               swal("Poof! coupon expired!", {
+                 icon: "error",
+               });
+               }
+               else if(data.status=='used'){
+               swal("Poof! coupon already used !", {
+                 icon: "error",
+               });
+               }
+               else if(data.status=='success'){
+               swal("Poof! coupon added !", {
+                 icon: "success",
+               });
+               }
+               else if(data.status=='error'){
+               swal("Poof! coupon not available!", {
+                 icon: "error",
+               });
+            
+               }
+               //alert(data.message)
+               
+               // document.getElementById('coupon_price').value = data.coupon_price
+               $("#coupon_price").html(data.coupon_price);
+               $("#coupon_amount").html(data.grand_total);
+               
+             },
+             error: function (data) {
+               console.log(data)
+               alert(data.message)
+             }
+           }); 
+       }
+   </script>
+
+<script>
+  function AddCart(product_id)
+  {
+      console.log(product_id)
+      $.ajax({
+      url:"{% url 'add_cart_ajax'  %}",
+      method: 'GET',
+      data: {'product_id':product_id},
+      dataType: 'json',
+      success: function (data) {
+
+      console.log(data)
+      if(data.status){    
+        console.log("vhbjnkkj=========",data.cart_count)     
+     
+          $('#cart_count').html(data.cart_count) ;
+          $('#'+product_id+'_subtotal').html("₹"+data.sub_total) ;
+          $('#'+product_id+'_quantity').html(data.product_quantity) ;
+          $('#total').html(data.total) ;
+          $('#tax').html(data.tax) ;
+          $('#grand_total').html(data.grand_total) ;
+
+          $( "#cart_count" ).load(window.location.href + " #cart_count");
+          $( "#here" ).load(window.location.href + " #here" );
+          $( "#delete_cartitems" ).load(window.location.href + " #delete_cartitems" );
+
+          if(data.product_quantity > 1){
+              $('#'+product_id+'_minus_button').css("display", "block");
+          }
+                     
+      }else{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
+          alert(data.message);   
+      }
+
+      },
+      error: function(error){
+        console.log("Ajax cant send data")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+      }
+  })//ajax end  
+  }
+</script>
+<!-- minus cart -->
+<script>
+  function minuscart(cart_item_id){
+    var cartitem_id = cart_item_id
+    $.ajax({
+
+      type: "GET",
+      url: "{% url 'minus_cart' %}",
+      data: { cartitem_id: cartitem_id },
+      dataType: 'json',
+      
+      success: function (data){
+        if(data.msg == 'confirm'){
+          swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+        }
+        $( "#cart_count" ).load(window.location.href + " #cart_count" );
+        $( "#here" ).load(window.location.href + " #here" );
+        $( "#delete_cartitems" ).load(window.location.href + " #delete_cartitems" );
+      },
+      error: function (data) {
+          alert(data.message)
+      }
+    });
+  }
+
+</script>
+<script>
+  function deletecart(cartid)
+  {
+    swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+        .then((willDelete) => {
+          if (willDelete) {
+            var cart_id = cartid;
+            $.ajax({
+
+                type: "GET",
+                url: "{% url 'delete_cart' %}",
+                data: { cart_id: cart_id },
+                dataType: 'json',
+                success: function (data) {
+                
+                  swal("Poof! Your imaginary file has been deleted!", {
+                          icon: "success",
+                        });
+                      $( "#here" ).load(window.location.href + " #here" );
+                      $( "#delete_cartitems" ).load(window.location.href + " #delete_cartitems" );
+                },
+                error: function (data) {
+                    alert('something went wrong')
+                }
+            });
+    }
+    else {
+              swal("Your product not deleted");
+            }
+    });
+  }
+  
+</script>
 </body>
  
 
