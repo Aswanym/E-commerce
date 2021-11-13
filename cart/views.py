@@ -36,8 +36,6 @@ def _cart_id(request):
 
 def add_cart_ajax(request):
 
-    print('jkkjj')
-
     product_id=request.GET.get('product_id')
     if request.GET.get('product_quantity'):
         product_quantity_input = int( request.GET.get('product_quantity') )
@@ -83,11 +81,10 @@ def add_cart_ajax(request):
                 cart_count += cart_item.quantity
                 #calculate subtotal tax and grand total====================
                 if  product.offer_status() : #check if offer price exists
-                    print("offer cart added in ajax")
                     total += (cart_item.product.offer_price * cart_item.quantity)
                 else:
                     total += (cart_item.product.price * cart_item.quantity)
-                    print("original price cart added in ajax") 
+
             tax = int ( (2 * total)/100  )
             grand_total = total + tax                
         except Cart.DoesNotExist:
@@ -134,11 +131,10 @@ def add_cart_ajax(request):
                 cart_count += cart_item.quantity
                 #calculate subtotal tax and grand total====================
                 if  product.offer_status() : #check if offer price exists
-                    print("offer cart added in ajax")
+
                     total += (cart_item.product.offer_price * cart_item.quantity)
                 else:
-                    total += (cart_item.product.price * cart_item.quantity)
-                    print("original price cart added in ajax") 
+                    total += (cart_item.product.price * cart_item.quantity) 
             tax = int ( (2 * total)/100  )
             grand_total = total + tax                
         except Cart.DoesNotExist:
@@ -148,8 +144,6 @@ def add_cart_ajax(request):
 
 def add_cart(request,product_id):
 
-    # if request.method == 'POST':
-    #     product_id = request.method.POST.get('id')
 
     product = Product.objects.get(id=product_id)  # get the product
     cart = Cart.objects.filter(cart_id= _cart_id(request))
@@ -319,7 +313,6 @@ def delete_cart(request):
             cart_item = CartItem.objects.get(product=product, user=request.user)
             cart_item.delete()
             cart_count = CartItem.objects.filter(user=request.user).count()
-            print("cart count is ",cart_count)
             return JsonResponse({ 'message': 'sucessfully deleted','cart_count':cart_count})
 
         else:
@@ -328,7 +321,6 @@ def delete_cart(request):
             cart_item = CartItem.objects.get(product=product, cart=cart)
             cart_item.delete()
             cart_count = CartItem.objects.filter(user=request.user).count()
-            print("cart count is ",cart_count)
             return JsonResponse({ 'message': 'sucessfully deleted','cart_count':cart_count})
   
 def checkout_shipping(request):
@@ -486,10 +478,7 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
         order1.order_number = order_number
         order1.save()
 
-
-    order_number=order1.order_number
-    print('order number===========',order_number)
-        
+    order_number=order1.order_number   
 
     context = {
         'total': total,

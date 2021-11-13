@@ -53,12 +53,10 @@ def admindash(request):
         sales = OrderProduct.objects.aggregate(sales=Sum( F('product_price')*F('quantity') ))['sales']
         products = Product.objects.all()
         stock_avail = Product.objects.aggregate(stock=Sum(F('stock') ))['stock']
-        
-        print("stock============",stock_avail)
+
         revenue=0
         for one_order in completed_order:
             revenue += one_order.product_price*one_order.quantity
-        print("revenue---------------------------",revenue,sales)
        
      #--------------------------------------payment graph----------------------------------------#
         payment_method = []
@@ -154,7 +152,6 @@ def addproduct(request):
 
         if request.POST.get('pro_img1'):
             image1 = request.POST['pro_img1']
-            print(image1)
             format, img1 = image1.split(';base64,')
             ext = format.split('/')[-1]
             img_data1 = ContentFile(base64.b64decode(img1), name=request.POST.get('product_name') + '1.' + ext)
@@ -609,7 +606,6 @@ def category_offer(request):
         context ={
             'category':category
         }
-        print(context)
         return render(request,'admin/categoryoffer.html',context)
 
 def delete_category_offer(request):
@@ -634,7 +630,6 @@ def categoryofferlist(request):
 
 def add_coupon(request):
     if request.method == "POST":
-        print(request.user)
         coupon_instance = CouponOffer()
         coupon_instance.coupon_title = request.POST.get('couponname')
         coupon_instance.coupon_offer = request.POST.get('discountprice')
@@ -644,10 +639,8 @@ def add_coupon(request):
         coupon_instance.save()
         return redirect('addcoupon')
     else:
-        print('fgvhbjnbvcdfrgyhbn')
         coupons = CouponOffer.objects.all()
         context = {'coupons':coupons}
-        print(context)
         return render(request,'admin/add-coupon.html',context)
 
 def deletecoupon(request):

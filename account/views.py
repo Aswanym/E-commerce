@@ -8,7 +8,7 @@ from admin_panel.models import *
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from cart.models import Cart, CartItem, UserAddress
-from order.models import Order, OrderProduct     
+from order.models import Order, OrderProduct
 from account.models import UserProfile
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -20,6 +20,7 @@ import logging
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
+
 
 def login(request):
 
@@ -131,7 +132,7 @@ def ProductPage(request, id):
         'all_data': all_data,
         'in_cart': in_cart,
     }
-    return render(request,'account/product-page.html', context)
+    return render(request, 'account/product-page.html', context)
 
 
 def shop_clothes(request):
@@ -149,6 +150,7 @@ def shop_footwears(request):
         'product': product
     }
     return render(request, 'account/shop_footwears.html', context)
+
 
 def shopindianwears(request):
     product = Product.objects.all()
@@ -169,15 +171,13 @@ def shopweasternwears(request):
 @login_required(login_url='login')
 def user_profile(request):
 
-    user_details=0
-    user_picture=0
-    order_list=0
-    order_count=0
-    print('hhhhhhhhhhh',request.user.id)
-    print('hhhhhhhhhhh==============',request.user)
+    user_details = 0
+    user_picture = 0
+    order_list = 0
+    order_count = 0
     user1 = User.objects.get(id=request.user.id)
-    if UserProfile.objects.filter(user = user1.id).exists():
-        user_picture = UserProfile.objects.get(user = user1.id)
+    if UserProfile.objects.filter(user=user1.id).exists():
+        user_picture = UserProfile.objects.get(user=user1.id)
     else:
         user_picture = UserProfile()
         user_picture.user = user1
@@ -191,19 +191,19 @@ def user_profile(request):
 
         context = {
             'user_details': user_details,
-            'user_picture':user_picture,
+            'user_picture': user_picture,
             'order_list': order_list,
             'order_count': order_count,
         }
     else:
-       
+
         context = {
             'user_details': user_details,
-            'user_picture':user_picture,
+            'user_picture': user_picture,
             'order_list': order_list,
             'order_count': order_count,
         }
-    
+
     return render(request, 'account/user_profile.html', context)
 
 
@@ -228,16 +228,16 @@ def order_cancel(request, order_number):
 
 def edit_profile(request):
     get_user = request.user.id
-   
-    logger.error('Something went wrong!',get_user)
+
+    logger.error('Something went wrong!', get_user)
     if UserAddress.objects.filter(user=get_user).exists():
         datas = UserAddress.objects.get(user=get_user)
     else:
-        datas=UserAddress()
-        
-    user_is = User.objects.get(id=get_user)   
-    
-    if  UserProfile.objects.filter(user=get_user).exists():
+        datas = UserAddress()
+
+    user_is = User.objects.get(id=get_user)
+
+    if UserProfile.objects.filter(user=get_user).exists():
 
         picture = UserProfile.objects.get(user=get_user)
     else:
@@ -258,7 +258,7 @@ def edit_profile(request):
         messages.success(request, "profile updated successfully")
         return redirect('user_profile')
     else:
-        return redirect(request,'account/edit-profile.html')
+        return redirect(request, 'account/edit-profile.html')
 
 
 @login_required(login_url='login')
@@ -313,26 +313,27 @@ def order_details(request, order_number):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def search(request):
-    
+
     value = request.POST['search']
     if value == "":
         return redirect('index')
     else:
-        data = Product.objects.filter(Q(product_name__icontains=value)).order_by("id")
+        data = Product.objects.filter(
+            Q(product_name__icontains=value)).order_by("id")
         prod = Product.objects.all()
         prd_count = prod.count()
-        count=data.count()
-        context={
-            'products' : data,
-            "count":count, 
-            "prd_count" : prd_count
-            }
-        return render(request,'store/search-product.html',context)
+        count = data.count()
+        context = {
+            'products': data,
+            "count": count,
+            "prd_count": prd_count
+        }
+        return render(request, 'store/search-product.html', context)
 
 
 def loginnavigation(request):
     if request.session.has_key('user'):
-            return redirect('index')
+        return redirect('index')
     else:
         if request.method == 'POST':
             username = request.POST['username']

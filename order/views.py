@@ -15,20 +15,15 @@ import razorpay
 # Create your views here.
 
 def checkcoupon(request):
-    print("user of the rquest===",request.user)
-    print('inside function coupon')
+
     if request.method=="GET":
         couponname = request.GET.get('coupon')
         grand_total = request.GET.get('total_ammount')
         order_number = request.GET.get('order_number')
 
-        print("grant_total===",grand_total)
-        print(type(grand_total))
-        print("coupon check===",couponname)
         if CouponOffer.objects.filter(coupon_title=couponname,is_available = True):
         
             coupon_instance = CouponOffer.objects.get(coupon_title=couponname,is_available = True)
-            print("coupon_instance---------------",coupon_instance)
 
             if coupon_instance.coupon_expiry() :
                 return JsonResponse({'status':'expired','message':"Coupon Expired"})
@@ -37,26 +32,19 @@ def checkcoupon(request):
                 return JsonResponse({'status':'used','message':"Coupon already used" })
 
             elif CouponUsed.objects.filter(user=request.user,coupon=coupon_instance ,is_ordered = False).exists():
-                print("inside elif")
+
                 use_coupon=CouponUsed.objects.get(user=request.user,coupon=coupon_instance)
                
             else:
-                print("inside else")
                 use_coupon=CouponUsed()
 
             use_coupon.user = request.user
             use_coupon.coupon = coupon_instance
             use_coupon.order_number = order_number
             use_coupon.save()
-
-            print("type====",type(coupon_instance.coupon_offer),"value====",coupon_instance.coupon_offer)
-            print("type====",type(grand_total),"value====",grand_total)
             val = float(grand_total)
-            print("type==",type(val),"value==",val)
 
             percent_value = (float(grand_total)*coupon_instance.coupon_offer/100)
-            print("type of percent value",type(percent_value))
-            print(" percent value",percent_value)
 
             if percent_value > coupon_instance.coupon_limit:
                 grand_total = float(grand_total )- (coupon_instance.coupon_limit)
@@ -68,11 +56,8 @@ def checkcoupon(request):
             
             order = Order.objects.get(user=request.user,order_number=order_number)
             order.coupon_price = grand_total
-            print(order)
             order.save()
-            
 
-            print(coupon_price,grand_total)
             return JsonResponse({'status':'success','message': ' coupon applied sucessfully','grand_total':grand_total,'coupon_price':coupon_price})
         return JsonResponse({'status':'error','message': 'coupon not available'})
 
