@@ -119,7 +119,7 @@
               <ul>
                 <li class="cart-icon"> 
                   <a href="{% url 'cart' %}"> 
-                    <span id="cart_count" >  <small class="cart-notification">{{cart_count_key}}</small> </span>
+                    <span id="cart_count" > <i style="color: #fff;" class="fa fa-cart-plus fa-2x"></i> <small class="cart-notification">{{cart_count_key}}</small> </span>
                     <div class="cart-text">
                       <div class="my-cart">Shopping Cart</div> 
                       <div class="total-price"></div>
@@ -246,17 +246,17 @@
             <a class="popup-with-form" href="#categories_popup"><span class="icon"></span><span class="icon-text">Categories</span></a>
           </li>
           <li class="cart-icon">
-            <a class="popup-with-form" href="#cart_popup"><span class="icon"></span><span class="icon-text">Cart</span></a>
+            <a  href="{% url 'cart' %}"><span class="icon"></span><span class="icon-text">Cart</span></a>
           </li>
           <li class="account">
-            <a class="popup-with-form" href="#account_popup"><span class="icon"></span><span class="icon-text">Account</span></a>
+            <a href="{% url 'user_profile'  %}"><span class="icon"></span><span class="icon-text">Account</span></a>
           </li>
           <li class="scroll scrollup">
             <a href="#"><span class="icon"></span><span class="icon-text">Scroll-top</span></a>
           </li>
         </ul>
       </div>
-      <div id="popup_containt">
+      <!-- <div id="popup_containt">
         <div id="categories_popup" class="white-popup-block mfp-hide popup-position">
           <div class="popup-title">
             <h2 class="main_title heading"><span>categories</span></h2>
@@ -341,7 +341,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </header>
 
     <body>
