@@ -82,7 +82,7 @@
           <div class="sub-banner sub-banner1">
             <img alt="Stylexpo" src="{% static 'pic/bannerimage112.jpg' %}">
             <div class="sub-banner-detail">
-              <div class="sub-banner-subtitle">Weastern wears</div>
+              <div class="sub-banner-subtitle"> <a style="color: inherit;" href="{% url 'shopweasternwears' %}"> Weastern wears</a></div>
               
               <a class="btn btn-color" href="{% url 'shopweasternwears' %}">Shop Now!</a>
             </div>
@@ -93,7 +93,7 @@
             <div class="sub-banner sub-banner2">
               <img alt="Stylexpo" src="{% static 'pic/bannerimage33.jpg' %}">
               <div class="sub-banner-detail">
-                <div class="sub-banner-subtitle" style="color: white;">Indian wears</div>
+                <div class="sub-banner-subtitle" style="color: white;"> <a style="color: inherit;" href="{% url 'shopindianwears' %}">Indian wears</a></div>
                 
                 <a class="btn btn-color " href="{% url 'shopindianwears' %}">Shop Now!</a>
               </div>
@@ -104,7 +104,7 @@
           <div class="sub-banner sub-banner3">
             <img alt="Stylexpo" src="{% static 'pic/subbanner1.jpeg' %}">
             <div class="sub-banner-detail">
-              <div class="sub-banner-subtitle">Footwears</div>
+              <div class="sub-banner-subtitle"> <a style="color:inherit" href="{% url 'shop_footwears' %}">Footwears</a></div>
               <a class="btn btn-color " href="{% url 'shop_footwears' %}">Shop Now!</a>
             </div>
           </div>
@@ -163,6 +163,24 @@
           </div>
           {% endfor %}
         </div>
+        <div class="pagination p-4">
+          <span class="step-links">
+              {% if product.has_previous %}
+                  <button class="btn"><a style="color: inherit;" href="?page=1">&laquo; </a>
+                  <a style="color: inherit;" href="?page={{ product.previous_page_number }}">previous</a></button>
+              {% endif %}
+      
+              <span class="current">
+                  Page {{ product.number }} of {{ product.paginator.num_pages }}.
+              </span>
+      
+              {% if product.has_next %}
+              <button class="btn"><a style="color: inherit;" href="?page={{ product.next_page_number }}">next</a>
+                  <a style="color: inherit;" href="?page={{ product.paginator.num_pages }}">&raquo;</a></button>
+              {% endif %}
+          </span>
+      </div>
+      
       </div>
     </div>
   </div>

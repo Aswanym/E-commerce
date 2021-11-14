@@ -107,7 +107,7 @@
                     <div class="search-box">
                       {% csrf_token %}
                       <input class="input-text" name="search" type="text" placeholder="Search entire store here...">
-                      <button type="submit" class="search-btn"></button>
+                      <button type="submit" class="search-btn justify-content-center"><i style="color:#5a89b9b3;" class="fa fa-search-plus fa-lg"></i></button>
                     </div>
                   </form>
                 </div>
@@ -119,7 +119,7 @@
               <ul>
                 <li class="cart-icon"> 
                   <a href="{% url 'cart' %}"> 
-                    <span id="cart_count" > <small class="cart-notification">{{cart_count_key}}</small> </span>
+                    <span id="cart_count" > <i style="color: #fff;" class="fa fa-cart-plus fa-2x"></i> <small class="cart-notification">{{cart_count_key}}</small> </span>
                     <div class="cart-text">
                       <div class="my-cart">Shopping Cart</div> 
                       <div class="total-price"></div>
@@ -194,7 +194,7 @@
               <div class="megamenu mobile-sub-menu">
                 <div class="megamenu-inner-top">
                   <ul class="sub-menu-level1">
-                    <li class="level2 "> <a><span>Women Cloths</span></a>
+                    <li class="level2 "> <a><span>Women Cloths</span></a> 
                       <ul class="sub-menu-level2">
                         <li class="level3"><a href="{% url 'shopindianwears' %}"><span>■</span>Indian Wears</a></li>
                         <li class="level3"><a href="{% url 'shopweasternwears' %}"><span>■</span>Weastern Wears</a></li>

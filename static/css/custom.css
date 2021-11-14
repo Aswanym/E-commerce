@@ -1796,67 +1796,6 @@ _______________________________________________________*/
     width: 60px;
 }
 
-.banner-detail .banner-detail-inner span.offer {
-    color: #1b2839;
-    font-size: 25px;
-    font-style: italic;
-    font-weight: 400;
-    margin-top: 0;
-}
-
-.inner-banner1 {
-	background: url(../pic/ecommerce-banner.png) no-repeat scroll center center;
-	padding: 60px 0 ;
-}
-
-.inner-banner1 .banner-detail {
-    display: inline-block;
-    position: relative;
-    left: 0;
-    padding: 0 30px;
-    top: 0 !important;
-    -webkit-transform: none;
-       -moz-transform: none;
-        -ms-transform: none;
-         -o-transform: none;
-            transform: none;
-}
-.inner-banner1 .banner-detail h1 {
-    display: inline-block;
-    color: #fff;
-    font-weight: 600;
-    font-size: 22px;
-    letter-spacing: 1px;
-    margin-bottom: 0;
-    text-align: left;
-}
-/* Bread-crumb CSS Start */
-
-.bread-crumb {
-    margin-top: 10px;
-}
-
-.bread-crumb ul li {
-	display: inline-block;
-	color: #fff;
-}
-.bread-crumb ul li a {
-	color: #fff;
-}
-.bread-crumb ul li a, .bread-crumb ul li span {
-	margin: 0 10px;
-	font-weight: 600;
-}
-.bread-crumb ul li a:hover {
-	color: #ec2d48;
-}
-.bread-crumb ul li:first-child {
-	padding-left: 0;
-}
-.bread-crumb ul li span {
-	color: #ffffff;
-}
-/* Bread-crumb CSS End */
 
 /* - Sub-banner Style  //---------------- */
 
