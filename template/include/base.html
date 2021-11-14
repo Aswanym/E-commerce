@@ -35,10 +35,9 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/magnific-popup.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/responsive.css' %}">
-  <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
-  <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.html' %}">
-  <link rel="apple-touch-icon" sizes="72x72" href="{% static 'images/apple-touch-icon-72x72.html' %}">
-  <link rel="apple-touch-icon" sizes="114x114" href="{% static 'images/apple-touch-icon-114x114.html' %}">
+  <link rel="apple-touch-icon" href="{% static 'pic/apple-touch-icon.html' %}">
+  <link rel="apple-touch-icon" sizes="72x72" href="{% static 'pic/apple-touch-icon-72x72.html' %}">
+  <link rel="apple-touch-icon" sizes="114x114" href="{% static 'pic/apple-touch-icon-114x114.html' %}">
   <link href='https://fonts.googleapis.com/css?family=Bilbo Swash Caps' rel='stylesheet'>
 
 </head>
@@ -129,7 +128,7 @@
                   <!-- <div class="cart-dropdown header-link-dropdown">
                     <ul class="cart-list link-dropdown-list">
                       <li> <a class="close-cart"><i class="fa fa-times-circle"></i></a>
-                        <div class="media"> <a class="pull-left"> <img alt="Stylexpo" src="images/1.jpg"></a>
+                        <div class="media"> <a class="pull-left"> <img alt="Stylexpo" src="pic/1.jpg"></a>
                           <div class="media-body"> <span><a href="#">Black African Print Skirt</a></span>
                             <p class="cart-price">$14.99</p>
                             <div class="product-qty">
@@ -142,7 +141,7 @@
                         </div>
                       </li>
                       <li> <a class="close-cart"><i class="fa fa-times-circle"></i></a>
-                        <div class="media"> <a class="pull-left"> <img alt="Stylexpo" src="images/2.jpg"></a>
+                        <div class="media"> <a class="pull-left"> <img alt="Stylexpo" src="pic/2.jpg"></a>
                           <div class="media-body"> <span><a href="#">Black African Print Skirt</a></span>
                             <p class="cart-price">$14.99</p>
                             <div class="product-qty">
@@ -191,7 +190,7 @@
           </div>
           <ul class="nav navbar-nav">
             
-            <li class="level dropdown"> <span class="opener plus"></span> <a href="{% url 'shop_clothes' %}" class="page-scroll">Clothings</a>
+            <li class="level dropdown"> <span class="opener plus" ><i style="color: #5a89b9b3;" class="fa fa-plus-circle"></i></span> <a href="{% url 'shop_clothes' %}" class="page-scroll">Clothings</a>
               <div class="megamenu mobile-sub-menu">
                 <div class="megamenu-inner-top">
                   <ul class="sub-menu-level1">
@@ -205,13 +204,34 @@
                 </div>
               </div>
             </li>
-            <li class="level dropdown"> <span class="opener plus"></span> <a href="{% url 'shop_footwears' %}" class="page-scroll">Footwears</a>
+          
+            <li class="level dropdown"> <span class="opener plus "><i style="color: #5a89b9b3;" class="fa fa-plus-circle"></i>  </span> <a href="{% url 'shop_footwears' %}" class="page-scroll">Footwears</a>
+            </li>
+            <li class="level dropdown"> <span class="opener plus" ><i style="color: #5a89b9b3;" class="fa fa-plus-circle"></i></span> <a class="page-scroll">Account</a>
+              <div class="megamenu mobile-sub-menu">
+                <div class="megamenu-inner-top">
+                  <ul class="sub-menu-level1">
+                    <li class="level2 "> <a><span>Account details</span></a>
+                      <ul class="sub-menu-level2">
+                        {% if user.is_active %}
+                        <li class="level3"><a href="{% url 'user_profile' %}"><span>■</span>My profile</a></li>
+                        <li class="level3"><a href="{% url 'cart' %}"><span>■</span>My Cart</a></li>
+                        <li class="level3"><a href="{% url 'logout' %}"><span>■</span>Logout</a></li>
+                        {% else %}
+                        <li class="level3"><a href="{% url 'login' %}"><span>■</span>Login</a></li>
+                        <li class="level3"><a href="{% url 'register' %}"><span>■</span>Register</a></li>
+                        {% endif %}
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </li>
             <!-- {% if user.is_active %} -->
             <div class="top-right-link right-side">
               <li class="level page-scroll"><span>Hello, {{user.username}}!</span></li>
               <!-- {% else %} -->
-              <li class="level page-scroll top-right-link right-side"><span>Hello, There!</span></li>
+              <li class="level page-scroll top-right-link right-side mr-5"><span>Hello, There!</span></li>
             <!-- {% endif %} -->
             </div>
           </ul>
@@ -261,7 +281,7 @@
               </li>
               <li class="level sub-megamenu">
                 <span class="opener plus"></span>
-                <a href="V" class="page-scroll"><i class="far fa-boots"></i>Footwears</a>
+                <a href="" class="page-scroll"><i class="far fa-boots"></i>Footwears</a>
               </li>
             </ul>
           </div>  
@@ -338,7 +358,7 @@
           <div class="footer-middle">
             <div class="row">
               <div class="col-xl-3 f-col">
-                <div class="footer-static-block"> <span class="opener plus"></span>
+                <div class="footer-static-block"> <span class="opener plus"> <i style="color: #5a89b9b3;" class="fa fa-plus-circle"></i></span>
                   <div class="f-logo">
                     <a href="{% url 'index' %}" class="">
                       <h2>SAASHA Boutique</h2>
@@ -353,7 +373,7 @@
                 </div>
               </div>
               <div class="col-xl-3 f-col">
-                <div class="footer-static-block"> <span class="opener plus"></span>
+                <div class="footer-static-block"> <span class="opener plus"><i style="color: #5a89b9b3;" class="fa fa-plus-circle"></i></span>
                   <h3 class="title">Help <span></span></h3>
                   <ul class="footer-block-contant link">
                     <li><a href="#">Gift Cards</a></li>
@@ -365,7 +385,7 @@
                 </div>
               </div>
               <div class="col-xl-3 f-col">
-                <div class="footer-static-block"> <span class="opener plus"></span>
+                <div class="footer-static-block"> <span class="opener plus"><i style="color: #5a89b9b3;" class="fa fa-plus-circle"></i></span>
                   <h3 class="title">Guidance <span></span></h3>
                   <ul class="footer-block-contant link">
                     <li><a href="#"> Delivery information</a></li>
@@ -377,7 +397,7 @@
                 </div>
               </div>
               <div class="col-xl-3 f-col">
-                <div class="footer-static-block"> <span class="opener plus"></span>
+                <div class="footer-static-block"> <span class="opener plus"><i style="color: #5a89b9b3;" class="fa fa-plus-circle"></i></span>
                   <h3 class="title">address<span></span></h3>
                   <ul class="footer-block-contant address-footer">
                     <li class="item"> <i class="fa fa-map-marker"> </i>
@@ -436,11 +456,11 @@
               <div class="col-12 ">
                 <div class="payment">
                   <ul class="payment_icon">
-                    <li class="visa"><a href="#"><img src="{% static 'images/pay1.png' %}" alt="Stylexpo"></a></li>
-                    <li class="discover"><a href="#"><img src="{% static 'images/pay2.png' %}" alt="Stylexpo"></a></li>
-                    <li class="paypal"><a href="#"><img src="{% static 'images/pay3.png' %}" alt="Stylexpo"></a></li>
-                    <li class="vindicia"><a href="#"><img src="{% static 'images/pay4.png' %}" alt="Stylexpo"></a></li>
-                    <li class="atos"><a href="#"><img src="{% static 'images/pay5.png' %}" alt="Stylexpo"></a></li>
+                    <li class="visa"><a href="#"><img src="{% static 'pic/pay1.png' %}" alt="Stylexpo"></a></li>
+                    <li class="discover"><a href="#"><img src="{% static 'pic/pay2.png' %}" alt="Stylexpo"></a></li>
+                    <li class="paypal"><a href="#"><img src="{% static 'pic/pay3.png' %}" alt="Stylexpo"></a></li>
+                    <li class="vindicia"><a href="#"><img src="{% static 'pic/pay4.png' %}" alt="Stylexpo"></a></li>
+                    <li class="atos"><a href="#"><img src="{% static 'pic/pay5.png' %}" alt="Stylexpo"></a></li>
                   </ul>
                 </div>
               </div>

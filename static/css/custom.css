@@ -1611,7 +1611,7 @@ header#header {
 }
 
 .cate-inner span.opener {
-    background:url(../images/sprite.png) no-repeat scroll 0 0; 
+    background:url(../pic/sprite.png) no-repeat scroll 0 0; 
     height: 25px; 
     width: 25px; 
     display: inline-block; 
@@ -1627,6 +1627,7 @@ header#header {
 .cate-inner span.minus {
 	background-position: -90px -416px;
 }
+
 
 
 #cart_popup .cart-dropdown li {
@@ -1804,7 +1805,7 @@ _______________________________________________________*/
 }
 
 .inner-banner1 {
-	background: url(../images/ecommerce-banner.png) no-repeat scroll center center;
+	background: url(../pic/ecommerce-banner.png) no-repeat scroll center center;
 	padding: 60px 0 ;
 }
 
@@ -2847,7 +2848,7 @@ _______________________________________________________*/
 }
 
 .bottom-detail ul li:hover span  {
-	background-color: #ec2d48;
+	background-color: #a3c5f8;
 }
 .bottom-detail ul li.pro-cart-icon span {
 	background-position: -9px -312px;
@@ -2974,7 +2975,7 @@ _______________________________________________________*/
 
 /* perellex block css start*/
 .perellex-banner {
-    background: rgba(0, 0, 0, 0) url("../images/shopping-wallpaper.jpg") no-repeat fixed center center;
+    background: rgba(0, 0, 0, 0) url("../pic/shopping-wallpaper.jpg") no-repeat fixed center center;
     color: #1b2839;
 }
 

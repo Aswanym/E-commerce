@@ -858,7 +858,7 @@ header#header {
 }
 
 .header-middle {
-	padding: 0 15px;
+	padding: 48px 15px 20px 15px;
 }
 
 .navbar-collapse ul.navbar-nav li.level {
@@ -1113,7 +1113,7 @@ button:focus {
 }
 
 #menu-main span.opener {
-    background:url(../images/sprite.png) no-repeat scroll 0 0; 
+    background:url(../pic/sprite.png) no-repeat scroll 0 0; 
     height: 25px; 
     width: 25px; 
     display: inline-block; 
@@ -1454,7 +1454,7 @@ button:focus {
 	display: none;
 }
 .sidebar-box span.opener {
-	background: url(../images/sprite.png) no-repeat scroll 0 0;
+	background: url(../pic/sprite.png) no-repeat scroll 0 0;
 	height: 30px;
 	width: 30px;
 	display: inline-block;
