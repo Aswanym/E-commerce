@@ -210,9 +210,10 @@ h1, h2, h3, h4, h5, h6, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 }
 
 h1 {
-	font-size: 43px;
+	margin-top: 30px;
+	font-size: 35px;
 	letter-spacing: 1px;
-	line-height: 40px;
+	line-height: 15px;
 }
 
 h2 {
@@ -892,7 +893,7 @@ header#header {
 }
 
 .search-box button.search-btn {
-	background: url("../images/sprite.png") no-repeat scroll -5px -85px #ffffff; */
+	/* background: url("../pic/sprite.png") no-repeat scroll -5px -85px #ffffff;  */
 	border: none;
 	height: 40px;
 	width: 40px;
@@ -2280,7 +2281,7 @@ _______________________________________________________*/
 }
 
 .detail-inner-left ul li button span, .cat-box-inner .cart-link button span {
-    background: rgba(0, 0, 0, 0) url("../images/sprite.png") no-repeat scroll -11px -318px;
+    background: rgba(0, 0, 0, 0) url("../pic/sprite.png") no-repeat scroll -11px -318px;
     display: inline-block;
     height: 25px;
     margin-bottom: -8px;

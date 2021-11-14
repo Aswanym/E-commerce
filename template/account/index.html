@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 
+
 <!-- BANNER STRAT -->
 <section class="mt-sm-15">
   <div class="container">
@@ -135,18 +136,9 @@
             <div class="product-item">
               <div class="product-image"> <a href="{% url 'productpage' product.id %}"> <img
                     src="{{product.image1.url}}" alt="Stylexpo" style="height: 340px;width:300px; "> </a>
-                <div class="product-detail-inner">
-                  <div class="detail-inner-left align-center">
-                    <ul>
-                      <li class="pro-cart-icon">
-                       
-                          <button onclick="AddCart('{{product.id}}')" title="Add to Cart"><span></span>Add to Cart</button>
-                        
-                      </li>
-                    </ul>
-                  </div>
-                </div>
               </div>
+  
+              
               <div class="product-item-details">
                 <div class="product-item-name"> <p>{{product.product_name}}</p></div>
                 {% if product.cat_offer_status and product.offer_status %}
@@ -159,7 +151,12 @@
                   <div class="price-box"> <span class="price">₹{{product.price}}</span> </div>
                 {% endif %}
               </div>
+              <div class="p-2 d-flex justify-content-center">
+                <button style="width: 200px; color: white; " onclick="AddCart('{{product.id}}')" title="Add to Cart"><span></span>Add to Cart</button>
+              </div>
+             
             </div>
+            
           </div>
           {% endfor %}
         </div>
