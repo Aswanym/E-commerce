@@ -36,7 +36,7 @@ class UserAddress(models.Model):
     first_name          = models.CharField(max_length=100)
     last_name           = models.CharField(max_length=100)
     email               = models.EmailField(max_length=100)
-    phone_number        = models.BigIntegerField()
+    phone_number        = models.BigIntegerField(null=True)
 
     first_address            = models.CharField(max_length=100)
     second_address            = models.CharField(max_length=100)

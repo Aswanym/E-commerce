@@ -1162,6 +1162,7 @@ header#header {
 }
 
 .cat-dropdown .sidebar-contant ul li.level3 {
+	
 	border: none;
 }
 
@@ -1329,6 +1330,10 @@ header#header {
 	position: absolute;
 	top: 100%;
 	z-index: 2;
+}
+
+.banner-1{
+	z-index: 0;
 }
 .megamenu.full {
 	left: 0;

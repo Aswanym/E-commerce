@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="item">
-          <div class="banner-3"> <img src="{% static 'pic/banner3.jpg' %}" alt="Stylexpo">
+          <!-- <div class="banner-3"> <img src="{% static 'pic/banner3.jpg' %}" alt="Stylexpo"> -->
             <div class="banner-detail">
               <div class="container">
                 <div class="row">
@@ -68,7 +68,7 @@
         </div>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 </section>
 <!-- BANNER END -->
 
@@ -281,50 +281,7 @@
 </div>
 <!-- Brand logo block End  -->
 <!-- CONTAINER END -->
-</div>
+<!-- </div> -->
 
-<script>
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/player_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-  // 3. This function creates an <iframe> (and YouTube player)
-  //    after the API code downloads.
-  var player;
-  function onYouTubePlayerAPIReady() {
-    player = new YT.Player('player', {
-      playerVars: { 'rel': 0, 'autoplay': 1, 'controls': 0, 'autohide': 1, 'showinfo': 0, 'wmode': 'opaque' },
-      videoId: 'Lgitw016T44',
-      //suggestedQuality: 'hd720',
-      events: {
-        'onReady': onPlayerReady
-      }
-    });
-  }
-
-  // 4. The API will call this function when the video player is ready.
-  function onPlayerReady(event) {
-    event.target.mute();
-    event.target.setPlaybackQuality('hd720');
-    //$(".video").fitVids();
-
-    $('.video i').on('click', function () {
-      if ($('.video').hasClass('on')) {
-        event.target.mute();
-        $('.video').removeClass('on');
-      } else {
-        event.target.unMute();
-        $('.video').addClass('on');
-      }
-    });
-
-  }
-
-  function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.BUFFERING) {
-      event.target.setPlaybackQuality('hd720');
-    }
-  }
-</script>
 {% endblock content %}

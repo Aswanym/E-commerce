@@ -98,7 +98,7 @@ def register(request):
                     user = User.objects.create_user(first_name=first_name, last_name=last_name,
                                                     email=email, password=password1, username=username)
                     user.save()
-                    return redirect('index')
+                    return redirect('login')
             else:
                 messages.info(request, 'password not matching')
                 return redirect('register')
@@ -180,19 +180,22 @@ def user_profile(request):
     user_picture = 0
     order_list = 0
     order_count = 0
-    user1 = User.objects.get(id=request.user.id)
-    if UserProfile.objects.filter(user=user1.id).exists():
-        user_picture = UserProfile.objects.get(user=user1.id)
+
+    get_user = request.user.id
+
+    if UserProfile.objects.filter(user= get_user).exists():
+        user_picture = UserProfile.objects.get(user=get_user)
     else:
         user_picture = UserProfile()
-        user_picture.user = user1
+        user_picture.user = get_user
         user_picture.save()
 
     order_list = Order.objects.filter(
         user=request.user, is_ordered=True).order_by('-created_at')
     order_count = order_list.count()
-    if UserAddress.objects.filter(user_id=user1.id).exists():
-        user_details = UserAddress.objects.filter(user_id=user1.id).last()
+    if UserAddress.objects.filter(user=get_user).exists():
+        user_details = UserAddress.objects.filter(user=get_user).last()
+
 
         context = {
             'user_details': user_details,
@@ -247,8 +250,6 @@ def edit_profile(request):
         picture = UserProfile.objects.get(user=get_user)
     else:
         picture = UserProfile()
-
-    # profile, created = UserProfile.objects.get_or_create(user_id=datas.user_id)
 
     if request.method == "POST":
         datas.first_name = request.POST['first_name']
