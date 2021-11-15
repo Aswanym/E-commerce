@@ -308,7 +308,6 @@ def delete_cart(request):
 
         product_id = request.GET.get('cart_id')
         if request.user.is_authenticated:
-            
             product = get_object_or_404(Product, id=product_id)
             cart_item = CartItem.objects.get(product=product, user=request.user)
             cart_item.delete()
@@ -317,8 +316,12 @@ def delete_cart(request):
 
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
+            print('cart is =====================',cart)
             product = get_object_or_404(Product, id=product_id)
+            print('product is =====================',product)
+
             cart_item = CartItem.objects.get(product=product, cart=cart)
+            print('cart_item is =====================',cart_item)
             cart_item.delete()
             cart_count = CartItem.objects.filter(user=request.user).count()
             return JsonResponse({ 'message': 'sucessfully deleted','cart_count':cart_count})
