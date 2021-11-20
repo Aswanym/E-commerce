@@ -511,10 +511,10 @@ def add_wishlist(request):
     return JsonResponse(data)
 
 def show_wishlist(request):
-    
+
     wishlists = Wishlist.objects.all()
     context={
-        'wishlists': wishlists,   
+        'wishlists': wishlists,  
     }
     return render(request,'account/wishlist.html',context)
 
