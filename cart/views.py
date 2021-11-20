@@ -8,9 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User, auth
 from admin_panel.models import Product,Offers
 from order.models import Order, OrderProduct
-
-
-from .models import Cart, CartItem, UserAddress
+from .models import Cart, CartItem, UserAddress, Wishlist
 import datetime
 
 # import the logging library
@@ -18,7 +16,6 @@ import logging
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
-
 
 # Create your views here.
 
@@ -31,8 +28,6 @@ def _cart_id(request):
     if not cart:
         cart = request.session.create()
     return cart
-
-
 
 def add_cart_ajax(request):
 
@@ -208,12 +203,17 @@ def minus_cart(request):
         if cart_item.quantity > 1:
             cart_item.quantity -= 1
             cart_item.save()
-            return JsonResponse({'msg':'success','message': 'updated successfully'})
+            count = cart_item.quantity
+            logger.error('count=========',count)
+            return JsonResponse({'msg':'success','count':count})
         else:
-            cart_item.delete()
-            return JsonResponse({'msg':'confirm','message': 'confirm???'})
+            pass
+            # cart_item.delete()
+            # count = cart_item.quantity
+            # logger.error('count=========',count)
+            # return JsonResponse({'msg':'confirm','message': 'confirm???','count':count})
     else:
-        return JsonResponse({'msg':'error','message': 'something went wrong'})
+        return JsonResponse({'msg':'error'})
     
 def cart(request, total=0, quantity=0, cart_items=None):
     shipping = 0
@@ -242,26 +242,22 @@ def cart(request, total=0, quantity=0, cart_items=None):
                 subtotals.append(item.product.category_offer_price*item.quantity)
             else:
                 subtotals.append(item.product.price*item.quantity)
-             
 
         for cart_item in cart_items:
             
             if cart_item.product.is_offer_avail and cart_item.product.category_offer_avail:
                 total += (cart_item.product.compare() * cart_item.quantity)
                 quantity += cart_item.quantity
-
             elif cart_item.product.is_offer_avail == True:
                 total += (cart_item.product.offer_price * cart_item.quantity)
                 quantity += cart_item.quantity
             elif cart_item.product.category_offer_avail == True:
                 total += (cart_item.product.category_offer_price * cart_item.quantity)
-                quantity += cart_item.quantity
-               
+                quantity += cart_item.quantity     
             else:
                 total += (cart_item.product.price * cart_item.quantity)
                 quantity += cart_item.quantity
                 
-
         tax  = int ( (2 * total)/100 )
         total_with_tax = total + tax
 
@@ -303,7 +299,6 @@ def cart(request, total=0, quantity=0, cart_items=None):
         }
     return render(request, 'account/cart.html', context)
 
-
 def delete_cart(request):
 
         product_id = request.GET.get('cart_id')
@@ -316,15 +311,10 @@ def delete_cart(request):
 
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
-            print('cart is =====================',cart)
             product = get_object_or_404(Product, id=product_id)
-            print('product is =====================',product)
-
-            cart_item = CartItem.objects.get(product=product, cart=cart)
-            print('cart_item is =====================',cart_item)
+            cart_item = CartItem.objects.get(product=product_id, cart=cart)
             cart_item.delete()
-            cart_count = CartItem.objects.filter(user=request.user).count()
-            return JsonResponse({ 'message': 'sucessfully deleted','cart_count':cart_count})
+            return JsonResponse({ 'message': 'sucessfully deleted'})
   
 def checkout_shipping(request):
     return redirect('checkout')
@@ -497,3 +487,43 @@ def order_overview(request,total=0, quantity=0, cart_items=None):
         'zipped_data':zipped_data  
     }
     return render(request,'store/order_over_view.html',context)
+
+@login_required(login_url = 'login')
+def add_wishlist(request):
+
+    if request.method == "GET":
+        p_id=request.GET.get('product_id')
+        data={}
+        product = Product.objects.get(id=p_id)
+        checkwishlist = Wishlist.objects.filter(product=product,user=request.user).count()
+        wishlist_count = Wishlist.objects.all().count()
+        if checkwishlist >0:
+            data={
+                'bool':False,
+            }
+        else:
+            wishlist = Wishlist.objects.create(product=product,user=request.user)
+
+            data={
+                'bool':True,
+                'wishlist_count':wishlist_count
+            }
+    return JsonResponse(data)
+
+def show_wishlist(request):
+    wishlists = Wishlist.objects.all()
+    context={
+        'wishlists': wishlists,
+        
+    }
+    return render(request,'account/wishlist.html',context)
+
+def delete_wishlist(request):
+    if request.method == "GET":
+        product_id=request.GET.get('pro_id')
+        delete_Wlist = Wishlist.objects.get(product=product_id)
+        delete_Wlist.delete()
+        return JsonResponse({'msg':'delete success'})
+    return JsonResponse({'msg':'message couldnot delete'})
+
+        

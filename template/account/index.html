@@ -134,6 +134,13 @@
 
           <div class="col-xl-3 col-md-4 col-6 item-width mb-30">
             <div class="product-item">
+              {% if product.is_offer_avail %}
+              <div class="main-label new-label"><span>{{product.offer_per}} %</span></div>
+              {% elif product.category_offer_avail %}
+              <div class="main-label new-label"><span>{{product.offer_per}} %</span></div>
+              {% else %}
+              <div><span hidden></span></div>
+              {% endif %}
               <div class="product-image"> <a href="{% url 'productpage' product.id %}"> <img
                     src="{{product.image1.url}}" alt="Stylexpo" style="height: 340px;width:300px; "> </a>
               </div>
@@ -152,7 +159,12 @@
                 {% endif %}
               </div>
               <div class="p-2 d-flex justify-content-center">
-                <button style="width: 200px; color: white; " onclick="AddCart('{{product.id}}')" title="Add to Cart"><span></span>Add to Cart</button>
+                <button onclick="AddCart('{{product.id}}')"><i class="fa fa-cart-plus fa-lg"></i></button> 
+                {% if user.is_authenticated %}
+                <button  id="hello" class="add-wishlist ml-3" onclick="AddWishlist('{{product.id}}')"><i class="fa fa-heart fa-lg"></i></button>
+                {% else %}
+                <button style="background-color: #397cc0b3;" disabled class="ml-3" ><i  class="fa fa-heart fa-lg" ></i></button>
+                {% endif %}
               </div>
              
             </div>
@@ -281,7 +293,6 @@
 </div>
 <!-- Brand logo block End  -->
 <!-- CONTAINER END -->
-<!-- </div> -->
 
 
 {% endblock content %}

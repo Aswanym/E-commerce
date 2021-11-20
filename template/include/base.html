@@ -140,10 +140,12 @@
                   <li class="cart-icon"> 
                     <a href="{% url 'cart' %}"> 
                       <span id="cart_count" > <i style="color: #fff;" class="fa fa-cart-plus fa-2x"></i> <small class="cart-notification">{{cart_count_key}}</small> </span>
-                      <div class="cart-text">
-                        <div class="my-cart">Shopping Cart</div> 
-                        <div class="total-price"></div>
-                      </div> 
+                    </a>
+                  
+                  </li>
+                  <li class="cart-icon"> 
+                    <a href="{% url 'showwishlist' %}"> 
+                      <span > <i style="color: #fff;" class="fa fa-heart fa-2x"></i> </span>
                     </a>
                   
                   </li>
@@ -203,6 +205,7 @@
                           <li class="level3"><a href="{% url 'logout' %}"><span>■</span>Logout</a></li>
                           <li class="level3"><a href="{% url 'cart' %}"><span>■</span>MyCart</a></li>
                           <li class="level3"><a href="{% url 'user_profile' %}"><span>■</span>My Profile</a></li>  
+                          <li class="level3"><a href="{% url 'showwishlist' %}"><span>■</span>My Wishlist</a></li>
                           {% else %}
                           <li class="level3"><a href="{% url 'login' %}"><span>■</span>Login</a></li>
                           <li class="level3"><a href="{% url 'register' %}"><span>■</span>Register</a></li>
@@ -413,63 +416,63 @@
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
-
-  <script>
-    function couponCheck(total,ordernumber) {
-      console.log("entered function")
-   
-         var coupon = document.getElementById("coupon_value").value;
-         total_ammount = total
-         order_number=ordernumber
-         console.log(" order number  ==== ", order_number)
-         console.log(" total_ammount ==== ", total_ammount)
-         console.log("copon name ==== ",coupon)
-           $.ajax({
-             type: "GET",
-             url: '{% url 'checkcoupon' %}',
-             data: { coupon: coupon ,
-                 total_ammount :total_ammount ,
-                 order_number:order_number
-             },
-             dataType: 'json',
-             success: function (data) {
-               console.log(data)
-               if(data.status=='expired'){
-               swal("Poof! coupon expired!", {
-                 icon: "error",
-               });
-               }
-               else if(data.status=='used'){
-               swal("Poof! coupon already used !", {
-                 icon: "error",
-               });
-               }
-               else if(data.status=='success'){
-               swal("Poof! coupon added !", {
-                 icon: "success",
-               });
-               }
-               else if(data.status=='error'){
-               swal("Poof! coupon not available!", {
-                 icon: "error",
-               });
-            
-               }
-               //alert(data.message)
-               
-               // document.getElementById('coupon_price').value = data.coupon_price
-               $("#coupon_price").html(data.coupon_price);
-               $("#coupon_amount").html(data.grand_total);
-               
-             },
-             error: function (data) {
-               console.log(data)
-               alert(data.message)
-             }
-           }); 
-       }
-   </script>
-
+<!-- coupon check ajax -->
+<script>
+  function couponCheck(total,ordernumber) {
+    console.log("entered function")
+  
+        var coupon = document.getElementById("coupon_value").value;
+        total_ammount = total
+        order_number=ordernumber
+        console.log(" order number  ==== ", order_number)
+        console.log(" total_ammount ==== ", total_ammount)
+        console.log("copon name ==== ",coupon)
+          $.ajax({
+            type: "GET",
+            url: '{% url 'checkcoupon' %}',
+            data: { coupon: coupon ,
+                total_ammount :total_ammount ,
+                order_number:order_number
+            },
+            dataType: 'json',
+            success: function (data) {
+              console.log(data)
+              if(data.status=='expired'){
+              swal("Poof! coupon expired!", {
+                icon: "error",
+              });
+              }
+              else if(data.status=='used'){
+              swal("Poof! coupon already used !", {
+                icon: "error",
+              });
+              }
+              else if(data.status=='success'){
+              swal("Poof! coupon added !", {
+                icon: "success",
+              });
+              }
+              else if(data.status=='error'){
+              swal("Poof! coupon not available!", {
+                icon: "error",
+              });
+          
+              }
+              //alert(data.message)
+              
+              // document.getElementById('coupon_price').value = data.coupon_price
+              $("#coupon_price").html(data.coupon_price);
+              $("#coupon_amount").html(data.grand_total);
+              
+            },
+            error: function (data) {
+              console.log(data)
+              alert(data.message)
+            }
+          }); 
+      }
+</script>
+<!-- add cart ajax -->
 <script>
   function AddCart(product_id)
   {
@@ -524,25 +527,27 @@
       dataType: 'json',
       
       success: function (data){
-        if(data.msg == 'confirm'){
-          swal({
-            title: "Are you sure?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-          })
-        }
+        console.log(data)
+      
         $( "#cart_count" ).load(window.location.href + " #cart_count" );
         $( "#here" ).load(window.location.href + " #here" );
         $( "#delete_cartitems" ).load(window.location.href + " #delete_cartitems" );
       },
       error: function (data) {
-          alert(data.message)
+          console.log(data)
       }
     });
   }
 
 </script>
+
+<script>
+  product_quantity.addEventListener("input", function (e) {
+    alert(this.value);
+});
+
+</script>
+<!-- delete cart -->
 <script>
   function deletecart(cartid)
   {
@@ -566,6 +571,7 @@
                   swal("Poof! Your imaginary file has been deleted!", {
                           icon: "success",
                         });
+                      $( "#cart_count" ).load(window.location.href + " #cart_count" );
                       $( "#here" ).load(window.location.href + " #here" );
                       $( "#delete_cartitems" ).load(window.location.href + " #delete_cartitems" );
                 },
@@ -580,6 +586,78 @@
     });
   }
   
+</script>
+<!-- wishlist ajax -->
+<script>
+  function AddWishlist(product_id){
+    console.log('fghjknmbhjkm',product_id)
+
+    $.ajax({
+      url:"{% url 'addwishlist' %}",
+      method:'GET',
+      data:{'product_id':product_id},
+      dataType: 'json',
+      success:function(data){
+        console.log(data)
+        if (data.bool==true){
+          $('#wish_count').html(data.wishlist_count) ;
+          swal("Added to wishlist!", {
+                 icon: "success",
+               });
+          
+        }else{
+          swal("Iteam already in wishlist", {
+                 icon: "success",
+               });
+        }
+      },
+      error: function(error){
+        console.log("Ajax cant send data")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+      }
+    });
+
+  }
+</script>
+<!-- delete wishlist -->
+<script>
+  function deletewishlist(p_id){
+    var pro_id = p_id;
+    console.log(p_id)
+    swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+        .then((willDelete) => {
+          if (willDelete) {
+            
+            $.ajax({
+
+                type: "GET",
+                url: "{% url 'deletewishlist' %}",
+                data: { pro_id: pro_id },
+                dataType: 'json',
+                success: function (data) {
+                
+                  swal("Poof! Your imaginary file has been deleted!", {
+                          icon: "success",
+                        });
+                  $( "#delete_wlist" ).load(window.location.href + " #delete_wlist" );
+                     
+                },
+                error: function (data) {
+                    swal('something went wrong')
+                }
+            });
+    }
+    else {
+              swal("Your product not deleted");
+            }
+    });
+
+  }
+
 </script>
 </body>
  

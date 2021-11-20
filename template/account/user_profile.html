@@ -65,9 +65,9 @@
                         <img src="{{user_picture.profile_picture.url}}" alt="Avatar" class="avatar" width="100"
                         height="100" style="border-radius: 50%" />
                       <br>
-                      <p>{{user_details.full_name}}</p>
-                      <p>{{user_details.email}}</p>
-                      <p>{{user_details.phone_number}}</p>
+                      <p>{{user_picture.user.first_name}} {{user_picture.user.last_name}}</p>
+                      <p>{{user_picture.user.email}}</p>
+                      <p>{{user_picture.user.phone_number}}</p>
                       
                     </div>
                   </div>
@@ -104,26 +104,26 @@
                   <div class="col-md-6">
                     <div class="input-box">
                       <input type="text" required placeholder="First Name" name="first_name"
-                        value="{{user_details.first_name}}" />
+                        value="{{user_picture.user.first_name}}" />
                     </div>
                   </div>
                   
                     <div class="col-md-6">
                       <div class="input-box">
                         <input type="text" required placeholder="Last Name" name="last_name"
-                          value="{{user_details.last_name}}" />
+                          value="{{user_picture.user.last_name}}" />
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="input-box">
                         <input type="email" required placeholder="Email Address" name="email"
-                          value="{{user_details.email}}" />
+                          value="{{user_picture.user.email}}" />
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="input-box">
-                        <input type="text" required placeholder="Contact Number" name="phone_number"
-                          value="{{user_details.phone_number}}" />
+                        <input type="text" required placeholder="Contact Number" maxlength="10" name="phone_number"
+                          value="{{user_picture.user.phone_number}}"/>
                       </div>
                     </div>
                     <div class="col-12" >

@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 def login(request):
 
-    if request.session.has_key('user'):
+    if request.session.has_key('user') and request.user.is_active:
         return redirect('index')
     else:
         if request.method == 'POST':
@@ -83,9 +83,13 @@ def register(request):
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
+        
+
         if username == '' or password1 == '' or first_name == '' or email == '' or last_name == '':
             messages.info(request, 'Varify all fields')
             return redirect('register')
+
+
         else:
             if password1 == password2:
                 if User.objects.filter(username=username).exists():
@@ -98,10 +102,16 @@ def register(request):
                     user = User.objects.create_user(first_name=first_name, last_name=last_name,
                                                     email=email, password=password1, username=username)
                     user.save()
+
+                    # user_picture = UserProfile()
+                    # user_picture.user = request.user.id
+                    # user_picture.save()
                     return redirect('login')
             else:
                 messages.info(request, 'password not matching')
                 return redirect('register')
+
+        
     else:
         return render(request, 'account/register.html')
 
@@ -125,6 +135,7 @@ def index(request):
     page_obj = paginator.get_page(page_number)
     context = {
         'product': page_obj,
+        
     }
     return render(request, 'account/index.html', context)
 
@@ -181,7 +192,8 @@ def user_profile(request):
     order_list = 0
     order_count = 0
 
-    get_user = request.user.id
+    get_user =User.objects.get(id= request.user.id)
+    print(get_user)
 
     if UserProfile.objects.filter(user= get_user).exists():
         user_picture = UserProfile.objects.get(user=get_user)
@@ -190,30 +202,22 @@ def user_profile(request):
         user_picture.user = get_user
         user_picture.save()
 
+    print("hjjjjjjjjjjjhjg",user_picture.user.email)
+
     order_list = Order.objects.filter(
         user=request.user, is_ordered=True).order_by('-created_at')
     order_count = order_list.count()
-    if UserAddress.objects.filter(user=get_user).exists():
-        user_details = UserAddress.objects.filter(user=get_user).last()
-
-
-        context = {
-            'user_details': user_details,
-            'user_picture': user_picture,
-            'order_list': order_list,
-            'order_count': order_count,
-        }
-    else:
-
-        context = {
-            'user_details': user_details,
-            'user_picture': user_picture,
-            'order_list': order_list,
-            'order_count': order_count,
-        }
+    
+    user_details = User.objects.filter(username=get_user)
+    context = {
+        'user_details': user_details,
+        'user_picture': user_picture,
+        'order_list': order_list,
+        'order_count': order_count,
+    }
+    print("jkiuj",user_details)
 
     return render(request, 'account/user_profile.html', context)
-
 
 def order_cancel(request, order_number):
 
@@ -236,34 +240,34 @@ def order_cancel(request, order_number):
 
 def edit_profile(request):
     get_user = request.user.id
+    print(get_user)
 
     logger.error('Something went wrong!', get_user)
-    if UserAddress.objects.filter(user=get_user).exists():
-        datas = UserAddress.objects.get(user=get_user)
-    else:
-        datas = UserAddress()
-
-    user_is = User.objects.get(id=get_user)
+    
+    user = User.objects.get(id=get_user)
 
     if UserProfile.objects.filter(user=get_user).exists():
 
-        picture = UserProfile.objects.get(user=get_user)
+        profile = UserProfile.objects.get(user=get_user)
     else:
-        picture = UserProfile()
+        profile = UserProfile()
 
     if request.method == "POST":
-        datas.first_name = request.POST['first_name']
-        datas.last_name = request.POST['last_name']
-        datas.email = request.POST['email']
-        datas.phone_number = request.POST['phone_number']
-        datas.save()
+        print('entereed post')
+        profile.user.first_name = request.POST['first_name']
 
-        picture.profile_picture = request.FILES['pic']
-        picture.user = user_is
-        picture.save()
+        profile.user.last_name = request.POST['last_name']
+        profile.user.email = request.POST['email']
+        profile.phone_number = request.POST['phone_number']
+        profile.user.save()
+
+        profile.profile_picture = request.FILES['pic']
+        profile.user = user
+        profile.save()
         messages.success(request, "profile updated successfully")
         return redirect('user_profile')
     else:
+
         return redirect(request, 'account/edit-profile.html')
 
 

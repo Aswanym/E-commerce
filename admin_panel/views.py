@@ -10,6 +10,7 @@ from admin_panel.models import Category, Offers, Product, SubCategory, CategoryO
 from order.models import Order, OrderProduct, Payment
 import calendar
 from django.db.models import Q
+from django.views.decorators.cache import never_cache
 
 from django.db.models import Count,Sum,F
 import os
@@ -21,18 +22,21 @@ from admin_panel.models import BannerUpdate
 from django.core.paginator import Paginator
 import datetime
 
-
+@never_cache
 def adminlogin(request):
     if request.session.has_key('admin_login'):
         return redirect('admindash')
     else:
+        print('inside else')
         if request.method == 'POST':
+            print('inside post')
             username = request.POST['username']
             password = request.POST['password']
             user = auth.authenticate(username=username, password=password)
 
             if user is not None:
                 if user.is_superuser:
+                    print('inside super user')
                     auth.login(request, user)
                     request.session['admin_login'] = True
                     return redirect('admindash')
@@ -42,13 +46,17 @@ def adminlogin(request):
                 messages.info(request, 'Username or password incorrect')
                 return redirect('adminlogin')
         else:
+            print('inside last else')
             return render(request, 'admin/adminlogin.html')
+        
 
 
 @login_required(login_url='adminlogin')
+@never_cache
 def admindash(request):
-    if request.session.has_key('admin_login'):
-        
+    if request.session.get('admin_login') != True:
+        return redirect('adminlogin')
+    else:
         completed_order= OrderProduct.objects.filter(status = "Delivered")
         sales = OrderProduct.objects.aggregate(sales=Sum( F('product_price')*F('quantity') ))['sales']
         products = Product.objects.all()
@@ -108,15 +116,15 @@ def admindash(request):
                     "sales":sales,
                     "stock_avail":stock_avail,
                    }
-
+        print('inside admin dash')
         return render(request, 'admin/admindash.html', context)
-    else:
-        return redirect('adminlogin')
-
-
+    
 @login_required(login_url='adminlogin')
+
 def adminlogout(request):
-    auth.logout(request)
+    if request.session.has_key('admin_login'):
+        del request.session['admin_login']
+        auth.logout(request)
     return redirect('adminlogin')
 
 
@@ -432,6 +440,7 @@ def userblock(request, id):
     data = User.objects.get(id=id)
     if data.is_active == True:
         data.is_active = False
+        # data.user.logout()
         data.save()
         return redirect('userlist')
     else:

@@ -2050,7 +2050,7 @@ _______________________________________________________*/
 	padding-right: 15px;
 }
 .product-image {
-    background: #9d9d9d none repeat scroll 0 0;
+    /* background: #9d9d9d none repeat scroll 0 0; */
     min-width: 70px;
     overflow: hidden;
     position: relative;

@@ -53,7 +53,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for subtotal , cart_item in zipped_data %}
+                {% for subtotal,cart_item in zipped_data %}
                 <tr >
                   <td>
                     <div class="product-image">
@@ -98,9 +98,14 @@
                     <div class="product-qty ">
                       <label for="qty">Qty:</label>
                       <div  class="custom-qty">
-                            <a onclick="minuscart('{{cart_item.product.id }}')" class="reduced items"> <i
-                              class="fa fa-minus"></i> </a>
-                        <input type="text" id="product_quantity" class="input-text qty" title="Qty" value="{{cart_item.quantity}}"
+                        {% if cart_item.quantity == 1 %}
+                        <a onclick="minuscart('{{cart_item.product.id }}')" class="reduced items"> <i
+                          class="fa fa-minus"></i> </a>
+                          {% else %}
+                          <a onclick="minuscart('{{cart_item.product.id }}')" class="reduced items"> <i
+                            class="fa fa-minus"></i> </a>
+                          {% endif %}
+                            <input type="text" id="product_quantity" class="input-text qty" title="Qty" value="{{cart_item.quantity}}"
                             name="qty">
                         <a onclick="AddCart('{{cart_item.product.id}}')" class="increase items"> <i
                             class="fa fa-plus"></i> </a>
@@ -207,6 +212,7 @@
   </div>
 </section>
 <script src="https://kit.fontawesome.com/d476ce10a9.js" crossorigin="anonymous"></script>
+
 
 
 
