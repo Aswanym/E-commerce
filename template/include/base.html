@@ -143,12 +143,14 @@
                     </a>
                   
                   </li>
+                  {% if user.is_authethicated %}
                   <li class="cart-icon"> 
                     <a href="{% url 'showwishlist' %}"> 
                       <span > <i style="color: #fff;" class="fa fa-heart fa-2x"></i> </span>
                     </a>
                   
                   </li>
+                  {% endif %}
                   <li class="side-toggle">
                     <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button"><i class="fa fa-bars"></i></button>
                   </li>
