@@ -82,11 +82,10 @@ def register(request):
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         email = request.POST['email']
-        phone_no = request.POST.get('phone_no')
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
-        
+        phone_no = request.POST.get('phone_no')
 
         if username == '' or password1 == '' or first_name == '' or email == '' or last_name == '':
             messages.info(request, 'Varify all fields')
