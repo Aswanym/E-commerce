@@ -82,7 +82,7 @@ def register(request):
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         email = request.POST['email']
-        phone_no = request.POST['phone_no']
+        phone_no = request.POST.get('phone_no')
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
