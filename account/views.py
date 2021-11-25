@@ -85,7 +85,8 @@ def register(request):
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
-        phone_no = request.POST.get('phone_no')
+        phone_no = request.POST.get('phone_number')
+        print('phone_no',phone_no)
 
         if username == '' or password1 == '' or first_name == '' or email == '' or last_name == '':
             messages.info(request, 'Varify all fields')
@@ -104,7 +105,12 @@ def register(request):
                     user = User.objects.create_user(first_name=first_name, last_name=last_name,
                                                     email=email, password=password1, username=username)
                     user.save()
-                    user_profile =  UserProfile(phone_no=phone_no)
+                    
+                    print('user',user.id)
+                    
+                    user_profile =  UserProfile()
+                    user_profile.user = user
+                    user_profile.phone_number = phone_no
                     user_profile.save()
 
                     return redirect('login')
