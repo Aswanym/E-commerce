@@ -8,6 +8,10 @@ urlpatterns = [
     path('register/',views.register,name='register'),
     path('login',views.login,name='login'),
     path('logout/',views.logout,name='logout'),
+    
+    path('otplogin/',views.otplogin,name='otplogin'),
+    path('otpcheck/',views.otpcheck,name='otpcheck'),
+
 
     path('productpage/<id>',views.ProductPage,name='productpage'),
 

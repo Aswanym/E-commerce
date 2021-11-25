@@ -1,0 +1,68 @@
+{% extends 'include/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Bread Crumb STRAT -->
+<div class="container mt-sm-15">
+  <div class="banner inner-banner1 ">
+    <section class="banner-detail center-xs">
+      <h1 class="banner-title">Login</h1>
+      <div class="bread-crumb right-side float-none-xs">
+        <ul>
+          <li><a href="{% url 'index' %}">Home</a>/</li>
+          <li><span>Login</span></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- Bread Crumb END -->
+
+<!-- CONTAIN START -->
+<section class="checkout-section ptb-70">
+  <div class="container">
+    <div class="row">
+        <div class=" ml-3" style="color: red">
+            {% for message in messages%}
+            <small>{{message}} </small>
+            {% endfor %}
+          </div>
+      <div class="col-12">
+        <div class="row justify-content-center">
+          <div class="col-xl-6 col-lg-8 col-md-8 ">
+            <form class="main-form full" action="{% url 'otpcheck' %}" method="POST">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-12 mb-20">
+                  <div class="heading-part heading-bg">
+                    <h2 class="heading text-center"> 
+                        Enter OTP</h2>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="input-box">
+                    <input id="otpInp"  name="otp" type="text" placeholder="Enter OTP" maxlength="6">
+                    <div><small style="color: red;" id="numberMessage"></small></div>
+                  </div>
+                </div>
+
+                <div id="timerDiv" class="mb-2 text-warning ">Time left = <span id="timer"></span></div>
+                
+                <div class="col-12 text-center">
+                <button id="subBtn" name="submit" type="submit" class="btn-color ">Login</button> <div class="new-account  mt-20"> <a class="link align-center"
+                    title="Register with Stylexpo" href="{% url 'otplogin' %}">Resend OTP</a> </div>
+                </div>
+                </div>
+                
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- CONTAINER END -->
+
+
+
+{% endblock content %}

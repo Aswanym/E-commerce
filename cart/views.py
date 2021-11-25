@@ -517,6 +517,7 @@ def show_wishlist(request):
         'wishlists': wishlists,  
     }
     return render(request,'account/wishlist.html',context)
+   
 
 def delete_wishlist(request):
     if request.method == "GET":

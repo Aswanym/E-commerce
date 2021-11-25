@@ -134,10 +134,11 @@
 
           <div class="col-xl-3 col-md-4 col-6 item-width mb-30">
             <div class="product-item">
-              {% if product.is_offer_avail %}
+              
+              {% if product.offer_status %}
               <div class="main-label new-label"><span>{{product.offer_per}} %</span></div>
-              {% elif product.category_offer_avail %}
-              <div class="main-label new-label"><span>{{product.offer_per}} %</span></div>
+              {% elif product.cat_offer_status %}
+              <div class="main-label new-label"><span>{{product.cat_offer_per}} %</span></div>
               {% else %}
               <div><span hidden></span></div>
               {% endif %}

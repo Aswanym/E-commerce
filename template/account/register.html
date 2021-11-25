@@ -55,6 +55,13 @@
                 </div>
                 <div class="col-12">
                   <div class="input-box">
+                    <label for="login-email">Phone number</label>
+                    <input id="inputphone" onkeyup="numberValidation()" type="text" maxlength="10" name="phone_number" placeholder="Contact Number">
+                    <div><small style="color: red;" id="numberMessage"></small>  </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="input-box">
                     <label for="login-email">Email address</label>
                     <input id="InputEmail" onkeyup="emailValidation()" type="email" name="email" placeholder="Email Address">
                     <div><small style="color: red;" id="emailMessage"></small>  </div>
@@ -172,6 +179,34 @@ function emailValidation(){
        document.getElementById("emailMessage").innerHTML ="Enter a valid email";
        return false;
    }
+}
+function numberValidation(){
+    var val = /^[6789]\d{9}$/
+    var charct =  /^[a-zA-Z ]*$/
+    
+    var number1 = document.getElementById("inputphone").value;
+    if(isNaN(number1) ){
+        document.getElementById("numberMessage").innerHTML = "Not valid number."
+        return false;
+
+    }
+    else if(number1==""){
+        document.getElementById("numberMessage").innerHTML = "This feild is required!"
+        return false;
+    }else if(number1.match(val)){
+        document.getElementById("numberMessage").innerHTML = ""
+        return true
+    }else{
+         
+       if(number1.length<10){
+            document.getElementById("numberMessage").innerHTML = "Enter minimum 10 digits."
+            return false
+        }
+        else{
+            document.getElementById("numberMessage").innerHTML = ""
+            return true
+        }
+    }
 }
 </script>
 {% endblock content %}

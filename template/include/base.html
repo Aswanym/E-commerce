@@ -663,6 +663,39 @@
   }
 
 </script>
+<!-- timer set for otp login -->
+<script>
+  let timerOn = true;
+
+function timer(remaining) {
+var m = Math.floor(remaining / 60);
+var s = remaining % 60;
+
+m = m < 10 ? '0' + m : m;
+s = s < 10 ? '0' + s : s;
+document.getElementById('timerDiv').innerHTML = m + ':' + s;
+remaining -= 1;
+
+if(remaining >= 0 && timerOn) {
+  setTimeout(function() {
+      timer(remaining);
+  }, 1000);
+  return;
+}
+
+if(!timerOn) {
+  // Do validate stuff here
+  return;
+}
+
+document.getElementById('otpInp').disabled = true
+document.getElementById('subBtn').disabled = true
+document.getElementById('timerDiv').hidden = true
+swal('OTP Timed out. Please try again.')
+}
+
+timer(120);
+</script>
 </body>
  
 

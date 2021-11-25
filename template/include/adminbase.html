@@ -474,7 +474,7 @@
 
 <script>
 	var today = new Date().toISOString().split('T')[0];
-	document.getElementsByName("fdate")[0].setAttribute('max', today);
+	document.getElementsByName("fdate")[0].setAttribute('min', today);
 	
 </script>
 
@@ -799,7 +799,7 @@
 	</script>
 <!-- ajax function to delete product -->
 	<script>
-		function productdelete(prodofferid) {
+		function productdelete(prodid) {
 			swal({
 				title: "Are you sure?",
 				icon: "warning",
@@ -808,7 +808,7 @@
 			})
 			.then((willDelete) => {
 			if (willDelete) {
-				var prod_offerid = prodofferid;
+				var prod_id = prodid;
 				console.log('entred inside')
 				$.ajax({
 					

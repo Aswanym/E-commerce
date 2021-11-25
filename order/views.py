@@ -288,6 +288,11 @@ def razorpay(request,order_number,total=0,quantity=0):
 
     orders = Order.objects.filter(user= request.user,is_ordered = False, order_number=order_number)
     cart_items=CartItem.objects.filter(user=request.user,is_active=True)
+
+    # if CouponOffer.objects.filter(user=request.user,is_available=True).exists():
+    #     grand_total=orders.coupon_price
+
+    # else:
     
     for cart_item in cart_items:
 
@@ -307,6 +312,8 @@ def razorpay(request,order_number,total=0,quantity=0):
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
 
+
+
     tax  = int ( (2 * total)/100 )
     total_with_tax = total + tax
 
@@ -315,7 +322,6 @@ def razorpay(request,order_number,total=0,quantity=0):
     else:
         shipping = 80
     grand_total = total_with_tax + shipping
-    payment_method = request.POST.get('payment-option')
     
     if request.method == 'POST':
         payment = Payment(user=request.user,payment_id=order_number,payment_method="razorpay",amount_paid=grand_total,status="Complete")
@@ -355,11 +361,6 @@ def razorpay(request,order_number,total=0,quantity=0):
                 couponuse = CouponUsed.objects.get(order_number=order_number)
                 couponuse.is_ordered = True
                 couponuse.save()
-            # else:
-                
-            #     couponuse = CouponUsed.objects.get(order_number=order_number)
-            #     couponuse.is_ordered = False
-            #     couponuse.save()
 
         #clear cart
         CartItem.objects.filter(user=request.user).delete()

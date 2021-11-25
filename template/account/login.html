@@ -48,12 +48,16 @@
                 </div>
                 <div class="col-12 text-center">
                   <button name="submit" type="submit" class="btn-color ">Log In</button>
+                  <!-- <a href="{% url 'otplogin' %}"><button  name="" type="button" class="btn-color ">OTP login</button></a> -->
+                  <div class="new-account align-center mt-20"> <a class="link"
+                    title="Register with Stylexpo" href="{% url 'otplogin' %}">OTP login</a> </div>
                 </div>
                 <div class=" ml-3" style="color: red">
                   {% for message in messages%}
                   <small>{{message}} </small>
                   {% endfor %}
                 </div>
+                
                 <div class="col-12">
                   <div class="new-account align-center mt-20"> <span>New to Saasha?</span> <a class="link"
                       title="Register with Stylexpo" href='register'>Create New Account</a> </div>

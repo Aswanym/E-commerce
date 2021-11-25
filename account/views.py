@@ -14,6 +14,8 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 
 from django.views.decorators.cache import cache_control
+from twilio.rest import Client
+from private import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_SERVICE_SID
 
 # import the logging library
 import logging
@@ -80,6 +82,7 @@ def register(request):
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         email = request.POST['email']
+        phone_no = request.POST['phone_no']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
@@ -102,18 +105,86 @@ def register(request):
                     user = User.objects.create_user(first_name=first_name, last_name=last_name,
                                                     email=email, password=password1, username=username)
                     user.save()
+                    user_profile =  UserProfile(phone_no=phone_no)
+                    user_profile.save()
 
-                    # user_picture = UserProfile()
-                    # user_picture.user = request.user.id
-                    # user_picture.save()
                     return redirect('login')
             else:
                 messages.info(request, 'password not matching')
                 return redirect('register')
-
-        
     else:
         return render(request, 'account/register.html')
+
+def otplogin(request):
+    if request.method == "POST":
+        phone_no = request.POST.get('phone_no')
+
+        if UserProfile.objects.filter(phone_number=phone_no).exists():
+            mobile = UserProfile.objects.filter(phone_number=phone_no)
+            for i in mobile:
+                mobile_no = i.phone_number
+                user = i.user.username
+
+            user_mobile = '+91'+ str(mobile_no)
+            request.session['user_mobile'] = user_mobile
+            request.session['username'] = user
+            print('yyyyyyyyyyyyyyy',request.session['username'])
+
+            auth_sid = TWILIO_ACCOUNT_SID
+            auth_token = TWILIO_AUTH_TOKEN
+            
+            client = Client(auth_sid,auth_token)
+            
+            verification = client.verify \
+                        .services(TWILIO_SERVICE_SID) \
+                        .verifications \
+                        .create(to= user_mobile, channel='sms')
+            print('user exists')
+            return redirect('otpcheck')
+
+        else:
+            print('not a registered user')
+            messages.error(request,'not a registered user')
+            return redirect('otplogin')
+    return render(request,'account/otplogin.html')
+
+def otpcheck(request):
+    if request.method == "POST":
+        otp_input = request.POST.get('otp')
+
+        user_mobile = request.session['user_mobile']
+        user = request.session['username'] 
+
+        account_sid = TWILIO_ACCOUNT_SID
+        auth_token = TWILIO_AUTH_TOKEN
+        client = Client(account_sid, auth_token)
+
+        verification_check = client.verify \
+                                .services(TWILIO_SERVICE_SID) \
+                                .verification_checks \
+                                .create(to= user_mobile, code= otp_input)
+
+        print(verification_check.status)
+        if verification_check.status == "approved":
+            # messages.success(request,"OTP verified successfully.")
+            user = User.objects.get(username=user)
+            user.is_active = True           
+            user.save()          
+            auth.login(request,user)          
+            try:
+                print('inside try')
+                del request.session['user_mobile']
+                del request.session['username']
+               
+            except:
+                print('inside except')
+                
+            return redirect('index') 
+        else:
+            messages.error(request,'wrong otp')
+            return redirect('otplogin')             
+    
+    return render(request,'account/otpcheck.html')
 
 
 @login_required(login_url='login')
@@ -122,7 +193,12 @@ def logout(request):
     if request.session.has_key('user'):
         del request.session['user']
         auth.logout(request)
-    return redirect('index')
+        return redirect('index')
+    else:
+        # del request.session['user_mobile']
+        # del request.session['username'] 
+        auth.logout(request)
+        return redirect('login')
 
 
 @never_cache
@@ -202,8 +278,6 @@ def user_profile(request):
         user_picture.user = get_user
         user_picture.save()
 
-    print("hjjjjjjjjjjjhjg",user_picture.user.email)
-
     order_list = Order.objects.filter(
         user=request.user, is_ordered=True).order_by('-created_at')
     order_count = order_list.count()
@@ -215,7 +289,6 @@ def user_profile(request):
         'order_list': order_list,
         'order_count': order_count,
     }
-    print("jkiuj",user_details)
 
     return render(request, 'account/user_profile.html', context)
 
@@ -253,9 +326,8 @@ def edit_profile(request):
         profile = UserProfile()
 
     if request.method == "POST":
-        print('entereed post')
+     
         profile.user.first_name = request.POST['first_name']
-
         profile.user.last_name = request.POST['last_name']
         profile.user.email = request.POST['email']
         profile.phone_number = request.POST['phone_number']

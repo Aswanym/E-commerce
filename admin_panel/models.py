@@ -122,7 +122,6 @@ class Product(models.Model):
                 result = self.offer_price 
             else:
                 result = self.category_offer_price 
-            print(result)
             return result
         else:
             pass
@@ -180,6 +179,8 @@ class CouponOffer(models.Model):
         if str(self.coupon_end) > today and  self.is_available == True :
             return False #not expired
         else:
+            self.is_available = False
+            self.save()
             return True  #expired
     
 class CouponUsed(models.Model):

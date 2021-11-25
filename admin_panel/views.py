@@ -301,7 +301,8 @@ def productlist(request):
 def DeleteProduct(request):
 
     if request.method == "GET":
-        id = request.GET.get('prod_offerid')
+        id = request.GET.get('prod_id')
+        print('delete product id is',id)
         data = Product.objects.get(id=id)
         data.delete()
         return JsonResponse({'msg': 'success', 'message': 'sucessfully deleted'})
